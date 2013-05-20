@@ -636,7 +636,7 @@ def process_all
 	ObjectSpace.each_object do |o|
 		if (o.respond_to?('name')) then
 			className = o.name
-			if className == 'DLTKBuiltinGenerator' || className == 'DLTKBuiltinGeneratorSet' then 
+			if className == 'DLTKBuiltinGenerator' || className == 'DLTKBuiltinGeneratorSet' || className == nil then
 				next
 			end
 		end
