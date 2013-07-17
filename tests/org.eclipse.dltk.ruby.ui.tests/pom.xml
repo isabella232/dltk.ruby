@@ -13,6 +13,19 @@
 	<artifactId>org.eclipse.dltk.ruby.ui.tests</artifactId>
 	<version>5.0.0-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
+	<profiles>
+		<profile>
+			<id>macosx-jvm-flags</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<os-jvm-flags>-XstartOnFirstThread</os-jvm-flags>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -21,6 +34,8 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<useUIHarness>true</useUIHarness>
+					<useUIThread>true</useUIThread>
+					<argLine>-Xms40m -Xmx1G ${os-jvm-flags}</argLine>
 					<includes>
 						<include>**/AllTests.java</include>
 					</includes>
