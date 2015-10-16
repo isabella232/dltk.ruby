@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.eclipse.dltk.ruby</groupId>
 		<artifactId>ruby</artifactId>
-		<version>5.3.1-SNAPSHOT</version>
+		<version>5.3.2-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 	<artifactId>org.eclipse.dltk.ruby.core.tests</artifactId>
