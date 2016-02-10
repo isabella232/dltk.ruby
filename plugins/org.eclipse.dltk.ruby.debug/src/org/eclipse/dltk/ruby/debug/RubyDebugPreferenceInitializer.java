@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2016 Red Hat Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat Inc. - Use builtin debugger if ruby-debug is not installed
+ *******************************************************************************/
 package org.eclipse.dltk.ruby.debug;
 
 import org.eclipse.core.runtime.Preferences;
@@ -10,7 +20,7 @@ public class RubyDebugPreferenceInitializer extends
 	public void initializeDefaultPreferences() {
 		Preferences store = RubyDebugPlugin.getDefault().getPluginPreferences();
 
-		if (store.getDefaultString(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY) == null)
+		if (store.getDefaultString(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY).isEmpty())
 			store.setDefault(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
 					"org.eclipse.dltk.ruby.basicdebugger"); //$NON-NLS-1$
 
