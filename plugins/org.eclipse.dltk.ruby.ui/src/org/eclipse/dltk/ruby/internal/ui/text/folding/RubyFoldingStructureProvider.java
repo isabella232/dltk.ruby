@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,34 +34,42 @@ import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 public class RubyFoldingStructureProvider extends
 		AbstractASTFoldingStructureProvider {
 
+	@Override
 	protected String getCommentPartition() {
 		return IRubyPartitions.RUBY_COMMENT;
 	}
 
+	@Override
 	protected String getDocPartition() {
 		return IRubyPartitions.RUBY_DOC;
 	}
 
+	@Override
 	protected String getPartition() {
 		return IRubyPartitions.RUBY_PARTITIONING;
 	}
 
+	@Override
 	protected IPartitionTokenScanner getPartitionScanner() {
 		return new RubyPartitionScanner();
 	}
 
+	@Override
 	protected String[] getPartitionTypes() {
 		return IRubyPartitions.RUBY_PARTITION_TYPES;
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
+	@Override
 	protected ILog getLog() {
 		return RubyUI.getDefault().getLog();
 	}
 
+	@Override
 	protected CodeBlock[] getCodeBlocks(String code, int offset) {
 		ModuleDeclaration decl = parse(code, offset);
 		if (decl instanceof FakeModuleDeclaration) {
@@ -70,11 +78,13 @@ public class RubyFoldingStructureProvider extends
 		return buildCodeBlocks(decl, offset);
 	}
 
+	@Override
 	protected boolean mayCollapse(ASTNode s,
 			FoldingStructureComputationContext ctx) {
 		return super.mayCollapse(s, ctx) || s instanceof CallExpression;
 	}
 
+	@Override
 	protected boolean initiallyCollapse(ASTNode s) {
 		return super.initiallyCollapse(s)
 				|| (s instanceof CallExpression && fInitCollapseRequires);
@@ -82,6 +92,7 @@ public class RubyFoldingStructureProvider extends
 
 	private boolean fInitCollapseRequires;
 
+	@Override
 	protected void initializePreferences(IPreferenceStore store) {
 		super.initializePreferences(store);
 		fInitCollapseRequires = store
@@ -114,6 +125,7 @@ public class RubyFoldingStructureProvider extends
 				return children.size();
 			}
 
+			@Override
 			public String toString() {
 				return declaration != null ? declaration.toString() : "(TOP)"; //$NON-NLS-1$
 			}
@@ -158,11 +170,13 @@ public class RubyFoldingStructureProvider extends
 			super(offset);
 		}
 
+		@Override
 		public boolean visit(ModuleDeclaration s) throws Exception {
 			declarations.push(new ModuleDeclarationContainer());
 			return visitGeneral(s);
 		}
 
+		@Override
 		public boolean visit(TypeDeclaration s) throws Exception {
 			handleRequireStatements();
 			final DeclarationContainer child = new DeclarationContainer(s,
@@ -172,11 +186,13 @@ public class RubyFoldingStructureProvider extends
 			return visitGeneral(s);
 		}
 
+		@Override
 		public boolean endvisit(TypeDeclaration s) throws Exception {
 			declarations.pop();
 			return super.endvisit(s);
 		}
 
+		@Override
 		public boolean visit(MethodDeclaration s) throws Exception {
 			handleRequireStatements();
 			final DeclarationContainer child = new DeclarationContainer(s, true);
@@ -185,6 +201,7 @@ public class RubyFoldingStructureProvider extends
 			return visitGeneral(s);
 		}
 
+		@Override
 		public boolean endvisit(MethodDeclaration s) throws Exception {
 			declarations.pop();
 			return super.endvisit(s);
@@ -209,6 +226,7 @@ public class RubyFoldingStructureProvider extends
 			}
 		}
 
+		@Override
 		public boolean endvisit(ModuleDeclaration s) throws Exception {
 			handleRequireStatements();
 			final DeclarationContainer container = popDeclaration();
@@ -216,6 +234,7 @@ public class RubyFoldingStructureProvider extends
 			return super.endvisit(s);
 		}
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (declarations.size() == 1) {
 				if (node instanceof CallExpression) {
@@ -249,6 +268,7 @@ public class RubyFoldingStructureProvider extends
 
 	}
 
+	@Override
 	protected FoldingASTVisitor getFoldingVisitor(int offset) {
 		return new RubyFoldingASTVisitor(offset);
 	}

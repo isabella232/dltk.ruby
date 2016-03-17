@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,22 +14,27 @@ import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.actions.OpenTypeAction;
 
 public class RubyOpenTypeAction extends OpenTypeAction {
+	@Override
 	protected IDLTKUILanguageToolkit getUILanguageToolkit() {
 		return RubyUILanguageToolkit.getInstance();
 	}
 
+	@Override
 	protected String getOpenTypeErrorMessage() {
 		return Messages.RubyOpenTypeAction_anExceptionOccurredWhileOpeningTheClassModule;
 	}
 
+	@Override
 	protected String getOpenTypeErrorTitle() {
 		return Messages.RubyOpenTypeAction_openClassModule;
 	}
 
+	@Override
 	protected String getOpenTypeDialogMessage() {
 		return Messages.RubyOpenTypeAction_selectAClassModuleToOpen;
 	}
 
+	@Override
 	protected String getOpenTypeDialogTitle() {
 		return Messages.RubyOpenTypeAction_openClassModule;
 	}

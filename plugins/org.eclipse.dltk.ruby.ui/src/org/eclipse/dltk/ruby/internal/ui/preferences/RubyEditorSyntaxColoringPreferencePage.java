@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,18 +17,22 @@ import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 public class RubyEditorSyntaxColoringPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 
+	@Override
 	protected String getHelpId() {
 		return null;
 	}
 
+	@Override
 	protected void setDescription() {
 		// leave blank
 	}
 
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
 	}
 
+	@Override
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
 		return new RubyEditorColoringConfigurationBlock(overlayPreferenceStore);

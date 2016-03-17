@@ -48,6 +48,7 @@ public abstract class ScriptHeuristicScanner implements ISymbols {
 	 * {@link Character#isWhitespace(char)}) character.
 	 */
 	protected static class NonWhitespace extends StopCondition {
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return !Character.isWhitespace(ch);
 		}
@@ -59,11 +60,13 @@ public abstract class ScriptHeuristicScanner implements ISymbols {
 	 * @see RubyHeuristicScanner.NonWhitespace
 	 */
 	protected final class NonWhitespaceDefaultPartition extends NonWhitespace {
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return super.stop(ch, position, true)
 					&& isDefaultPartition(position);
 		}
 
+		@Override
 		public int nextPosition(int position, boolean forward) {
 			ITypedRegion partition = getPartition(position);
 			if (fPartition.equals(partition.getType()))
@@ -87,6 +90,7 @@ public abstract class ScriptHeuristicScanner implements ISymbols {
 	 * {@link Character#isJavaIdentifierPart(char)}) character.
 	 */
 	protected class NonIdentifierPart extends StopCondition {
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return !isValidIdentifierPart(ch);
 		}
@@ -99,11 +103,13 @@ public abstract class ScriptHeuristicScanner implements ISymbols {
 	 */
 	protected final class NonIdentifierPartDefaultPartition extends
 			NonIdentifierPart {
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return super.stop(ch, position, true)
 					|| !isDefaultPartition(position);
 		}
 
+		@Override
 		public int nextPosition(int position, boolean forward) {
 			ITypedRegion partition = getPartition(position);
 			if (fPartition.equals(partition.getType()))
@@ -150,6 +156,7 @@ public abstract class ScriptHeuristicScanner implements ISymbols {
 		/*
 		 * @see org.eclipse.jdt.internal.ui.text.JavaHeuristicScanner.StopCondition#stop(char, int)
 		 */
+		@Override
 		public boolean stop(char ch, int position, boolean forward) {
 			return Arrays.binarySearch(fChars, ch) >= 0 && isDefaultPartition(position);
 		}
@@ -157,6 +164,7 @@ public abstract class ScriptHeuristicScanner implements ISymbols {
 		/*
 		 * @see org.eclipse.jdt.internal.ui.text.JavaHeuristicScanner.StopCondition#nextPosition(int, boolean)
 		 */
+		@Override
 		public int nextPosition(int position, boolean forward) {
 			ITypedRegion partition= getPartition(position);
 			if (fPartition.equals(partition.getType()))

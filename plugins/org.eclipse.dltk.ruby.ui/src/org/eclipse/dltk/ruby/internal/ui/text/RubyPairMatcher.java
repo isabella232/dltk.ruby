@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ public final class RubyPairMatcher extends DefaultCharacterPairMatcher {
 	}
 
 	/* @see ICharacterPairMatcher#match(IDocument, int) */
+	@Override
 	public IRegion match(IDocument document, int offset) {
 		try {
 			return performMatch(document, offset);
@@ -80,6 +81,7 @@ public final class RubyPairMatcher extends DefaultCharacterPairMatcher {
 		return null;
 	}
 
+	@Override
 	public int getAnchor() {
 		int superAnchor = super.getAnchor();
 		if (superAnchor < 0)
@@ -88,6 +90,7 @@ public final class RubyPairMatcher extends DefaultCharacterPairMatcher {
 			return superAnchor;
 	}
 
+	@Override
 	public void clear() {
 		super.clear();
 		fBlockAnchor = -1;

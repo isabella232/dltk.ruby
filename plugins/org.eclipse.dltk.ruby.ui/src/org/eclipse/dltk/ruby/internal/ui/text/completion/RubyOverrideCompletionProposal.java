@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
@@ -46,10 +45,12 @@ public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal
 		setReplacementString(buffer.toString());		
 	}
 
+	@Override
 	public CharSequence getPrefixCompletionText(IDocument document, int completionOffset) {
 		return fMethodName;
 	}
 
+	@Override
 	protected boolean updateReplacementString(IDocument document, char trigger, int offset) throws CoreException, BadLocationException {
 		final IDocument buffer= new Document(document.get());
 		int index= offset - 1;
@@ -64,6 +65,7 @@ public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal
 		return false;
 	}
 	
+	@Override
 	public IContextInformation getContextInformation() {		
 		return new ContextInformation(getDisplayString(), getDisplayString());
 	}

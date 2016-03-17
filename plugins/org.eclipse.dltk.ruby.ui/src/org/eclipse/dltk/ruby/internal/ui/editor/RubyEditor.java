@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,25 +41,30 @@ public class RubyEditor extends ScriptEditor {
 	private org.eclipse.dltk.internal.ui.editor.BracketInserter fBracketInserter = new RubyBracketInserter(
 			this);
 
+	@Override
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
 		setRulerContextMenuId(RULER_CONTEXT);
 	}
 
+	@Override
 	public IPreferenceStore getScriptPreferenceStore() {
 		return RubyUI.getDefault().getPreferenceStore();
 	}
 
+	@Override
 	public ScriptTextTools getTextTools() {
 		return RubyUI.getDefault().getTextTools();
 	}
 
+	@Override
 	protected ScriptOutlinePage doCreateOutlinePage() {
 		return new RubyOutlinePage(this, RubyUI.getDefault()
 				.getPreferenceStore());
 	}
 
+	@Override
 	protected void connectPartitioningToElement(IEditorInput input,
 			IDocument document) {
 		if (document instanceof IDocumentExtension3) {
@@ -74,6 +79,7 @@ public class RubyEditor extends ScriptEditor {
 
 	private IFoldingStructureProvider fFoldingProvider = null;
 
+	@Override
 	protected IFoldingStructureProvider getFoldingStructureProvider() {
 		if (fFoldingProvider == null) {
 			fFoldingProvider = new RubyFoldingStructureProvider();
@@ -81,22 +87,27 @@ public class RubyEditor extends ScriptEditor {
 		return fFoldingProvider;
 	}
 
+	@Override
 	public String getEditorId() {
 		return EDITOR_ID;
 	}
 
+	@Override
 	public IDLTKLanguageToolkit getLanguageToolkit() {
 		return RubyLanguageToolkit.getDefault();
 	}
 
+	@Override
 	public String getCallHierarchyID() {
 		return "org.eclipse.dltk.callhierarchy.view"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected void initializeKeyBindingScopes() {
 		setKeyBindingScopes(new String[] { "org.eclipse.dltk.ui.rubyEditorScope" }); //$NON-NLS-1$
 	}
 
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
@@ -134,6 +145,7 @@ public class RubyEditor extends ScriptEditor {
 		}
 	}
 
+	@Override
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
 		IModelElement element = getInputModelElement();
@@ -142,6 +154,7 @@ public class RubyEditor extends ScriptEditor {
 		}
 	}
 
+	@Override
 	public void dispose() {
 		ISourceViewer sourceViewer = getSourceViewer();
 		if (sourceViewer instanceof ITextViewerExtension)

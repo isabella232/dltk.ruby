@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -103,6 +103,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 
 	private static final boolean ACTIVE = true;
 
+	@Override
 	public boolean visitGeneral(ASTNode node) throws Exception {
 		if (!ACTIVE) {
 			return true;
@@ -175,6 +176,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 		return true;
 	}
 
+	@Override
 	public void endvisitGeneral(ASTNode node) throws Exception {
 		stack.pop();
 	}

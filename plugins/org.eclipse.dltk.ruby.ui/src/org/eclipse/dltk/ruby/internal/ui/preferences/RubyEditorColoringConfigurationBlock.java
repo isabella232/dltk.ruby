@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -91,10 +91,12 @@ public class RubyEditorColoringConfigurationBlock extends
 		super(store);
 	}
 
+	@Override
 	protected String[][] getSyntaxColorListModel() {
 		return fSyntaxColorListModel;
 	}
 
+	@Override
 	protected ProjectionViewer createPreviewViewer(Composite parent,
 			IVerticalRuler verticalRuler, IOverviewRuler overviewRuler,
 			boolean showAnnotationsOverview, int styles, IPreferenceStore store) {
@@ -102,6 +104,7 @@ public class RubyEditorColoringConfigurationBlock extends
 				showAnnotationsOverview, styles, store);
 	}
 
+	@Override
 	protected ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(
 			IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, boolean configureFormatter) {
@@ -110,15 +113,18 @@ public class RubyEditorColoringConfigurationBlock extends
 				configureFormatter);
 	}
 
+	@Override
 	protected void setDocumentPartitioning(IDocument document) {
 		RubyDocumentSetupParticipant participant = new RubyDocumentSetupParticipant();
 		participant.setup(document);
 	}
 
+	@Override
 	protected InputStream getPreviewContentReader() {
 		return getClass().getResourceAsStream(PREVIEW_FILE_NAME);
 	}
 
+	@Override
 	protected ScriptTextTools getTextTools() {
 		return RubyUI.getDefault().getTextTools();
 	}

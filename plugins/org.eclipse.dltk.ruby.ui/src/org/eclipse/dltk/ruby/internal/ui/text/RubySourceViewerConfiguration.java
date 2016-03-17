@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,6 @@
  *  Contributors:
  *     xored software, Inc. - initial API and implementation
  *     xored software, Inc. - fix tab handling (Bug# 200024) (Alex Panchenko) 
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text;
 
@@ -69,10 +68,12 @@ public class RubySourceViewerConfiguration extends
 		super(colorManager, preferenceStore, editor, partitioning);
 	}
 
+	@Override
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return IRubyPartitions.RUBY_PARTITION_TYPES;
 	}
 
+	@Override
 	protected void initializeScanners() {
 		Assert.isTrue(isNewSetup());
 		fCodeScanner = new RubyCodeScanner(getColorManager(), fPreferenceStore);
@@ -103,6 +104,7 @@ public class RubySourceViewerConfiguration extends
 		return fCommentScanner;
 	}
 
+	@Override
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new ScriptPresentationReconciler();
@@ -157,6 +159,7 @@ public class RubySourceViewerConfiguration extends
 	 * @see RubySourceViewerConfiguration#ScriptSourceViewerConfiguration(IColorManager,
 	 *      IPreferenceStore, ITextEditor, String)
 	 */
+	@Override
 	public void handlePropertyChangeEvent(PropertyChangeEvent event) {
 		Assert.isTrue(isNewSetup());
 		if (fCodeScanner.affectsBehavior(event))
@@ -180,6 +183,7 @@ public class RubySourceViewerConfiguration extends
 	 * @return <code>true</code> if event causes a behavioral change
 	 * 
 	 */
+	@Override
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return fCodeScanner.affectsBehavior(event)
 				|| fStringScanner.affectsBehavior(event)
@@ -200,6 +204,7 @@ public class RubySourceViewerConfiguration extends
 		};
 	}
 
+	@Override
 	public IInformationPresenter getHierarchyPresenter(
 			ScriptSourceViewer sourceViewer, boolean doCodeResolve) {
 		// Do not create hierarchy presenter if there's no CU.
@@ -222,6 +227,7 @@ public class RubySourceViewerConfiguration extends
 		return presenter;
 	}
 
+	@Override
 	public IAutoEditStrategy[] getAutoEditStrategies(
 			ISourceViewer sourceViewer, String contentType) {
 		// // TODO: check contentType. think, do we really need it? :)
@@ -229,6 +235,7 @@ public class RubySourceViewerConfiguration extends
 		return new IAutoEditStrategy[] { new RubyAutoEditStrategy(partitioning) };
 	}
 
+	@Override
 	protected void alterContentAssistant(ContentAssistant assistant) {
 		IContentAssistProcessor scriptProcessor = new RubyCompletionProcessor(
 				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
@@ -240,10 +247,12 @@ public class RubySourceViewerConfiguration extends
 				IRubyPartitions.RUBY_STRING);
 	}
 
+	@Override
 	protected ContentAssistPreference getContentAssistPreference() {
 		return RubyContentAssistPreference.getDefault();
 	}
 
+	@Override
 	protected Map getHyperlinkDetectorTargets(final ISourceViewer sourceViewer) {
 		final Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
 		targets.put("org.eclipse.dltk.ruby.code", getEditor()); //$NON-NLS-1$

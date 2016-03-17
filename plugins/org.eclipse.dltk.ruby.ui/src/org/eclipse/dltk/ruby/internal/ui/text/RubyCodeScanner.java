@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -77,10 +77,12 @@ public class RubyCodeScanner extends AbstractScriptScanner {
 		initialize();
 	}
 
+	@Override
 	protected String[] getTokenProperties() {
 		return fgTokenProperties;
 	}
 
+	@Override
 	protected List createRules() {
 		List/* <IRule> */rules = new ArrayList/* <IRule> */();
 		IToken keyword = getToken(IRubyColorConstants.RUBY_KEYWORD);
@@ -102,6 +104,7 @@ public class RubyCodeScanner extends AbstractScriptScanner {
 		rules.add(new StartWithRule(globalVariable, '$') {
 			private char[] addition = new char[] { '=', '-' };
 
+			@Override
 			protected char[] getAdditional() {
 				return addition;
 			}

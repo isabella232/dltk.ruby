@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -39,6 +39,7 @@ public class RubyLabelProvider extends LabelProvider {
 		fStorageLabelProvider = new StorageLabelProvider();
 	}
 
+	@Override
 	public Image getImage(Object element) {
 		if (element instanceof IStorage) {
 			return fStorageLabelProvider.getImage(element);
@@ -46,6 +47,7 @@ public class RubyLabelProvider extends LabelProvider {
 		return null;
 	}
 
+	@Override
 	public String getText(Object element) {
 		if (element instanceof ISourceModule) {
 			final StringBuffer sb = new StringBuffer();
@@ -63,11 +65,7 @@ public class RubyLabelProvider extends LabelProvider {
 		return super.getText(element);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.BaseLabelProvider#dispose()
-	 */
+	@Override
 	public void dispose() {
 		fStorageLabelProvider.dispose();
 	}

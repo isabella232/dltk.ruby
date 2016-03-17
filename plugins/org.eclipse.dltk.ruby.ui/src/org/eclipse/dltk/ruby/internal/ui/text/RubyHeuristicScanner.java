@@ -45,6 +45,7 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 				IDocument.DEFAULT_CONTENT_TYPE);
 	}
 
+	@Override
 	public int getToken(int pos, String s) {
 		Assert.isNotNull(s);
 

@@ -4,6 +4,7 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ui.wizards.NewSourceModulePage;
 
 public abstract class RubyNewFilePage extends NewSourceModulePage {
+	@Override
 	protected String getRequiredNature() {
 		return RubyNature.NATURE_ID;
 	}

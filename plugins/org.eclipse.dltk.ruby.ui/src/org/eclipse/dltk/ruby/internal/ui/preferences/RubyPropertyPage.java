@@ -7,6 +7,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 public class RubyPropertyPage extends PropertyPage {
 
+	@Override
 	protected Control createContents(Composite parent) {
 		return new Composite(parent, SWT.NONE);
 	}

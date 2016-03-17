@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,16 +24,19 @@ import org.eclipse.jface.preference.PreferencePage;
 public class RubyFoldingPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 
+	@Override
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
 		return new DefaultFoldingPreferenceConfigurationBlock(
 				overlayPreferenceStore, this) {
 
+			@Override
 			protected IFoldingPreferenceBlock createDocumentationBlock(
 					OverlayPreferenceStore store, PreferencePage page) {
 				return new RubyDocFoldingPreferenceBlock(store, page);
 			}
 
+			@Override
 			protected IFoldingPreferenceBlock createSourceCodeBlock(
 					OverlayPreferenceStore store, PreferencePage page) {
 				return new RubyFoldingPreferenceBlock(store, page);
@@ -41,14 +44,17 @@ public class RubyFoldingPreferencePage extends
 		};
 	}
 
+	@Override
 	protected String getHelpId() {
 		return null;
 	}
 
+	@Override
 	protected void setDescription() {
 		// setDescription(RubyPreferencesMessages.EditorFoldingPreferencePageDescription);
 	}
 
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
 	}

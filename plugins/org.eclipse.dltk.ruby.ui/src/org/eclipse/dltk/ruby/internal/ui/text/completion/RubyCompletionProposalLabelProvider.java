@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ public class RubyCompletionProposalLabelProvider extends
 	private static final String SEPARATOR = RubyLabelProvider.SEPARATOR;
 	private static final String PACKAGE_SEPARATOR = RubyLabelProvider.PACKAGE_SEPARATOR;
 
+	@Override
 	protected String createMethodProposalLabel(CompletionProposal methodProposal) {
 		StringBuffer nameBuffer = new StringBuffer();
 
@@ -52,6 +53,7 @@ public class RubyCompletionProposalLabelProvider extends
 		return nameBuffer.toString();
 	}
 
+	@Override
 	protected String createOverrideMethodProposalLabel(
 			CompletionProposal methodProposal) {
 		StringBuffer nameBuffer = new StringBuffer();
@@ -83,6 +85,7 @@ public class RubyCompletionProposalLabelProvider extends
 		return nameBuffer.toString();
 	}
 
+	@Override
 	public String createTypeProposalLabel(CompletionProposal typeProposal) {
 		final StringBuffer nameBuffer = new StringBuffer();
 		final IType type = (IType) typeProposal.getModelElement();

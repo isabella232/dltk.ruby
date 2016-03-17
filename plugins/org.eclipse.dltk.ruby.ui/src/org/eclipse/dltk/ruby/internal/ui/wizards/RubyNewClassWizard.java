@@ -15,16 +15,20 @@ public class RubyNewClassWizard extends NewSourceModuleWizard {
 		setWindowTitle(RubyWizardMessages.NewClassWizard_title);
 	}
 
+	@Override
 	protected NewSourceModulePage createNewSourceModulePage() {
 		return new RubyNewFilePage() {
+			@Override
 			protected String getPageTitle() {
 				return RubyWizardMessages.NewClassPage_title;
 			}
 
+			@Override
 			protected String getPageDescription() {
 				return RubyWizardMessages.NewClassPage_description;
 			}
 
+			@Override
 			protected String getFileContent() {
 				String text = getFileText();
 				String className = Character.toUpperCase(text.charAt(0))

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -24,14 +24,17 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 public class RubyTodoTaskPreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
 
+	@Override
 	protected String getHelpId() {
 		return null;
 	}
 
+	@Override
 	protected void setDescription() {
 		setDescription(RubyPreferencesMessages.TodoTaskDescription);
 	}
 
+	@Override
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
@@ -39,23 +42,28 @@ public class RubyTodoTaskPreferencePage extends
 				container, RubyPlugin.PLUGIN_ID);
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
+	@Override
 	protected String getProjectHelpId() {
 		return null;
 	}
 
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(new PreferencesAdapter(RubyPlugin.getDefault()
 				.getPluginPreferences()));
 	}
 
+	@Override
 	protected String getPreferencePageId() {
 		return "org.eclipse.dltk.ruby.preferences.todo"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected String getPropertyPageId() {
 		return "org.eclipse.dltk.ruby.propertyPage.todo"; //$NON-NLS-1$
 	}

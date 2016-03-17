@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,26 +32,32 @@ public class RubySemanticHighlighting extends SemanticHighlighting {
 		this.enablement = enablement;
 	}
 
+	@Override
 	public String getPreferenceKey() {
 		return preferenceKey;
 	}
 
+	@Override
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	@Override
 	public boolean isSemanticOnly() {
 		return displayName != null;
 	}
 
+	@Override
 	public String getEnabledPreferenceKey() {
 		return enablement ? super.getEnabledPreferenceKey() : null;
 	}
 
+	@Override
 	public int hashCode() {
 		return preferenceKey.hashCode();
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

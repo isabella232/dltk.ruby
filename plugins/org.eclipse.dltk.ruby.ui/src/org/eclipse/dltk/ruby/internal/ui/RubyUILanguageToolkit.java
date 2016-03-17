@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui;
 
@@ -31,6 +30,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 public class RubyUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 	private static ScriptElementLabels sInstance = new ScriptElementLabels() {
+		@Override
 		public void getElementLabel(IModelElement element, long flags,
 				StringBuffer buf) {
 			StringBuffer buffer = new StringBuffer(60);
@@ -44,6 +44,7 @@ public class RubyUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 			buf.append(s);
 		}
 
+		@Override
 		protected void getTypeLabel(IType type, long flags, StringBuffer buf) {
 			StringBuffer buffer = new StringBuffer(60);
 			super.getTypeLabel(type, flags, buffer);
@@ -79,6 +80,7 @@ public class RubyUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 		return sToolkit;
 	}
 
+	@Override
 	public ScriptElementLabels getScriptElementLabels() {
 		return sInstance;
 	}
@@ -95,30 +97,37 @@ public class RubyUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 		return RubyUI.getDefault().getDialogSettings();
 	}
 
+	@Override
 	public String getPartitioningId() {
 		return RubyConstants.RUBY_PARTITIONING;
 	}
 
+	@Override
 	public String getEditorId(Object inputElement) {
 		return RubyEditor.EDITOR_ID;
 	}
 
+	@Override
 	public String getInterpreterContainerId() {
 		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"; //$NON-NLS-1$
 	}
 
+	@Override
 	public ScriptUILabelProvider createScriptUILabelProvider() {
 		return null;
 	}
 
+	@Override
 	public boolean getProvideMembers(ISourceModule element) {
 		return true;
 	}
 
+	@Override
 	public ScriptTextTools getTextTools() {
 		return RubyUI.getDefault().getTextTools();
 	}
 
+	@Override
 	public ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		return new SimpleRubySourceViewerConfiguration(getTextTools()
 				.getColorManager(), getPreferenceStore(), null,
@@ -134,14 +143,17 @@ public class RubyUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 			"org.eclipse.dltk.ruby.preferences.templates" //$NON-NLS-1$
 	};
 
+	@Override
 	public String getInterpreterPreferencePage() {
 		return INTERPRETERS_PREFERENCE_PAGE_ID;
 	}
 
+	@Override
 	public String getDebugPreferencePage() {
 		return DEBUG_PREFERENCE_PAGE_ID;
 	}
 
+	@Override
 	public String[] getEditorPreferencePages() {
 		return EDITOR_PREFERENCE_PAGES_IDS;
 	}

@@ -22,26 +22,32 @@ public class RubyFormatterPreferencePage extends
 	private static final PreferenceKey FORMATTER = new PreferenceKey(
 			RubyUI.PLUGIN_ID, RubyPreferenceConstants.FORMATTER_ID);
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
+	@Override
 	protected PreferenceKey getFormatterPreferenceKey() {
 		return FORMATTER;
 	}
 
+	@Override
 	protected IDialogSettings getDialogSettings() {
 		return RubyUI.getDefault().getDialogSettings();
 	}
 
+	@Override
 	protected String getPreferencePageId() {
 		return "org.eclipse.dltk.ruby.preferences.formatter"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected String getPropertyPageId() {
 		return "org.eclipse.dltk.ruby.propertyPage.formatter"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected ScriptSourceViewerConfiguration createSimpleSourceViewerConfiguration(
 			IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, boolean configureFormatter) {
@@ -50,6 +56,7 @@ public class RubyFormatterPreferencePage extends
 				configureFormatter);
 	}
 
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(RubyUI.getDefault().getPreferenceStore());
 	}

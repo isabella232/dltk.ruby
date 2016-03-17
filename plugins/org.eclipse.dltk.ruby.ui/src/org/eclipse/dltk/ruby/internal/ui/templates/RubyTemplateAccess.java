@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.templates;
 
@@ -30,23 +29,17 @@ public class RubyTemplateAccess extends ScriptTemplateAccess {
 		return instance;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.templates.ScriptTemplateAccess#getPreferenceStore()
-	 */
+	@Override
 	protected IPreferenceStore getPreferenceStore() {
 		return RubyUI.getDefault().getPreferenceStore();
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.templates.ScriptTemplateAccess#getContextTypeId()
-	 */
+	@Override
 	protected String getContextTypeId() {
 		return RubyUniversalTemplateContextType.CONTEXT_TYPE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.templates.ScriptTemplateAccess#getCustomTemplatesKey()
-	 */
+	@Override
 	protected String getCustomTemplatesKey() {
 		return CUSTOM_TEMPLATES_KEY;
 	}
