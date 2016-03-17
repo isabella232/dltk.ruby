@@ -181,7 +181,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 		stack.pop();
 	}
 
-	private final Stack stack = new Stack();
+	private final Stack<ASTNode> stack = new Stack<ASTNode>();
 
 	private void handleVariableReference(VariableReference ref) {
 		final String varName = ref.getName();

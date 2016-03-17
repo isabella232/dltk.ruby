@@ -38,7 +38,7 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 				fOutlineViewer, fStore);
 
 		String title, helpContext;
-		ArrayList actions = new ArrayList(3);
+		ArrayList<MemberFilterAction> actions = new ArrayList<MemberFilterAction>(3);
 
 		// Hide variables
 		title = ActionMessages.MemberFilterActionGroup_hide_variables_label;
@@ -85,8 +85,7 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 		actions.add(hideNamespaces);
 
 		// Adding actions to toobar
-		MemberFilterAction[] fFilterActions = (MemberFilterAction[]) actions
-				.toArray(new MemberFilterAction[actions.size()]);
+		MemberFilterAction[] fFilterActions = actions.toArray(new MemberFilterAction[actions.size()]);
 
 		fMemberFilterActionGroup.setActions(fFilterActions);
 		fMemberFilterActionGroup.contributeToToolBar(toolBarManager);

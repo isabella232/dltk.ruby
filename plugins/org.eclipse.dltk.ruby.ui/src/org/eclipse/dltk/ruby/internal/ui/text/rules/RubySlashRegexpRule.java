@@ -37,9 +37,9 @@ public class RubySlashRegexpRule extends PatternRule {
 	 * @since 3.1
 	 */
 	private static class DecreasingCharArrayLengthComparator implements
-			Comparator {
-		public int compare(Object o1, Object o2) {
-			return ((char[]) o2).length - ((char[]) o1).length;
+			Comparator<char[]> {
+		public int compare(char[] o1, char[] o2) {
+			return o2.length - o1.length;
 		}
 	}
 
@@ -49,7 +49,7 @@ public class RubySlashRegexpRule extends PatternRule {
 	 * 
 	 * @since 3.1
 	 */
-	private Comparator fLineDelimiterComparator = new DecreasingCharArrayLengthComparator();
+	private Comparator<char[]> fLineDelimiterComparator = new DecreasingCharArrayLengthComparator();
 
 	/**
 	 * Cached line delimiters.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -109,16 +109,15 @@ public class RubyRequireHyperlink implements IHyperlink {
 		if (dialog.open() == Window.OK) {
 			final Object[] selection = dialog.getResult();
 			if (selection != null && selection.length > 0) {
-				final List result = new ArrayList();
+				final List<ISourceModule> result = new ArrayList<ISourceModule>();
 				for (int i = 0, size = selection.length; i < size; i++) {
 					final Object current = selection[i];
 					if (current instanceof ISourceModule) {
-						result.add(current);
+						result.add((ISourceModule) current);
 					}
 				}
 				if (!result.isEmpty()) {
-					return (ISourceModule[]) result
-							.toArray(new ISourceModule[result.size()]);
+					return result.toArray(new ISourceModule[result.size()]);
 				}
 			}
 		}

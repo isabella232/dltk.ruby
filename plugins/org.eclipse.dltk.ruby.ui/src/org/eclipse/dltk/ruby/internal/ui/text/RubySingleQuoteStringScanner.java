@@ -15,6 +15,7 @@ import org.eclipse.dltk.ruby.internal.ui.text.IRubyColorConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 
 public class RubySingleQuoteStringScanner extends AbstractScriptScanner {
@@ -34,8 +35,8 @@ public class RubySingleQuoteStringScanner extends AbstractScriptScanner {
 	}
 
 	@Override
-	protected List createRules() {
-		List rules = new ArrayList();
+	protected List<IRule> createRules() {
+		List<IRule> rules = new ArrayList<IRule>();
 
 		// Add generic whitespace rule.
 		rules.add(new WhitespaceRule(new RubyWhitespaceDetector()));

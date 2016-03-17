@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text.rules;
 
@@ -28,9 +27,9 @@ public class RubyPercentStringRule implements IPredicateRule {
 	 *
 	 * @since 3.1
 	 */
-	private static class DecreasingCharArrayLengthComparator implements Comparator {
-		public int compare(Object o1, Object o2) {
-			return ((char[]) o2).length - ((char[]) o1).length;
+	private static class DecreasingCharArrayLengthComparator implements Comparator<char[]> {
+		public int compare(char[] o1, char[] o2) {
+			return o2.length - o1.length;
 		}
 	}
 
@@ -55,7 +54,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 	 * Line delimiter comparator which orders according to decreasing delimiter length.
 	 * @since 3.1
 	 */
-	private Comparator fLineDelimiterComparator= new DecreasingCharArrayLengthComparator();
+	private Comparator<char[]> fLineDelimiterComparator= new DecreasingCharArrayLengthComparator();
 	/**
 	 * Cached line delimiters.
 	 * @since 3.1
