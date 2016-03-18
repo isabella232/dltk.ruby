@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.launching;
 
@@ -42,23 +41,28 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 		return INSTALL_TYPE_NAME;
 	}
 
+	@Override
 	protected String getPluginId() {
 		return RubyLaunchingPlugin.PLUGIN_ID;
 	}
 
+	@Override
 	protected String[] getPossibleInterpreterNames() {
 		return INTERPRETER_NAMES;
 	}
 
+	@Override
 	protected IInterpreterInstall doCreateInterpreterInstall(String id) {
 		return new RubyGenericInstall(this, id);
 	}
 
+	@Override
 	protected IPath createPathFile(IDeployment deployment) throws IOException {
 		return deployment.add(RubyLaunchingPlugin.getDefault().getBundle(),
 				"scripts/path.rb"); //$NON-NLS-1$
 	}
 
+	@Override
 	public IStatus validateInstallLocation(IFileHandle installLocation) {
 		if (!installLocation.exists() || !installLocation.isFile()) {
 			return createStatus(IStatus.ERROR,
@@ -89,10 +93,12 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 		}
 	}
 
+	@Override
 	protected String getBuildPathDelimeter() {
 		return ";:"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected ILog getLog() {
 		return RubyLaunchingPlugin.getDefault().getLog();
 	}

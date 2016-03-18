@@ -10,6 +10,7 @@ public class RubyLaunchingPluginPreferenceInitializer extends
 		super();
 	}
 
+	@Override
 	public void initializeDefaultPreferences() {
 		final Preferences prefs = RubyLaunchingPlugin.getDefault()
 				.getPluginPreferences();

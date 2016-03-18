@@ -9,17 +9,13 @@ import org.eclipse.dltk.ruby.internal.launching.RubyRemoteDebuggerRunner;
 public class RubyRemoteLaunchConfigurationDelegate extends
 		AbstractRemoteLaunchConfigurationDelegate {
 
-	/*
-	 * @see org.eclipse.dltk.launching.AbstractRemoteLaunchConfigurationDelegate#getDebuggingRunner(org.eclipse.dltk.launching.IInterpreterInstall)
-	 */
+	@Override
 	protected RemoteDebuggingEngineRunner getDebuggingRunner(
 			IInterpreterInstall install) {
 		return new RubyRemoteDebuggerRunner(install);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate#getLanguageId()
-	 */
+	@Override
 	public String getLanguageId() {
 		return RubyNature.NATURE_ID;
 	}

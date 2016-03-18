@@ -13,6 +13,7 @@ public class RubyRemoteDebuggerRunner extends RemoteDebuggingEngineRunner {
 	/*
 	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier()
 	 */
+	@Override
 	protected String getDebugPreferenceQualifier() {
 		return RubyDebugPlugin.PLUGIN_ID;
 	}

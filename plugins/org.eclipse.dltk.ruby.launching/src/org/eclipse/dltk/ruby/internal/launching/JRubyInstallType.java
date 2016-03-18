@@ -23,27 +23,33 @@ public class JRubyInstallType extends AbstractInterpreterInstallType {
 		return INSTALL_TYPE_NAME;
 	}
 
+	@Override
 	protected String getPluginId() {
 		return RubyLaunchingPlugin.PLUGIN_ID;
 	}
 
+	@Override
 	protected String[] getPossibleInterpreterNames() {
 		return INTERPRETER_NAMES;
 	}
 
+	@Override
 	protected IInterpreterInstall doCreateInterpreterInstall(String id) {
 		return new RubyGenericInstall(this, id);
 	}
 
+	@Override
 	protected IPath createPathFile(IDeployment deployment) throws IOException {
 		return deployment.add(RubyLaunchingPlugin.getDefault().getBundle(),
 				"scripts/path.rb"); //$NON-NLS-1$
 	}
 
+	@Override
 	protected String getBuildPathDelimeter() {
 		return ";:"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected ILog getLog() {
 		return RubyLaunchingPlugin.getDefault().getLog();
 	}

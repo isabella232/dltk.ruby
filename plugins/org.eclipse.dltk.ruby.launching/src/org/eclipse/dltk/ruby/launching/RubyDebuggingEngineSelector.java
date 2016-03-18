@@ -13,6 +13,7 @@ public class RubyDebuggingEngineSelector extends DLTKIdContributionSelector {
 	/*
 	 * @see org.eclipse.dltk.core.DLTKIdContributionSelector#getSavedContributionId(org.eclipse.dltk.core.PreferencesLookupDelegate)
 	 */
+	@Override
 	protected String getSavedContributionId(PreferencesLookupDelegate delegate) {
 		return delegate.getString(RubyDebugPlugin.PLUGIN_ID,
 				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY);

@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.launching;
 
@@ -172,8 +171,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 				if (lines != null) {
 					parseLines(lines);
 					if (content != null) {
-						content = (InterpreterGeneratedContent) EcoreUtil
-								.copy(content);
+						content = EcoreUtil.copy(content);
 						content.setFetchedAt(new Date());
 						if (!lines.equals(content.getValue())) {
 							content.getValue().clear();
@@ -213,6 +211,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 		super(type, id);
 	}
 
+	@Override
 	public IInterpreterRunner getInterpreterRunner(String mode) {
 		final IInterpreterRunner runner = super.getInterpreterRunner(mode);
 
@@ -227,21 +226,25 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 		return null;
 	}
 
+	@Override
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
 	// Builtins
+	@Override
 	public String getBuiltinModuleContent(String name) {
 		final Map<String, String> sources = helper.getSources();
 		return sources.get(name);
 	}
 
+	@Override
 	public long lastModified() {
 		helper.getSources();
 		return helper.lastModified;
 	}
 
+	@Override
 	public String[] getBuiltinModules() {
 		final Map<String, String> sources = helper.getSources();
 		return sources.keySet().toArray(new String[sources.size()]);
