@@ -165,7 +165,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 		if (stack.empty()) {
 			return true;
 		}
-		final ASTNode top = (ASTNode) stack.peek();
+		final ASTNode top = stack.peek();
 		if (top instanceof RubyDRegexpExpression) {
 			return false;
 		}

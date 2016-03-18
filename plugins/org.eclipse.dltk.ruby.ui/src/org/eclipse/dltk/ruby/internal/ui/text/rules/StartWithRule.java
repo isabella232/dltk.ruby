@@ -78,11 +78,11 @@ public class StartWithRule implements IRule
 		if( c1 == start[0] ) {
 			int index = 1;
 			char ch = (char) scanner.read();
-			if( Character.isJavaIdentifierStart(ch) || isInAddition(ch) || ( start.length > index && start[index] == (char)ch ) ) {
+			if( Character.isJavaIdentifierStart(ch) || isInAddition(ch) || ( start.length > index && start[index] == ch ) ) {
 				for( ;; ) {
 					index++;
 					int c = scanner.read();
-					if( !Character.isJavaIdentifierPart((char) c) && !isInAddition((char)c ) && !( start.length > index && start[index] == (char)ch ) ) {							
+					if( !Character.isJavaIdentifierPart((char) c) && !isInAddition((char)c ) && !( start.length > index && start[index] == ch ) ) {							
 						break;
 					}
 				}

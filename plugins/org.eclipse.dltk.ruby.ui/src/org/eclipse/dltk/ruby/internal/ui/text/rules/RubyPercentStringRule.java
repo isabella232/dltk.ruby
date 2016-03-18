@@ -138,7 +138,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 						return Token.UNDEFINED;
 				}
 				char leader = startSequenceDetected(scanner);
-				char term = RubySyntaxUtils.getPercentStringTerminator((char) leader);
+				char term = RubySyntaxUtils.getPercentStringTerminator(leader);
 				if (term != (char) 0) {
 					if (endSequenceDetected(scanner, leader, term))
 						return fToken;
@@ -192,7 +192,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 
 			} else if (lead != term && c == lead) {
 				nestCount++;
-			} else if (c == (int) term) {
+			} else if (c == term) {
 				if (--nestCount <= 0)
 					return true;
 			} else if (c == '%') {
