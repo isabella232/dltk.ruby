@@ -125,7 +125,7 @@ public class RubyRequireHyperlink implements IHyperlink {
 	}
 
 	private void showMessage(String message) {
-		final IEditorStatusLine statusLine = (IEditorStatusLine) editor
+		final IEditorStatusLine statusLine = editor
 				.getAdapter(IEditorStatusLine.class);
 		if (statusLine != null) {
 			statusLine.setMessage(true, message, null);

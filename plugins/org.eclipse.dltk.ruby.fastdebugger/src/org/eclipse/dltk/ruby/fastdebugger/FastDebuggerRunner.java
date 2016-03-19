@@ -70,7 +70,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		}
 
 		IEnvironment env = getInstall().getEnvironment();
-		IExecutionEnvironment exeEnv = (IExecutionEnvironment) env
+		IExecutionEnvironment exeEnv = env
 				.getAdapter(IExecutionEnvironment.class);
 		IDeployment deployment = exeEnv.createDeployment();
 		if (deployment == null) {
@@ -159,7 +159,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 	public boolean resolveRubyDebugGemExists() {
 		IEnvironment environment = getInstall().getEnvironment();
 
-		IExecutionEnvironment executionEnvironment = (IExecutionEnvironment) environment
+		IExecutionEnvironment executionEnvironment = environment
 				.getAdapter(IExecutionEnvironment.class);
 		
 		Bundle bundle = FastDebuggerPlugin.getDefault().getBundle();

@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
@@ -480,7 +479,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	public boolean visit(CallExpression call) throws Exception {
 		if (call.getReceiver() == null
 				&& call.getName().equals("include") && call.getArgs().getChilds().size() > 0) { //$NON-NLS-1$
-			ASTNode expr = (ASTNode) call.getArgs().getChilds().get(0);
+			ASTNode expr = call.getArgs().getChilds().get(0);
 			if (expr instanceof RubyCallArgument)
 				expr = ((RubyCallArgument) expr).getValue();
 			Scope scope = peekScope();
@@ -499,7 +498,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		} else if (call.getReceiver() == null
 				&& call.getName().equals("extend") //$NON-NLS-1$
 				&& call.getArgs().getChilds().size() > 0) {
-			ASTNode expr = (ASTNode) call.getArgs().getChilds().get(0);
+			ASTNode expr = call.getArgs().getChilds().get(0);
 			if (expr instanceof RubyCallArgument)
 				expr = ((RubyCallArgument) expr).getValue();
 			scopes.push(new MetaClassScope(call, peekScope().getClassKey()));
@@ -655,7 +654,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 			ASTListNode superClasses = declaration.getSuperClasses();
 			if (superClasses != null && superClasses.getChilds().size() == 1) {
-				ASTNode s = (ASTNode) superClasses.getChilds().get(0);
+				ASTNode s = superClasses.getChilds().get(0);
 				// if (this.sourceModule != null) {
 				SuperclassReferenceInfo ref = new SuperclassReferenceInfo(s,
 						this.module, sourceModule);

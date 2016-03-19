@@ -28,7 +28,7 @@ public class RubyVariableColumnPresentationFactory implements IColumnPresentatio
 		if (IDebugUIConstants.ID_VARIABLE_VIEW.equals(context.getId())) {
 			if (element instanceof IAdaptable) {
 				IAdaptable adaptable = (IAdaptable)element;
-				frame = (IScriptStackFrame) adaptable.getAdapter(IScriptStackFrame.class);
+				frame = adaptable.getAdapter(IScriptStackFrame.class);
 			}
 		}
 		return frame != null;		

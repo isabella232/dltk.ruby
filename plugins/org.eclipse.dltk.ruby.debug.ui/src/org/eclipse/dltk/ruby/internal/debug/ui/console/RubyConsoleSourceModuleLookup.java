@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,7 +27,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.environment.EnvironmentPathUtils;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
-import org.eclipse.dltk.internal.core.ProjectFragment;
 import org.eclipse.dltk.internal.core.util.Util;
 
 public class RubyConsoleSourceModuleLookup {
@@ -85,7 +84,7 @@ public class RubyConsoleSourceModuleLookup {
 	}
 
 	public static boolean isIncluded(IProjectFragment fragment, IPath path) {
-		final IProjectFragment root = (IProjectFragment) fragment;
+		final IProjectFragment root = fragment;
 		return !Util.isExcluded(path, root, false);
 	}
 

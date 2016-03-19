@@ -70,7 +70,7 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 					null);
 		}
 		IEnvironment environment = installLocation.getEnvironment();
-		IExecutionEnvironment executionEnvironment = (IExecutionEnvironment) environment
+		IExecutionEnvironment executionEnvironment = environment
 				.getAdapter(IExecutionEnvironment.class);
 
 		String output = ScriptLaunchUtil.runEmbeddedScriptReadContent(

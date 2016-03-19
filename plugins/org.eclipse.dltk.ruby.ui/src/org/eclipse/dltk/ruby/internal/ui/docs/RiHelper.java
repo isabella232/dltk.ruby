@@ -77,7 +77,7 @@ public class RiHelper {
 		}
 
 		IEnvironment env = install.getEnvironment();
-		IExecutionEnvironment exeEnv = (IExecutionEnvironment) env
+		IExecutionEnvironment exeEnv = env
 				.getAdapter(IExecutionEnvironment.class);
 		deployment = exeEnv.createDeployment();
 		if (deployment == null) {
