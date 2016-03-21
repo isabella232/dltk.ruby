@@ -9,9 +9,7 @@ import org.eclipse.dltk.debug.ui.breakpoints.ScriptToggleBreakpointAdapter;
 public class RubyEditorDebugAdapterFactory extends
 		ScriptEditorDebugAdapterFactory {
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.ScriptEditorDebugAdapterFactory#getBreakointAdapter()
-	 */
+	@Override
 	protected ScriptToggleBreakpointAdapter getBreakpointAdapter() {
 		return new RubyToggleBreakpointAdapter();
 	}

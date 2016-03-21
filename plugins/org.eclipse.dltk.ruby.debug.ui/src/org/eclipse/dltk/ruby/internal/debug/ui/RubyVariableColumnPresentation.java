@@ -18,6 +18,7 @@ public class RubyVariableColumnPresentation extends VariableColumnPresentation {
 	 */
 	private static String[] fgAllColumns = null;
 
+	@Override
 	public String[] getAvailableColumns() {
 		if (fgAllColumns == null) {
 			String[] basic = super.getAvailableColumns();
@@ -28,6 +29,7 @@ public class RubyVariableColumnPresentation extends VariableColumnPresentation {
 		return fgAllColumns;
 	}
 
+	@Override
 	public String getHeader(String id) {
 		if (COLUMN_INSTANCE_ID.equals(id)) {
 			return "Object ID"; //$NON-NLS-1$
@@ -36,6 +38,7 @@ public class RubyVariableColumnPresentation extends VariableColumnPresentation {
 		return super.getHeader(id);
 	}
 
+	@Override
 	public String getId() {
 		return RUBY_VARIABLE_COLUMN_PRESENTATION;
 	}

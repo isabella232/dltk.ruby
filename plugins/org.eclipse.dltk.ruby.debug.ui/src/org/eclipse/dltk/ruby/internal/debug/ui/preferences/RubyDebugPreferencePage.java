@@ -29,16 +29,19 @@ public class RubyDebugPreferencePage extends
 	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug"; //$NON-NLS-1$
 	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug"; //$NON-NLS-1$
 
+	@Override
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
 		return new AbstractDebuggingOptionsBlock(newStatusChangedListener,
 				project, getKeys(), container) {
 
+			@Override
 			protected PreferenceKey getBreakOnFirstLineKey() {
 				return BREAK_ON_FIRST_LINE;
 			}
 
+			@Override
 			protected PreferenceKey getDbgpLoggingEnabledKey() {
 				return ENABLE_DBGP_LOGGING;
 			}
@@ -49,49 +52,38 @@ public class RubyDebugPreferencePage extends
 		return new PreferenceKey[] { BREAK_ON_FIRST_LINE, ENABLE_DBGP_LOGGING };
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
-	 */
+	@Override
 	protected String getHelpId() {
 		return null;
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
-	 */
+	@Override
 	protected String getPreferencePageId() {
 		return PREFERENCE_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
-	 */
+	@Override
 	protected String getProjectHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
-	 */
+	@Override
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
-	 */
+	@Override
 	protected void setDescription() {
 		setDescription(RubyDebugPreferencesMessages.RubyDebugPreferencePage_description);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
-	 */
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(new PreferencesAdapter(RubyDebugPlugin.getDefault()
 				.getPluginPreferences()));

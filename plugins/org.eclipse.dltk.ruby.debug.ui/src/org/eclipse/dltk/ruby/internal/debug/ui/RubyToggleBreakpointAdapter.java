@@ -12,10 +12,12 @@ public class RubyToggleBreakpointAdapter extends ScriptToggleBreakpointAdapter {
 	private static final IScriptBreakpointLineValidator validator = ScriptBreakpointLineValidatorFactory
 			.createNonEmptyNoCommentValidator("#"); //$NON-NLS-1$
 
+	@Override
 	protected String getDebugModelId() {
 		return RubyDebugConstants.DEBUG_MODEL_ID;
 	}
 
+	@Override
 	protected IScriptBreakpointLineValidator getValidator() {
 		return validator;
 	}

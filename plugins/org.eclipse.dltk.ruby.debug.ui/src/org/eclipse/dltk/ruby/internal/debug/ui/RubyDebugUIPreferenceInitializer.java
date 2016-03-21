@@ -6,6 +6,7 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 public class RubyDebugUIPreferenceInitializer extends
 		DLTKDebugUIPluginPreferenceInitializer {
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}

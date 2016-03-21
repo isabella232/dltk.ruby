@@ -4,6 +4,7 @@ import org.eclipse.dltk.debug.ui.actions.AddExceptionAction;
 import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
 
 public class AddRubyExceptionAction extends AddExceptionAction {
+	@Override
 	protected String getDebugModelId() {
 		return RubyDebugConstants.DEBUG_MODEL_ID;
 	}

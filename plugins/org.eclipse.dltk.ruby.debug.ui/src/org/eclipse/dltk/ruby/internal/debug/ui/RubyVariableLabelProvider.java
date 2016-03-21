@@ -21,6 +21,7 @@ public class RubyVariableLabelProvider extends VariableLabelProvider implements
 		// JDIDebugUIPlugin.getDefault().getPluginPreferences().addPropertyChangeListener(this);
 	}
 
+	@Override
 	protected String getValueText(IVariable variable, IValue value,
 			IPresentationContext context) throws CoreException {
 		// if (value instanceof IJavaValue) {
@@ -31,6 +32,7 @@ public class RubyVariableLabelProvider extends VariableLabelProvider implements
 		return super.getValueText(variable, value, context);
 	}
 
+	@Override
 	protected String getValueTypeName(IVariable variable, IValue value,
 			IPresentationContext context) throws CoreException {
 		// String typeName=
@@ -45,11 +47,7 @@ public class RubyVariableLabelProvider extends VariableLabelProvider implements
 		return super.getVariableTypeName(variable, context);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.internal.ui.elements.adapters.VariableLabelAdapter#getVariableTypeName(org.eclipse.debug.core.model.IVariable)
-	 */
+	@Override
 	protected String getVariableTypeName(IVariable variable,
 			IPresentationContext context) throws CoreException {
 		// String typeName=
@@ -82,13 +80,8 @@ public class RubyVariableLabelProvider extends VariableLabelProvider implements
 // }
 // return qualified;
 // }
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.internal.ui.elements.adapters.VariableLabelAdapter#getColumnText(org.eclipse.debug.core.model.IVariable,
-	 *      org.eclipse.debug.core.model.IValue, java.lang.String,
-	 *      org.eclipse.debug.internal.ui.viewers.provisional.IPresentationContext)
-	 */
+
+	@Override
 	protected String getColumnText(IVariable variable, IValue value,
 			IPresentationContext context, String columnId) throws CoreException {
 		if (RubyVariableColumnPresentation.COLUMN_INSTANCE_ID.equals(columnId)) {

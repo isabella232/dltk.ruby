@@ -8,10 +8,12 @@ import org.eclipse.swt.widgets.Composite;
 
 public class RubyVariableEditor extends VariableEditor {
 	
+	@Override
 	public ICellModifier getCellModifier(IPresentationContext context, Object element) {
 		return null;
 	}
 
+	@Override
 	public CellEditor getCellEditor(IPresentationContext context, String columnId, Object element, Composite parent) {
 		//if (element instanceof IScriptVariable) {
 			//IScriptVariable  var = (IScriptVariable)element;

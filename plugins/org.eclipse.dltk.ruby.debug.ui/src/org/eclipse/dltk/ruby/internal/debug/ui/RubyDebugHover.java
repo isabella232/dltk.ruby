@@ -6,6 +6,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 public class RubyDebugHover extends ScriptDebugHover {
 
+	@Override
 	protected ScriptDebugModelPresentation getModelPresentation() {
 		return new RubyDebugModelPresentation();
 	}

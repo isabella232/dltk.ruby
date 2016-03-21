@@ -16,26 +16,20 @@ public class RubyRemoteLaunchConfigurationTab extends
 		super(mode);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#breakOnFirstLinePrefEnabled(org.eclipse.dltk.core.PreferencesLookupDelegate)
-	 */
+	@Override
 	protected boolean breakOnFirstLinePrefEnabled(
 			PreferencesLookupDelegate delegate) {
 		return delegate.getBoolean(RubyDebugPlugin.PLUGIN_ID,
 				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#dbpgLoggingPrefEnabled(org.eclipse.dltk.core.PreferencesLookupDelegate)
-	 */
+	@Override
 	protected boolean dbpgLoggingPrefEnabled(PreferencesLookupDelegate delegate) {
 		return delegate.getBoolean(RubyDebugPlugin.PLUGIN_ID,
 				DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#getNatureID()
-	 */
+	@Override
 	protected String getNatureID() {
 		return RubyNature.NATURE_ID;
 	}

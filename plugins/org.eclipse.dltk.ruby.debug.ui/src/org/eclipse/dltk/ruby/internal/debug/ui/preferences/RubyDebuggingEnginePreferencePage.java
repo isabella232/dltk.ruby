@@ -27,11 +27,7 @@ public class RubyDebuggingEnginePreferencePage extends
 	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines"; //$NON-NLS-1$
 	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines"; //$NON-NLS-1$
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
-	 *      org.eclipse.core.resources.IProject,
-	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
-	 */
+	@Override
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
@@ -39,60 +35,51 @@ public class RubyDebuggingEnginePreferencePage extends
 		return new AbstractDebuggingEngineOptionsBlock(
 				newStatusChangedListener, project, getKeys(), container) {
 
+			@Override
 			protected String getNatureId() {
 				return RubyNature.NATURE_ID;
 			}
 
+			@Override
 			protected PreferenceKey getSavedContributionKey() {
 				return DEBUGGING_ENGINE;
 			}
 		};
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
-	 */
+	@Override
 	protected String getHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
-	 */
+	@Override
 	protected String getPreferencePageId() {
 		return PREFERENCE_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
-	 */
+	@Override
 	protected String getProjectHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
-	 */
+	@Override
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
-	 */
+	@Override
 	protected void setDescription() {
 		setDescription(RubyDebugPreferencesMessages.RubyDebugEnginePreferencePage_description);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
-	 */
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(new PreferencesAdapter(RubyDebugPlugin.getDefault()
 				.getPluginPreferences()));

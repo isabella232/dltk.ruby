@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
@@ -17,6 +16,7 @@ import org.eclipse.ui.IEditorInput;
 
 public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 
+	@Override
 	public String getEditorId(IEditorInput input, Object element) {
 		String editorId = EditorUtility.getEditorID(input, element);
 		if (editorId == null)
@@ -25,6 +25,7 @@ public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 		return editorId;
 	}
 
+	@Override
 	public String getDetailPaneText(IScriptValue value) {
 		return value.getRawValue();
 	}

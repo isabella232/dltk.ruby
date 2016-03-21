@@ -12,16 +12,12 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class ToggleLocalVariablesHandler extends
 		AbstractToggleLocalVariableHandler {
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.handlers.AbstractToggleVariableHandler#getModelId()
-	 */
+	@Override
 	protected String getModelId() {
 		return RubyDebugConstants.DEBUG_MODEL_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.handlers.AbstractToggleVariableHandler#getPreferenceStore()
-	 */
+	@Override
 	protected IPreferenceStore getPreferenceStore() {
 		return new PreferencesAdapter(RubyDebugPlugin.getDefault()
 				.getPluginPreferences());
