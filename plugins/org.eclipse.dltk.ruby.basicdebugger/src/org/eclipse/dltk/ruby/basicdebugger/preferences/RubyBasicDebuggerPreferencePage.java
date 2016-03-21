@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,11 +38,7 @@ public class RubyBasicDebuggerPreferencePage extends
 	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger"; //$NON-NLS-1$
 	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger"; //$NON-NLS-1$
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
-	 *      org.eclipse.core.resources.IProject,
-	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
-	 */
+	@Override
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
@@ -50,67 +46,60 @@ public class RubyBasicDebuggerPreferencePage extends
 				project, new PreferenceKey[] { ENABLE_LOGGING, LOG_FILE_PATH,
 						LOG_FILE_NAME }, container) {
 
+			@Override
 			protected void createEngineBlock(Composite composite) {
 				// no engine preferences, yet...
 			}
 
+			@Override
 			protected PreferenceKey getEnableLoggingPreferenceKey() {
 				return ENABLE_LOGGING;
 			}
 
+			@Override
 			protected PreferenceKey getLogFileNamePreferenceKey() {
 				return LOG_FILE_NAME;
 			}
 
+			@Override
 			protected PreferenceKey getLogFilePathPreferenceKey() {
 				return LOG_FILE_PATH;
 			}
 		};
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
-	 */
+	@Override
 	protected String getHelpId() {
 		return null;
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
-	 */
+	@Override
 	protected String getPreferencePageId() {
 		return PREFERENCE_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
-	 */
+	@Override
 	protected String getProjectHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
-	 */
+	@Override
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
-	 */
+	@Override
 	protected void setDescription() {
 		setDescription(PreferenceMessages.PreferencesDescription);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
-	 */
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(RubyBasicDebuggerPlugin.getDefault()
 				.getPreferenceStore());

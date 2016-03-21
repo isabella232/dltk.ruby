@@ -55,6 +55,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		super(install);
 	}
 
+	@Override
 	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate, ILaunch launch)
 			throws CoreException {
@@ -102,53 +103,35 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		return newConfig;
 	}
 
+	@Override
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier
-	 * ()
-	 */
+	@Override
 	protected String getDebugPreferenceQualifier() {
 		return RubyDebugPlugin.PLUGIN_ID;
 	}
 
-	/*
-	 * @seeorg.eclipse.dltk.launching.DebuggingEngineRunner#
-	 * getDebuggingEnginePreferenceQualifier()
-	 */
+	@Override
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return RubyBasicDebuggerPlugin.PLUGIN_ID;
 	}
 
-	/*
-	 * @seeorg.eclipse.dltk.launching.DebuggingEngineRunner#
-	 * getLoggingEnabledPreferenceKey()
-	 */
 	protected String getLoggingEnabledPreferenceKey() {
 		return RubyBasicDebuggerConstants.ENABLE_LOGGING;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey
-	 * ()
-	 */
+	@Override
 	protected String getLogFileNamePreferenceKey() {
 		return RubyBasicDebuggerConstants.LOG_FILE_NAME;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey
-	 * ()
-	 */
 	protected String getLogFilePathPreferenceKey() {
 		return RubyBasicDebuggerConstants.LOG_FILE_PATH;
 	}
 
+	@Override
 	protected String getProcessType() {
 		return RubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
 	}
