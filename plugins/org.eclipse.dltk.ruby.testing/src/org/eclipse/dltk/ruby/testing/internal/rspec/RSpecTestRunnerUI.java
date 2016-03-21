@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -82,9 +82,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		super(testingEngine, project);
 	}
 
-	/*
-	 * @see AbstractTestRunnerUI#getTestCaseLabel(ITestCaseElement, boolean)
-	 */
+	@Override
 	public String getTestCaseLabel(ITestCaseElement caseElement, boolean full) {
 		final String testName = caseElement.getTestName();
 		int index = testName.lastIndexOf(PATH_BEGIN);
@@ -100,9 +98,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return testName;
 	}
 
-	/*
-	 * @see AbstractTestRunnerUI#getTestStartedMessage(ITestCaseElement)
-	 */
+	@Override
 	public String getTestStartedMessage(ITestCaseElement caseElement) {
 		final String testName = caseElement.getTestName();
 		int index = testName.lastIndexOf(PATH_BEGIN);
@@ -186,6 +182,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 			this.contextName = contextName;
 		}
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (range == null) {
 				if (node instanceof CallExpression) {
@@ -235,6 +232,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		private final Stack states = new Stack();
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (range == null) {
 				if (node instanceof CallExpression) {
@@ -279,6 +277,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 			return false;
 		}
 
+		@Override
 		public void endvisitGeneral(ASTNode node) throws Exception {
 			if (!states.isEmpty()) {
 				final State state = (State) states.peek();
@@ -294,6 +293,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		final Set resources = new HashSet();
 
+		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
 			if (match.getResource() != null) {
 				resources.add(match.getResource());
@@ -302,6 +302,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	}
 
+	@Override
 	protected TestElementResolution resolveTestSuite(ITestSuiteElement element) {
 		final ITestElement[] children = element.getChildren();
 		final Set locations = new HashSet();
@@ -392,6 +393,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return resources;
 	}
 
+	@Override
 	protected TestElementResolution resolveTestCase(ITestCaseElement element) {
 		if (!(element.getParentContainer() instanceof ITestSuiteElement)) {
 			return null;
@@ -463,6 +465,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	private static final Pattern GEM_RSPEC_LIB = Pattern.compile(buildRegex());
 
+	@Override
 	protected boolean selectLine(String line) {
 		final String filename = extractFileName(line);
 		if (filename == null) {
@@ -477,16 +480,12 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return true;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.testing.AbstractTestRunnerUI#canRerunFailures()
-	 */
+	@Override
 	public boolean canRerunFailures() {
 		return true;
 	}
 
-	/*
-	 * @see AbstractTestRunnerUI#collectFailures(ITestElement[])
-	 */
+	@Override
 	public String collectFailures(ITestRunSession testRunSession)
 			throws CoreException {
 		try {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -53,6 +53,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 		static final int REQUIRE_WEIGHT = 9;
 		static final int TEST_WEIGHT = 3;
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (node instanceof CallExpression) {
 				final CallExpression call = (CallExpression) node;
@@ -70,6 +71,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 			return super.visitGeneral(node);
 		}
 
+		@Override
 		public void endvisitGeneral(ASTNode node) throws Exception {
 			if (!contextCalls.isEmpty()) {
 				if (contextCalls.peek() == node) {
@@ -93,6 +95,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 		}
 	}
 
+	@Override
 	public IStatus validateSourceModule(ISourceModule module) {
 		final ModuleDeclaration declaration = ResolverUtils.parse(module);
 		if (declaration == null) {
@@ -110,11 +113,13 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 
 	static final String RSPEC_RUNNER = "dltk-rspec-runner.rb"; //$NON-NLS-1$
 
+	@Override
 	public String getMainScriptPath(ILaunchConfiguration configuration,
 			IEnvironment scriptEnvironment) throws CoreException {
 		return getRunnerFile(getBundle(), RUNNER_PATH, RSPEC_RUNNER).getPath();
 	}
 
+	@Override
 	public void configureLaunch(InterpreterConfig config,
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
@@ -156,6 +161,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 	/*
 	 * @see org.eclipse.dltk.testing.ITestingEngine#getTestRunnerUI()
 	 */
+	@Override
 	public ITestRunnerUI getTestRunnerUI(IScriptProject project,
 			ILaunchConfiguration configuration) {
 		return new RSpecTestRunnerUI(this, project);

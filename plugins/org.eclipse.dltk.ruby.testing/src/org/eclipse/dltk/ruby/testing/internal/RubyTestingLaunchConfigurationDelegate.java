@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -44,6 +44,7 @@ public class RubyTestingLaunchConfigurationDelegate extends
 		return containerHandle.length() > 0;
 	}
 
+	@Override
 	protected void validateLaunchConfiguration(
 			ILaunchConfiguration configuration, String mode, IProject project)
 			throws CoreException {
@@ -69,6 +70,7 @@ public class RubyTestingLaunchConfigurationDelegate extends
 		}
 	}
 
+	@Override
 	protected String getScriptLaunchPath(ILaunchConfiguration configuration,
 			IEnvironment scriptEnvironment) throws CoreException {
 		final ITestingEngine engine = getTestingEngine(configuration);
@@ -80,6 +82,7 @@ public class RubyTestingLaunchConfigurationDelegate extends
 		return super.getScriptLaunchPath(configuration, scriptEnvironment);
 	}
 
+	@Override
 	protected IPath getDefaultWorkingDirectory(
 			ILaunchConfiguration configuration) throws CoreException {
 		if (isContainerMode(configuration)) {
@@ -89,6 +92,7 @@ public class RubyTestingLaunchConfigurationDelegate extends
 		}
 	}
 
+	@Override
 	protected void runRunner(ILaunchConfiguration configuration,
 			IInterpreterRunner runner, InterpreterConfig config,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {

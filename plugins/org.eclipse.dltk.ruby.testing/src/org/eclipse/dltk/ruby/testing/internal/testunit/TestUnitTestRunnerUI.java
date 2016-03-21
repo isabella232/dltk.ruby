@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -74,6 +74,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		super(testingEngine, project);
 	}
 
+	@Override
 	public String getTestCaseLabel(ITestCaseElement caseElement, boolean full) {
 		final String testName = caseElement.getTestName();
 		int index = testName.lastIndexOf(CLASS_BEGIN);
@@ -100,6 +101,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		}
 	}
 
+	@Override
 	public String getTestStartedMessage(ITestCaseElement caseElement) {
 		final String testName = caseElement.getTestName();
 		int index = testName.lastIndexOf(CLASS_BEGIN);
@@ -124,6 +126,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	private static final String SHOULDA_TEST_PREFIX = "test:"; //$NON-NLS-1$
 
+	@Override
 	protected TestElementResolution resolveTestCase(ITestCaseElement testCase) {
 		final String testName = testCase.getTestName();
 		if (testName.length() == 0) {
@@ -205,6 +208,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		final Stack typeMatches = new Stack();
 
+		@Override
 		public boolean visit(TypeDeclaration s) throws Exception {
 			final String enclosingName = s.getEnclosingTypeName();
 			final String fullName;
@@ -217,6 +221,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			return true;
 		}
 
+		@Override
 		public boolean endvisit(TypeDeclaration s) throws Exception {
 			typeMatches.pop();
 			return true;
@@ -234,6 +239,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		final Stack calls = new Stack();
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (isMatchedType() && range == null) {
 				if (node instanceof CallExpression) {
@@ -314,6 +320,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			return false;
 		}
 
+		@Override
 		public void endvisitGeneral(ASTNode node) throws Exception {
 			if (!calls.isEmpty() && calls.peek() == node) {
 				calls.pop();
@@ -349,6 +356,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return null;
 	}
 
+	@Override
 	protected TestElementResolution resolveTestSuite(ITestSuiteElement element) {
 		final String className = element.getSuiteTypeName();
 		if (RubySyntaxUtils.isValidClass(className)) {
@@ -365,6 +373,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	private static final class TypeSearchRequestor extends SearchRequestor {
 		final List types = new ArrayList();
 
+		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
 			types.add(match.getElement());
 		}
@@ -373,6 +382,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	private static final class MethodRequestor extends SearchRequestor {
 		IMethod method = null;
 
+		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
 			method = (IMethod) match.getElement();
 		}
@@ -456,6 +466,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	private static final Pattern GEM_SHOULDA_LIB = Pattern
 			.compile(buildRegex());
 
+	@Override
 	protected boolean selectLine(String line) {
 		final String filename = extractFileName(line);
 		if (filename == null) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -69,11 +69,13 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 		return testingEngine.getName();
 	}
 
+	@Override
 	public boolean isStackFrame(String line) {
 		return STACK_FRAME_IN_PATTERN.matcher(line).matches()
 				|| STACK_FRAME_PATTERN.matcher(line).matches();
 	}
 
+	@Override
 	public IAction createOpenEditorAction(String line) {
 		Matcher matcher = STACK_FRAME_IN_PATTERN.matcher(line);
 		if (!matcher.matches()) {
@@ -98,6 +100,7 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 	/*
 	 * @see AbstractTestRunnerUI#getAdapter(java.lang.Class)
 	 */
+	@Override
 	public Object getAdapter(Class adapter) {
 		if (ITestElementResolver.class.equals(adapter)) {
 			return this;
@@ -133,6 +136,7 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 	protected abstract TestElementResolution resolveTestCase(
 			ITestCaseElement element);
 
+	@Override
 	protected IPreferenceStore getPreferenceStore() {
 		return RubyTestingPlugin.getDefault().getPreferenceStore();
 	}
@@ -140,10 +144,12 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 	/*
 	 * @see org.eclipse.dltk.testing.AbstractTestRunnerUI#canFilterStack()
 	 */
+	@Override
 	public boolean canFilterStack() {
 		return true;
 	}
 
+	@Override
 	public String filterStackTrace(String trace) {
 		BufferedReader reader = new BufferedReader(new StringReader(trace));
 		try {

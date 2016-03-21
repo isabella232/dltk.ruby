@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -86,6 +86,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	private IModelElement fContainerElement;
 	private final ILabelProvider fModelElementLabelProvider = new ModelElementLabelProvider();
 
+	@Override
 	public void createControl(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NONE);
 		setControl(comp);
@@ -100,6 +101,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 				.setText(DLTKTestingMessages.JUnitLaunchConfigurationTab_label_oneTest);
 		fTestRadioButton.setLayoutData(createModeGridData());
 		fTestRadioButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (fTestRadioButton.getSelection()) {
 					testModeChanged();
@@ -120,6 +122,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 				.setText(DLTKTestingMessages.JUnitLaunchConfigurationTab_label_containerTest);
 		fTestContainerRadioButton.setLayoutData(createModeGridData());
 		fTestContainerRadioButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (fTestContainerRadioButton.getSelection())
 					testModeChanged();
@@ -136,6 +139,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 				DLTKTestingMessages.JUnitLaunchConfigurationTab_label_search,
 				null);
 		fContainerSearchButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				handleContainerSearchButtonSelected();
 			}
@@ -173,6 +177,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		updateLaunchConfigurationDialog();
 	}
 
+	@Override
 	protected boolean validate() {
 		updateEngineStatus();
 		final boolean result;
@@ -197,6 +202,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 				IScriptProject.class, IScriptFolder.class };
 		TypedElementSelectionValidator validator = new TypedElementSelectionValidator(
 				acceptedClasses, false) {
+			@Override
 			public boolean isSelectedValid(Object element) {
 				return true;
 			}
@@ -206,6 +212,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 				IProjectFragment.class, IScriptProject.class,
 				IScriptFolder.class };
 		ViewerFilter filter = new TypedViewerFilter(acceptedClasses) {
+			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IScriptProject) {
 					if (!getNatureID().equals(
@@ -264,11 +271,13 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		return gd;
 	}
 
+	@Override
 	protected boolean needGroupForField(String fieldName) {
 		return !FIELD_PROJECT.equals(fieldName)
 				&& !FIELD_SCRIPT.equals(fieldName);
 	}
 
+	@Override
 	protected Label createLabelForField(Composite parent, String fieldName,
 			String text) {
 		final Label label = super.createLabelForField(parent, fieldName, text);
@@ -289,6 +298,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		return gd;
 	}
 
+	@Override
 	protected final void doCreateControl(Composite composite) {
 		// NOP
 	}
@@ -318,6 +328,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		setEnableScriptField(enabled);
 	}
 
+	@Override
 	protected void projectChanged() {
 		testModeChanged();
 	}
@@ -346,6 +357,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 			nameToId.put(name, engines[i].getId());
 		}
 		detect.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleDetectButtonSelected();
 			}
@@ -441,6 +453,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		}
 	}
 
+	@Override
 	protected ISourceModule getSourceModule() {
 		if (!fTestRadioButton.getSelection()) {
 			return null;
@@ -486,6 +499,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		}
 	}
 
+	@Override
 	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
 		if (fTestContainerRadioButton.getSelection()
 				&& fContainerElement != null) {
@@ -511,6 +525,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		config.setAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, getEngineId());
 	}
 
+	@Override
 	protected void mapResources(ILaunchConfigurationWorkingCopy config)
 			throws CoreException {
 		DLTKTestingMigrationDelegate.mapResources(config);
@@ -520,6 +535,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		return (String) this.nameToId.get(this.engineType.getText());
 	}
 
+	@Override
 	protected void doInitializeForm(ILaunchConfiguration config) {
 		initializeInteractiveConsoleFrom(config);
 		// update test type

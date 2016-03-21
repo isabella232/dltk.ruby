@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -64,6 +64,7 @@ public class TestUnitTestingEngine extends AbstractRubyTestingEngine {
 			this.module = module;
 		}
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (node instanceof CallExpression) {
 				final CallExpression call = (CallExpression) node;
@@ -101,6 +102,7 @@ public class TestUnitTestingEngine extends AbstractRubyTestingEngine {
 		}
 	}
 
+	@Override
 	public IStatus validateSourceModule(ISourceModule module) {
 		final ModuleDeclaration declaration = ResolverUtils.parse(module);
 		if (declaration == null) {
@@ -118,6 +120,7 @@ public class TestUnitTestingEngine extends AbstractRubyTestingEngine {
 
 	static final String TEST_UNIT_RUNNER = "dltk-testunit-runner.rb"; //$NON-NLS-1$
 
+	@Override
 	public void configureLaunch(InterpreterConfig config,
 			ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
@@ -155,6 +158,7 @@ public class TestUnitTestingEngine extends AbstractRubyTestingEngine {
 		}
 	}
 
+	@Override
 	public String getMainScriptPath(ILaunchConfiguration configuration,
 			IEnvironment scriptEnvironment) throws CoreException {
 		if (RubyTestingLaunchConfigurationDelegate
@@ -166,9 +170,7 @@ public class TestUnitTestingEngine extends AbstractRubyTestingEngine {
 		}
 	}
 
-	/*
-	 * @see org.eclipse.dltk.testing.ITestingEngine#getTestRunnerUI()
-	 */
+	@Override
 	public ITestRunnerUI getTestRunnerUI(IScriptProject project,
 			ILaunchConfiguration configuration) {
 		return new TestUnitTestRunnerUI(this, project);
