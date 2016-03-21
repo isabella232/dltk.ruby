@@ -17,6 +17,7 @@ import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 public class RubyDebugPreferenceInitializer extends
 		AbstractPreferenceInitializer {
 
+	@Override
 	public void initializeDefaultPreferences() {
 		Preferences store = RubyDebugPlugin.getDefault().getPluginPreferences();
 

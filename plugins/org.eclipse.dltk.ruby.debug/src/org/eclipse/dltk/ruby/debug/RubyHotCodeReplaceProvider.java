@@ -19,6 +19,7 @@ public class RubyHotCodeReplaceProvider implements
 	public RubyHotCodeReplaceProvider() {
 	}
 
+	@Override
 	public void performCodeReplace(IScriptDebugTarget target,
 			IResource[] resources) throws DebugException {
 		IScriptThread[] threads = (IScriptThread[]) target.getThreads();

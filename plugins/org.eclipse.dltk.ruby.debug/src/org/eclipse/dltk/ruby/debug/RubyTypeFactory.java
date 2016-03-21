@@ -14,6 +14,7 @@ public class RubyTypeFactory implements IScriptTypeFactory {
 			"Fixnum", "Float", "Integer", "NilClass", "Numeric", "Range", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 			"Regexp", "Symbol", "TrueClass" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
+	@Override
 	public IScriptType buildType(String type) {
 		if (STRING.equalsIgnoreCase(type)) {
 			return new StringScriptType(type);

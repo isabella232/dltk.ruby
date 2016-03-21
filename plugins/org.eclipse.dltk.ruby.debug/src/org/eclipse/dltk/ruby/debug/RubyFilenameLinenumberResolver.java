@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -27,6 +27,7 @@ public class RubyFilenameLinenumberResolver implements IDynamicVariableResolver 
 	private static final String SEGMENT = "[ _\\p{L}\\p{N}\\p{M}\\p{S}\\.\\-]+"; //$NON-NLS-1$
 	private static final String LINE_NUMBER = "(\\d+)"; //$NON-NLS-1$
 
+	@Override
 	public String resolveValue(IDynamicVariable variable, String argument) {
 		final StringBuffer sb = new StringBuffer(128);
 		//		sb.append("(?<!(?:\\W|^))"); //$NON-NLS-1$ not word char before
