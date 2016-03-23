@@ -221,7 +221,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		ILaunchConfigurationType configType = getLaunchManager()
 				.getLaunchConfigurationType(getLaunchConfigurationTypeId());
 		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
+				getLaunchManager().generateLaunchConfigurationName(
 						testName));
 
 		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
@@ -415,7 +415,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		ILaunchConfigurationType configType = getLaunchManager()
 				.getLaunchConfigurationType(getLaunchConfigurationTypeId());
 		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager().generateUniqueLaunchConfigurationNameFrom(
+				getLaunchManager().generateLaunchConfigurationName(
 						testName));
 
 		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
