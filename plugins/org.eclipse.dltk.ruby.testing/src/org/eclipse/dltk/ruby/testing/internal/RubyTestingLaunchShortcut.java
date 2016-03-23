@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -66,12 +66,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 	public RubyTestingLaunchShortcut() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.ui.ILaunchShortcut#launch(org.eclipse.ui.IEditorPart,
-	 *      java.lang.String)
-	 */
+	@Override
 	public void launch(IEditorPart editor, String mode) {
 		IModelElement element = DLTKUIPlugin.getEditorInputModelElement(editor
 				.getEditorInput());
@@ -82,12 +77,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.ui.ILaunchShortcut#launch(org.eclipse.jface.viewers
-	 *      .ISelection, java.lang.String)
-	 */
+	@Override
 	public void launch(ISelection selection, String mode) {
 		if (selection instanceof IStructuredSelection) {
 			launch(((IStructuredSelection) selection).toArray(), mode);
@@ -242,6 +232,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 
 				private boolean detected;
 
+				@Override
 				public boolean visit(IModelElement element) {
 					if (detected)
 						return false;

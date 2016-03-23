@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -62,9 +62,7 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 		this.pathEquality = PathEqualityUtils.getInstance();
 	}
 
-	/*
-	 * @see org.eclipse.dltk.testing.ITestRunnerUI#getDisplayName()
-	 */
+	@Override
 	public String getDisplayName() {
 		return testingEngine.getName();
 	}
@@ -111,6 +109,7 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 		return SearchEngine.createSearchScope(project);
 	}
 
+	@Override
 	public TestElementResolution resolveElement(ITestElement element) {
 		if (element instanceof ITestCaseElement) {
 			return resolveTestCase((ITestCaseElement) element);
@@ -200,16 +199,12 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 		}
 	}
 
-	/*
-	 * @see org.eclipse.dltk.testing.ITestRunnerUI#getTestingEngine()
-	 */
+	@Override
 	public ITestingEngine getTestingEngine() {
 		return testingEngine;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.testing.ITestRunnerUI#getProject()
-	 */
+	@Override
 	public IScriptProject getProject() {
 		return project;
 	}
