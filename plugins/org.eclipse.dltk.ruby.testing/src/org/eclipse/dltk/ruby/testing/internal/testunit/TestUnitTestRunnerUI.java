@@ -162,20 +162,19 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 						.trim();
 			}
 			if (shouldName.length() != 0) {
-				final Set resources = new HashSet();
+				final Set<IFile> resources = new HashSet<IFile>();
 				for (Iterator i = types.iterator(); i.hasNext();) {
 					final IType type = (IType) i.next();
 					final IResource resource = type.getResource();
 					if (resource != null && resource instanceof IFile) {
-						resources.add(resource);
+						resources.add((IFile) resource);
 					}
 				}
 				if (resources.isEmpty()) {
 					return null;
 				}
-				for (Iterator i = resources.iterator(); i.hasNext();) {
-					final ISourceModule module = (ISourceModule) DLTKCore
-							.create((IFile) i.next());
+				for (Iterator<IFile> i = resources.iterator(); i.hasNext();) {
+					final ISourceModule module = (ISourceModule) DLTKCore.create(i.next());
 					final TestElementResolution resolution = findShould(module,
 							className, shouldName);
 					if (resolution != null) {
@@ -206,7 +205,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			this.shouldName = shouldName;
 		}
 
-		final Stack typeMatches = new Stack();
+		final Stack<Boolean> typeMatches = new Stack<Boolean>();
 
 		@Override
 		public boolean visit(TypeDeclaration s) throws Exception {
@@ -229,7 +228,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		private boolean isMatchedType() {
 			for (int i = 0, size = typeMatches.size(); i < size; ++i) {
-				Boolean value = (Boolean) typeMatches.get(i);
+				Boolean value = typeMatches.get(i);
 				if (value.booleanValue()) {
 					return true;
 				}
@@ -237,7 +236,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			return false;
 		}
 
-		final Stack calls = new Stack();
+		final Stack<CallExpression> calls = new Stack<CallExpression>();
 
 		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
@@ -292,7 +291,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		 */
 		private boolean isShouldMatched(String value) {
 			for (int i = 0; i < calls.size(); ++i) {
-				final CallExpression call = (CallExpression) calls.get(i);
+				final CallExpression call = calls.get(i);
 				if (ShouldaUtils.SHOULD.equals(call.getName())) {
 					if (!startsWith(value, ShouldaUtils.SHOULD)) {
 						return false;
@@ -371,7 +370,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	}
 
 	private static final class TypeSearchRequestor extends SearchRequestor {
-		final List types = new ArrayList();
+		final List<Object> types = new ArrayList<Object>();
 
 		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {

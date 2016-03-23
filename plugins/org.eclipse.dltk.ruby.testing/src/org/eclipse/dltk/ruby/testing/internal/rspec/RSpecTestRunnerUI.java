@@ -114,10 +114,10 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 			AbstractTestingEngineValidateVisitor {
 
 		protected ASTNode collectArgs(final CallArgumentsList args,
-				final List texts) {
+				final List<String> texts) {
 			ASTNode lastArg = null;
-			for (Iterator i = args.getChilds().iterator(); i.hasNext();) {
-				final Object arg = i.next();
+			for (Iterator<ASTNode> i = args.getChilds().iterator(); i.hasNext();) {
+				final ASTNode arg = i.next();
 				if (arg instanceof RubyCallArgument) {
 					final ASTNode value = ((RubyCallArgument) arg).getValue();
 					final String text = toText(value);
@@ -148,9 +148,9 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		 * @param value
 		 * @return
 		 */
-		protected boolean isMatched(String value, List texts) {
+		protected boolean isMatched(String value, List<String> texts) {
 			final StringBuffer sb = new StringBuffer();
-			for (Iterator i = texts.iterator(); i.hasNext();) {
+			for (Iterator<String> i = texts.iterator(); i.hasNext();) {
 				if (sb.length() != 0) {
 					sb.append(' ');
 				}
@@ -190,7 +190,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 					if (isMethodCall(call, RSpecUtils.CONTEXT_METHODS)) {
 						final CallArgumentsList args = call.getArgs();
 						if (args.getChilds().size() >= 1) {
-							final List texts = new ArrayList();
+							final List<String> texts = new ArrayList<String>();
 							final ASTNode lastArg = collectArgs(args, texts);
 							if (!texts.isEmpty()
 									&& isMatched(contextName, texts)) {
@@ -230,7 +230,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		}
 
-		private final Stack states = new Stack();
+		private final Stack<State> states = new Stack<State>();
 
 		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
@@ -241,7 +241,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 					if (args.getChilds().size() >= 1) {
 						if (isMethodCall(call, RSpecUtils.CONTEXT_METHODS)) {
 							boolean matched = false;
-							final List texts = new ArrayList();
+							final List<String> texts = new ArrayList<String>();
 							final ASTNode lastArg = collectArgs(args, texts);
 							if (!texts.isEmpty()
 									&& isMatched(contextName, texts)) {
@@ -254,7 +254,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 							states.push(new State(node, matched));
 						} else if (isMatchingContext()
 								&& isMethodCall(call, RSpecUtils.TEST_METHODS)) {
-							final List texts = new ArrayList();
+							final List<String> texts = new ArrayList<String>();
 							final ASTNode lastArg = collectArgs(args, texts);
 							if (!texts.isEmpty() && isMatched(testName, texts)) {
 								assert (lastArg != null);
@@ -271,7 +271,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		private boolean isMatchingContext() {
 			if (!states.isEmpty()) {
-				final State state = (State) states.peek();
+				final State state = states.peek();
 				return state.isMatched;
 			}
 			return false;
@@ -280,7 +280,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		@Override
 		public void endvisitGeneral(ASTNode node) throws Exception {
 			if (!states.isEmpty()) {
-				final State state = (State) states.peek();
+				final State state = states.peek();
 				if (state.callNode == node) {
 					states.pop();
 				}
@@ -291,7 +291,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	private static class MethodRequestor extends SearchRequestor {
 
-		final Set resources = new HashSet();
+		final Set<IResource> resources = new HashSet<IResource>();
 
 		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
@@ -305,7 +305,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 	@Override
 	protected TestElementResolution resolveTestSuite(ITestSuiteElement element) {
 		final ITestElement[] children = element.getChildren();
-		final Set locations = new HashSet();
+		final Set<String> locations = new HashSet<String>();
 		for (int i = 0; i < children.length; ++i) {
 			if (children[i] instanceof ITestCaseElement) {
 				final ITestCaseElement caseElement = (ITestCaseElement) children[i];
@@ -321,11 +321,11 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 				}
 			}
 		}
-		final Set processedResources = new HashSet();
+		final Set<IResource> processedResources = new HashSet<IResource>();
 		final RSpecContextLocator locator = new RSpecContextLocator(element
 				.getSuiteTypeName());
-		for (Iterator i = locations.iterator(); i.hasNext();) {
-			final ISourceModule module = findSourceModule((String) i.next());
+		for (Iterator<String> i = locations.iterator(); i.hasNext();) {
+			final ISourceModule module = findSourceModule(i.next());
 			if (module != null) {
 				if (module.getResource() != null) {
 					processedResources.add(module.getResource());
@@ -353,11 +353,11 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	private TestElementResolution searchMethodReferences(
 			final IDLTKSearchScope scope, final RSpecContextLocator locator,
-			final String methodName, final Set processedResources) {
-		final Set describeReferences = findMethodReferences(scope, methodName);
+			final String methodName, final Set<IResource> processedResources) {
+		final Set<IResource> describeReferences = findMethodReferences(scope, methodName);
 		describeReferences.removeAll(processedResources);
-		for (Iterator i = describeReferences.iterator(); i.hasNext();) {
-			final IResource resource = (IResource) i.next();
+		for (Iterator<IResource> i = describeReferences.iterator(); i.hasNext();) {
+			final IResource resource = i.next();
 			if (resource instanceof IFile) {
 				final IFile file = (IFile) resource;
 				processedResources.add(file);
@@ -373,7 +373,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return null;
 	}
 
-	private Set findMethodReferences(final IDLTKSearchScope scope,
+	private Set<IResource> findMethodReferences(final IDLTKSearchScope scope,
 			final String methodName) {
 		final SearchPattern pattern = SearchPattern.createPattern(methodName,
 				IDLTKSearchConstants.METHOD, IDLTKSearchConstants.REFERENCES,
@@ -389,7 +389,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 			final String msg = "Error in search method references {0})"; //$NON-NLS-1$
 			RubyTestingPlugin.error(NLS.bind(msg, methodName), e);
 		}
-		final Set resources = requestor.resources;
+		final Set<IResource> resources = requestor.resources;
 		return resources;
 	}
 

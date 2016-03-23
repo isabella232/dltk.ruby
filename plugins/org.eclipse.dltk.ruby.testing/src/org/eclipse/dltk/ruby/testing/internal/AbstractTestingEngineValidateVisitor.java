@@ -32,7 +32,7 @@ import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 
 public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 
-	private final Stack stack = new Stack();
+	private final Stack<ASTNode> stack = new Stack<ASTNode>();
 
 	/**
 	 * @param call
@@ -56,7 +56,7 @@ public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 	 * @param nodeClass
 	 * @return
 	 */
-	protected boolean isNodeOnStack(Class nodeClass) {
+	protected boolean isNodeOnStack(Class<?> nodeClass) {
 		for (int i = stack.size(); --i >= 0;) {
 			if (nodeClass.isAssignableFrom(stack.get(i).getClass())) {
 				return true;
@@ -91,10 +91,10 @@ public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 		else {
 			String classKey = className.replaceAll("::", //$NON-NLS-1$
 					String.valueOf(IIndexConstants.SEPARATOR));
-			Set processedKeys = new HashSet();
-			for (Iterator iter = declaration.getSuperClassNames().iterator(); iter
+			Set<String> processedKeys = new HashSet<String>();
+			for (Iterator<String> iter = declaration.getSuperClassNames().iterator(); iter
 					.hasNext();) {
-				String superClass = (String) iter.next();
+				String superClass = iter.next();
 				RubyMixinModel model = RubyMixinModel.getInstance(module
 						.getScriptProject());
 				RubyMixinClass mixinClass = model
@@ -127,8 +127,7 @@ public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 
 	protected boolean isRequire(CallExpression call, String moduleName) {
 		if (isRequire(call)) {
-			final ASTNode argument = (ASTNode) call.getArgs().getChilds()
-					.get(0);
+			final ASTNode argument = call.getArgs().getChilds().get(0);
 			return isStringLiteralArgument(argument, moduleName);
 		}
 		return false;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -117,7 +117,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 					case IModelElement.SCRIPT_PROJECT: {
 						IProject project = ((IScriptProject) element)
 								.getProject();
-						List configs = new ArrayList();
+						List<ILaunchConfiguration> configs = new ArrayList<ILaunchConfiguration>();
 						IFolder specFolder = project.getFolder("test"); //$NON-NLS-1$
 						if (specFolder != null && specFolder.exists())
 							configs.add(findOrCreateLaunch(specFolder, mode));
@@ -126,7 +126,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 							configs.add(findOrCreateLaunch(specFolder, mode));
 						ILaunchConfiguration config = null;
 						if (configs.size() == 1) {
-							config = (ILaunchConfiguration) configs.get(0);
+							config = configs.get(0);
 						} else if (configs.size() > 1) {
 							config = chooseConfiguration(configs, mode);
 						}
@@ -332,7 +332,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 	 * @return ILaunchConfiguration
 	 * @throws InterruptedException
 	 */
-	private ILaunchConfiguration chooseConfiguration(List configList,
+	private ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList,
 			String mode) throws InterruptedException {
 		IDebugModelPresentation labelProvider = DebugUITools
 				.newDebugModelPresentation();
@@ -494,7 +494,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 				.getLaunchConfigurations(configType);
 		String[] attributeToCompare = getAttributeNamesToCompare();
 
-		ArrayList candidateConfigs = new ArrayList(configs.length);
+		ArrayList<ILaunchConfiguration> candidateConfigs = new ArrayList<ILaunchConfiguration>(configs.length);
 		for (int i = 0; i < configs.length; i++) {
 			ILaunchConfiguration config = configs[i];
 			if (hasSameAttributes(config, temporary, attributeToCompare)) {
@@ -512,7 +512,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		if (candidateCount == 0) {
 			return null;
 		} else if (candidateCount == 1) {
-			return (ILaunchConfiguration) candidateConfigs.get(0);
+			return candidateConfigs.get(0);
 		} else {
 			// Prompt the user to choose a config. A null result means the user
 			// cancelled the dialog, in which case this method returns null,

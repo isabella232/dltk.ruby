@@ -97,13 +97,11 @@ public abstract class AbstractRubyTestRunnerUI extends AbstractTestRunnerUI
 		return null;
 	}
 
-	/*
-	 * @see AbstractTestRunnerUI#getAdapter(java.lang.Class)
-	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		if (ITestElementResolver.class.equals(adapter)) {
-			return this;
+			return (T) this;
 		} else {
 			return super.getAdapter(adapter);
 		}

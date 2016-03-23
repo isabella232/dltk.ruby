@@ -68,7 +68,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 
 	private Button detect;
 	private Combo engineType;
-	private Map nameToId = new HashMap();
+	private Map<String, String> nameToId = new HashMap<String, String>();
 	private Label engineMessageLabel;
 	private Label engineMessageImageLabel;
 
@@ -198,7 +198,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	}
 
 	private IModelElement chooseContainer(IModelElement initElement) {
-		Class[] acceptedClasses = new Class[] { IProjectFragment.class,
+		Class<?>[] acceptedClasses = new Class[] { IProjectFragment.class,
 				IScriptProject.class, IScriptFolder.class };
 		TypedElementSelectionValidator validator = new TypedElementSelectionValidator(
 				acceptedClasses, false) {
@@ -532,7 +532,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	}
 
 	private String getEngineId() {
-		return (String) this.nameToId.get(this.engineType.getText());
+		return this.nameToId.get(this.engineType.getText());
 	}
 
 	@Override

@@ -81,7 +81,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 			super.endvisitGeneral(node);
 		}
 
-		private final Stack contextCalls = new Stack();
+		private final Stack<ASTNode> contextCalls = new Stack<ASTNode>();
 
 		public IStatus getStatus() {
 			if (weight >= REQUIRE_WEIGHT + TEST_WEIGHT) {
