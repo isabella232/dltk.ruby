@@ -9,6 +9,7 @@ import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 
 public class RubyVariableColumnPresentationFactory implements IColumnPresentationFactory {
 
+	@Override
 	public IColumnPresentation createColumnPresentation(IPresentationContext context, Object element) {
 		if (isApplicable(context, element)) {
 			return new RubyVariableColumnPresentation();
@@ -16,6 +17,7 @@ public class RubyVariableColumnPresentationFactory implements IColumnPresentatio
 		return null;
 	}
 
+	@Override
 	public String getColumnPresentationId(IPresentationContext context, Object element) {
 		if (isApplicable(context, element)) {
 			return RubyVariableColumnPresentation.RUBY_VARIABLE_COLUMN_PRESENTATION;

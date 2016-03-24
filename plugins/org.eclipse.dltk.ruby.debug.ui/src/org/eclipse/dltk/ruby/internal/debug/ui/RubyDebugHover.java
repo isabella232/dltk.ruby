@@ -11,6 +11,7 @@ public class RubyDebugHover extends ScriptDebugHover {
 		return new RubyDebugModelPresentation();
 	}
 
+	@Override
 	public void setPreferenceStore(IPreferenceStore store) {
 
 	}

@@ -12,23 +12,26 @@ public class RubyAdapterFactory implements IAdapterFactory {
 
 	private static final IElementLabelProvider labelProvider = new RubyVariableLabelProvider();
 
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof IScriptStackFrame) {
 			if (IColumnPresentationFactory.class.equals(adapterType)) {
-				return columnPresentation;
+				return (T) columnPresentation;
 			}
 		}
 
 		if (adaptableObject instanceof IScriptVariable) {
 			if (IElementLabelProvider.class.equals(adapterType)) {
-				return labelProvider;
+				return (T) labelProvider;
 			}
 		}
 
 		return null;
 	}
 
-	public Class[] getAdapterList() {
+	@Override
+	public Class<?>[] getAdapterList() {
 		return new Class[] { IColumnPresentationFactory.class,
 				IElementLabelProvider.class };
 	}

@@ -6,16 +6,12 @@ import org.eclipse.jface.preference.IPreferenceStore;
 
 public class RubyDebugUILanguageToolkit extends AbstractDebugUILanguageToolkit {
 
-	/*
-	 * @see org.eclipse.dltk.debug.ui.IDLTKDebugUILanguageToolkit#getDebugModelId()
-	 */
+	@Override
 	public String getDebugModelId() {
 		return RubyDebugConstants.DEBUG_MODEL_ID;
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.debug.ui.IDLTKDebugUILanguageToolkit#getPreferenceStore()
-	 */
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return RubyDebugUIPlugin.getDefault().getPreferenceStore();
 	}

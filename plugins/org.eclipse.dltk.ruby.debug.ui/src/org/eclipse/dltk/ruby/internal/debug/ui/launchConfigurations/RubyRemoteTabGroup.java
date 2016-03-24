@@ -7,10 +7,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
 public class RubyRemoteTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	/*
-	 * @see org.eclipse.debug.ui.ILaunchConfigurationTabGroup#createTabs(org.eclipse.debug.ui.ILaunchConfigurationDialog,
-	 *      java.lang.String)
-	 */
+	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
 				new RubyRemoteLaunchConfigurationTab(mode), new CommonTab() };

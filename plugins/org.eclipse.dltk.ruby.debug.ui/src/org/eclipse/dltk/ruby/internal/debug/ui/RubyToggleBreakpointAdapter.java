@@ -22,31 +22,37 @@ public class RubyToggleBreakpointAdapter extends ScriptToggleBreakpointAdapter {
 		return validator;
 	}
 
+	@Override
 	public void toggleMethodBreakpoints(IWorkbenchPart part,
 			ISelection selection) throws CoreException {
 		// Not implemented for ruby yet
 	}
 
+	@Override
 	public boolean canToggleMethodBreakpoints(IWorkbenchPart part,
 			ISelection selection) {
 		return false;
 	}
 
+	@Override
 	public void toggleWatchpoints(IWorkbenchPart part, ISelection selection)
 			throws CoreException {
 		// Not implemented for ruby yet
 	}
 
+	@Override
 	public boolean canToggleWatchpoints(IWorkbenchPart part,
 			ISelection selection) {
 		return false;
 	}
 
+	@Override
 	public void toggleBreakpoints(IWorkbenchPart part, ISelection selection)
 			throws CoreException {
 		toggleLineBreakpoints(part, selection);
 	}
 
+	@Override
 	public boolean canToggleBreakpoints(IWorkbenchPart part,
 			ISelection selection) {
 		return canToggleLineBreakpoints(part, selection);

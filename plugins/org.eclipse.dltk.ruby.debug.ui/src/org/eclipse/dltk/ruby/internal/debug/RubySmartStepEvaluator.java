@@ -12,6 +12,7 @@ public class RubySmartStepEvaluator implements ISmartStepEvaluator {
 	public RubySmartStepEvaluator() {
 	}
 
+	@Override
 	public boolean isFiltered(String[] filters, IScriptThread thread) {
 		try {
 			final IStackFrame topFrame = thread.getTopStackFrame();

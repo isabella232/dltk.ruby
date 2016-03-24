@@ -91,6 +91,7 @@ public class RubyVariableLabelProvider extends VariableLabelProvider implements
 		return super.getColumnText(variable, value, context, columnId);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		// TODO Auto-generated method stub
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     xored software, Inc. - Ñompleted initial version (Alex Panchenko)
+ *     xored software, Inc. - ï¿½ompleted initial version (Alex Panchenko)
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui.console;
 
@@ -22,10 +22,12 @@ public class RubyConsoleTracker implements IPatternMatchListenerDelegate {
 
 	private TextConsole fConsole;
 
+	@Override
 	public void connect(TextConsole console) {
 		fConsole = console;
 	}
 
+	@Override
 	public void disconnect() {
 		fConsole = null;
 	}
@@ -37,6 +39,7 @@ public class RubyConsoleTracker implements IPatternMatchListenerDelegate {
 	//	private static final String FROM = "from "; //$NON-NLS-1$
 	//	private static final String FROM_E = "from -e"; //$NON-NLS-1$
 
+	@Override
 	public void matchFound(PatternMatchEvent event) {
 		try {
 			int offset = event.getOffset();
