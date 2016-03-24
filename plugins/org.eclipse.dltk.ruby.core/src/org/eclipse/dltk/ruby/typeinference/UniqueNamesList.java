@@ -1,15 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
-/**
- * 
- */
 package org.eclipse.dltk.ruby.typeinference;
 
 import java.util.ArrayList;
@@ -23,6 +19,7 @@ class UniqueNamesList extends ArrayList {
 	
 	HashSet names = new HashSet ();
 	
+	@Override
 	public boolean add(Object elem) {
 		if (elem instanceof IModelElement) {
 			IModelElement modelElement = (IModelElement) elem;
@@ -33,11 +30,13 @@ class UniqueNamesList extends ArrayList {
 		return super.add(elem);
 	}
 
+	@Override
 	public void clear() {			
 		super.clear();
 		names.clear();
 	}
 
+	@Override
 	public boolean contains(Object elem) {
 		if (elem instanceof IModelElement) {
 			IModelElement modelElement = (IModelElement) elem;

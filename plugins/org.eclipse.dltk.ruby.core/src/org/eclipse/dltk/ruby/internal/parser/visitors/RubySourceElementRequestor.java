@@ -97,6 +97,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 			return fToNode;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof TypeField) {
 				TypeField typeFileld = (TypeField) obj;
@@ -107,6 +108,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 			return false;
 		}
 
+		@Override
 		public String toString() {
 			return fName;
 		}
@@ -172,6 +174,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 		}
 	}
 
+	@Override
 	protected String makeLanguageDependentValue(ASTNode value) {
 		String outValue = ""; //$NON-NLS-1$
 		/*
@@ -188,6 +191,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 	}
 
 	// Visiting methods
+	@Override
 	protected void onEndVisitMethod(MethodDeclaration method) {
 		if (DLTKCore.DEBUG) {
 			System.out.println("==> Method: " + method.getName()); //$NON-NLS-1$
@@ -238,6 +242,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 	}
 
 	// Visiting expressions
+	@Override
 	public boolean visit(ASTNode expression) throws Exception {
 		if (DLTKCore.DEBUG) {
 			System.out.println("==> Expression: " + expression.toString()); //$NON-NLS-1$
@@ -461,20 +466,24 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 		return true;
 	}
 
+	@Override
 	public boolean endvisit(ASTNode expression) throws Exception {
 		return true;
 	}
 
+	@Override
 	public boolean visit(Expression expression) throws Exception {
 		super.visit(expression);
 		return visit((ASTNode) expression);
 	}
 
+	@Override
 	public boolean visit(Statement statement) throws Exception {
 		super.visit(statement);
 		return visit((ASTNode) statement);
 	}
 
+	@Override
 	protected void modifyMethodInfo(MethodDeclaration methodDeclaration,
 			MethodInfo mi) {
 		if (fInClass) {

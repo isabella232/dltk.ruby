@@ -8,6 +8,7 @@ public class RubyContentDescriber extends ScriptContentDescriber {
 	protected static Pattern[] header_patterns = { Pattern.compile(
 			"^#!.*ruby.*", Pattern.MULTILINE) }; //$NON-NLS-1$
 
+	@Override
 	protected Pattern[] getHeaderPatterns() {
 		return header_patterns;
 	}

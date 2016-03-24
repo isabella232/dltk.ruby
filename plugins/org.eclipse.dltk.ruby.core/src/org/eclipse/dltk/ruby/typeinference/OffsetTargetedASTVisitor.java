@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference;
 
@@ -39,6 +38,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return true;
 	}
 
+	@Override
 	public final boolean visit(MethodDeclaration s) {
 		if (!interesting(s))
 			return false;
@@ -49,6 +49,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
+	@Override
 	public final boolean visit(ModuleDeclaration s) {
 		if (!interesting(s))
 			return false;
@@ -59,6 +60,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
+	@Override
 	public final boolean visit(TypeDeclaration s) throws Exception {
 		if (!interesting(s))
 			return false;
@@ -69,6 +71,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
+	@Override
 	public final boolean visit(Expression s) throws Exception {
 		if (!interesting(s))
 			return false;
@@ -79,6 +82,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return visitGeneralInteresting(s);
 	}
 
+	@Override
 	public final boolean visit(Statement s) throws Exception {
 		if (!interesting(s))
 			return false;
@@ -93,6 +97,7 @@ public class OffsetTargetedASTVisitor extends ASTVisitor {
 		return true;
 	}
 
+	@Override
 	public final boolean visitGeneral(ASTNode s) throws Exception {
 		if (!interesting(s))
 			return false;

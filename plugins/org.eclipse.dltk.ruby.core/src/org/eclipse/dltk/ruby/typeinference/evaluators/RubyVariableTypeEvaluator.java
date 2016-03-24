@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
@@ -41,6 +40,7 @@ public class RubyVariableTypeEvaluator extends GoalEvaluator {
 		super(goal);
 	}
 
+	@Override
 	public IGoal[] init() {
 		init = true;
 		VariableTypeGoal goal = (VariableTypeGoal) this.goal;
@@ -51,6 +51,7 @@ public class RubyVariableTypeEvaluator extends GoalEvaluator {
 				parent) };
 	}
 
+	@Override
 	public Object produceResult() {
 		IEvaluatedType type = RubyTypeInferencingUtils.combineTypes(results);
 		return type;
@@ -68,6 +69,7 @@ public class RubyVariableTypeEvaluator extends GoalEvaluator {
 		return (BasicContext) this.goal.getContext();
 	}
 
+	@Override
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (init) {
 			init = false;

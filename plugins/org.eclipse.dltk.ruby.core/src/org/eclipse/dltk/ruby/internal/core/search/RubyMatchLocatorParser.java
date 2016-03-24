@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,10 +55,12 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			super(start, end, name);
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			return locationEquals(this, obj);
 		}
 
+		@Override
 		public int hashCode() {
 			return this.sourceEnd() * 1001 + this.sourceEnd();
 		}
@@ -71,10 +73,12 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			super(name, nameStart, nameEnd, declStart, declEnd);
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			return locationEquals(this, obj);
 		}
 
+		@Override
 		public int hashCode() {
 			return this.sourceEnd() * 1001 + this.sourceEnd();
 		}
@@ -87,10 +91,12 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			super(name, nameStart, nameEnd, declStart, declEnd);
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			return locationEquals(this, obj);
 		}
 
+		@Override
 		public int hashCode() {
 			return this.sourceEnd() * 1001 + this.sourceEnd();
 		}
@@ -101,10 +107,12 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			super(start, end, name);
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			return locationEquals(this, obj);
 		}
 
+		@Override
 		public int hashCode() {
 			return this.sourceEnd() * 1001 + this.sourceEnd();
 		}
@@ -119,6 +127,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 
 	}
 
+	@Override
 	protected MatchVisitor getMatchVisitor() {
 		return new RubyMatchVisitor();
 	}
@@ -155,6 +164,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 				this.getNodeSet());
 	}
 
+	@Override
 	protected void processStatement(ASTNode node, PatternLocator locator) {
 		if (node == null) {
 			return;
@@ -252,6 +262,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 		}
 	}
 
+	@Override
 	protected TypeReference createSuperTypeReference(TypeDeclaration t,
 			ASTNode superClass) {
 		String name = t.resolveSuperClassReference(superClass);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,6 +19,7 @@ public class RubySearchPatternProcessor extends SearchPatternProcessor {
 
 	private static final String METHOD_DELIMITER = "::"; //$NON-NLS-1$
 
+	@Override
 	public char[] extractDeclaringTypeQualification(String pattern) {
 		final int pos = pattern.lastIndexOf(METHOD_DELIMITER);
 		if (pos != -1) {
@@ -28,6 +29,7 @@ public class RubySearchPatternProcessor extends SearchPatternProcessor {
 		return null;
 	}
 
+	@Override
 	public char[] extractDeclaringTypeSimpleName(String pattern) {
 		final int pos = pattern.lastIndexOf(METHOD_DELIMITER);
 		if (pos != -1) {
@@ -37,6 +39,7 @@ public class RubySearchPatternProcessor extends SearchPatternProcessor {
 		return null;
 	}
 
+	@Override
 	public char[] extractSelector(String pattern) {
 		final int pos = pattern.lastIndexOf(METHOD_DELIMITER);
 		if (pos != -1) {
@@ -62,6 +65,7 @@ public class RubySearchPatternProcessor extends SearchPatternProcessor {
 		}
 	}
 
+	@Override
 	public String getDelimiterReplacementString() {
 		return TYPE_DELIMITER;
 	}

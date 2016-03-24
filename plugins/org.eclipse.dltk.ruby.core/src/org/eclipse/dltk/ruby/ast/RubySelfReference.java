@@ -1,16 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
-/*
- * (c) 2002, 2005 xored software and others all rights reserved. http://www.xored.com
- */
-
 package org.eclipse.dltk.ruby.ast;
 
 import org.eclipse.dltk.ast.references.Reference;
@@ -22,18 +17,22 @@ public class RubySelfReference extends Reference {
 		super(start, end);
 	}
 
+	@Override
 	public String getStringRepresentation() {
 		return "self"; //$NON-NLS-1$
 	}
 
+	@Override
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn("SelfReference" + this.getSourceRange().toString()); //$NON-NLS-1$
 	}
 
+	@Override
 	public String toString() {
 		return "self"; //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof RubySelfReference)) {
 			return false;
@@ -42,6 +41,7 @@ public class RubySelfReference extends Reference {
 		return sourceStart() == d.sourceStart() && sourceEnd() == d.sourceEnd();
 	}
 
+	@Override
 	public int hashCode() {
 		return sourceStart() ^ sourceEnd();
 	}

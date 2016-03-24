@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
@@ -59,6 +58,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 		super(goal);
 	}
 
+	@Override
 	public Object produceResult() {
 		return RubyTypeInferencingUtils.combineTypes(results);
 	}
@@ -86,6 +86,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 		return null;
 	}
 
+	@Override
 	public IGoal[] init() {
 		VariableReference ref = getGoalVariableReference();
 		if (ref.getVariableKind() == RubyVariableKind.LOCAL) {
@@ -236,6 +237,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 		return null;
 	}
 
+	@Override
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (subgoal == callsGoal) {
 			List possibles = new ArrayList();

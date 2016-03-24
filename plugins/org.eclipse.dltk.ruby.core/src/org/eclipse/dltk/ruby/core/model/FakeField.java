@@ -1,15 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
-/**
- * 
- */
 package org.eclipse.dltk.ruby.core.model;
 
 import org.eclipse.dltk.core.ISourceModule;
@@ -41,18 +37,22 @@ public class FakeField extends SourceField implements ISourceRange {
 		this.hasFlags = true;
 	}
 
+	@Override
 	public ISourceRange getNameRange() throws ModelException {
 		return this;
 	}
 
+	@Override
 	public ISourceRange getSourceRange() throws ModelException {
 		return this;
 	}
 
+	@Override
 	public boolean exists() {
 		return true;
 	}
 
+	@Override
 	public int getFlags() throws ModelException {
 		return hasFlags ? flags : super.getFlags();
 	}

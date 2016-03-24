@@ -51,10 +51,12 @@ public class AliasedRubyMixinMethod extends RubyMixinMethod {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return alias.getNewName();
 	}
 
+	@Override
 	public RubyMixinVariable[] getVariables() {
 		List result = new ArrayList();
 		IMixinElement mixinElement = model.getRawModel().get(alias.getOldKey());

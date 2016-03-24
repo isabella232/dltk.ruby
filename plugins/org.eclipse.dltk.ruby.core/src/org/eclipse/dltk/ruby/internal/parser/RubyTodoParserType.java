@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,6 +20,7 @@ import org.eclipse.dltk.ruby.core.RubyPlugin;
 
 public class RubyTodoParserType extends AbstractTodoTaskBuildParticipantType {
 
+	@Override
 	protected ITodoTaskPreferences getPreferences(IScriptProject project) {
 		return new TodoTaskPreferencesOnPreferenceLookupDelegate(
 				RubyPlugin.PLUGIN_ID, project);
@@ -31,6 +32,7 @@ public class RubyTodoParserType extends AbstractTodoTaskBuildParticipantType {
 			super(preferences);
 		}
 
+		@Override
 		protected void reset() {
 			super.reset();
 			blockMode = false;
@@ -38,6 +40,7 @@ public class RubyTodoParserType extends AbstractTodoTaskBuildParticipantType {
 
 		private boolean blockMode;
 
+		@Override
 		protected int findCommentStart(char[] content, int begin, int end) {
 			if (blockMode) {
 				if (checkChars(content, begin, end, "=end")) { //$NON-NLS-1$
@@ -83,6 +86,7 @@ public class RubyTodoParserType extends AbstractTodoTaskBuildParticipantType {
 
 	}
 
+	@Override
 	protected IBuildParticipant getBuildParticipant(
 			ITodoTaskPreferences preferences) {
 		return new RubyTodoTaskParser(preferences);

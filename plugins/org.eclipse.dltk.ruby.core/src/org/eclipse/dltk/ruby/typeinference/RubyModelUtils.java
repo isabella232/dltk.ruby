@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference;
 
@@ -117,12 +116,14 @@ public class RubyModelUtils {
 				return true;
 			}
 
+			@Override
 			public boolean visit(Expression s) throws Exception {
 				if (!interesting(s))
 					return false;
 				return true;
 			}
 
+			@Override
 			public boolean visit(MethodDeclaration s) throws Exception {
 				if (!interesting(s))
 					return false;
@@ -141,24 +142,28 @@ public class RubyModelUtils {
 				return true;
 			}
 
+			@Override
 			public boolean visit(ModuleDeclaration s) throws Exception {
 				if (!interesting(s))
 					return false;
 				return true;
 			}
 
+			@Override
 			public boolean visit(TypeDeclaration s) throws Exception {
 				if (!interesting(s))
 					return false;
 				return true;
 			}
 
+			@Override
 			public boolean endvisit(TypeDeclaration s) throws Exception {
 				if (!interesting(s))
 					return false;
 				return false /* dummy */;
 			}
 
+			@Override
 			public boolean visitGeneral(ASTNode s) throws Exception {
 				if (s instanceof Block)
 					return true;
@@ -613,6 +618,7 @@ public class RubyModelUtils {
 		final List result = new ArrayList();
 		SearchRequestor requestor = new SearchRequestor() {
 
+			@Override
 			public void acceptSearchMatch(SearchMatch match)
 					throws CoreException {
 				Object element = match.getElement();

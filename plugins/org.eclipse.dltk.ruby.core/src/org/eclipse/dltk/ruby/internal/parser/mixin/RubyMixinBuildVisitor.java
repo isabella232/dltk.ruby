@@ -98,12 +98,14 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			super(node);
 		}
 
+		@Override
 		public String getClassKey() {
 			return "Object"; //$NON-NLS-1$
 		}
 
 		private boolean isObjectReported = false;
 
+		@Override
 		public String reportMethod(String name, IMethod object) {
 			if (!isObjectReported) {
 				report(getClassKey() + INSTANCE_SUFFIX, null);
@@ -113,6 +115,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					RubyMixinElementInfo.createMethod(object));
 		}
 
+		@Override
 		public String reportType(String name, IType object, boolean module) {
 			RubyMixinElementInfo obj = null;
 			if (module)
@@ -123,6 +126,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			return report(name, obj);
 		}
 
+		@Override
 		public String reportVariable(String name, IField object) {
 			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX)) ? RubyMixinElementInfo
 					.createVirtualClass()
@@ -138,16 +142,19 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 		}
 
+		@Override
 		public String getKey() {
 			return "Object"; //$NON-NLS-1$
 		}
 
+		@Override
 		public String reportInclude(String object) {
 			return report(getClassKey() + INSTANCE_SUFFIX,
 					new RubyMixinElementInfo(RubyMixinElementInfo.K_INCLUDE,
 							object));
 		}
 
+		@Override
 		public String reportExtend(String object) {
 			return null;
 		}
@@ -163,11 +170,13 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			this.classKey = classKey;
 		}
 
+		@Override
 		public String reportMethod(String name, IMethod object) {
 			String key = classKey + INSTANCE_SUFFIX + SEPARATOR + name;
 			return report(key, RubyMixinElementInfo.createMethod(object));
 		}
 
+		@Override
 		public String reportType(String name, IType obj, boolean module) {
 			RubyMixinElementInfo object = null;
 			if (module)
@@ -179,6 +188,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			return report(key, object);
 		}
 
+		@Override
 		public String reportVariable(String name, IField object) {
 			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX)) ? RubyMixinElementInfo
 					.createVirtualClass()
@@ -200,19 +210,23 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 		}
 
+		@Override
 		public String getClassKey() {
 			return classKey;
 		}
 
+		@Override
 		public String getKey() {
 			return classKey;
 		}
 
+		@Override
 		public String reportInclude(String object) {
 			return report(classKey + INSTANCE_SUFFIX, new RubyMixinElementInfo(
 					RubyMixinElementInfo.K_INCLUDE, object));
 		}
 
+		@Override
 		public String reportExtend(String object) {
 			return report(classKey + INSTANCE_SUFFIX, new RubyMixinElementInfo(
 					RubyMixinElementInfo.K_EXTEND, object));
@@ -229,11 +243,13 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			this.classKey = classKey;
 		}
 
+		@Override
 		public String reportMethod(String name, IMethod object) {
 			return report(classKey + SEPARATOR + name, RubyMixinElementInfo
 					.createMethod(object));
 		}
 
+		@Override
 		public String reportType(String name, IType object, boolean module) {
 			RubyMixinElementInfo obj = null;
 			if (module)
@@ -244,6 +260,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			return report(classKey + SEPARATOR + name, obj);
 		}
 
+		@Override
 		public String reportVariable(String name, IField object) {
 			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX)) ? RubyMixinElementInfo
 					.createVirtualClass()
@@ -259,19 +276,23 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 		}
 
+		@Override
 		public String getClassKey() {
 			return classKey;
 		}
 
+		@Override
 		public String getKey() {
 			return classKey;
 		}
 
+		@Override
 		public String reportInclude(String object) {
 			return report(classKey, new RubyMixinElementInfo(
 					RubyMixinElementInfo.K_INCLUDE, object));
 		}
 
+		@Override
 		public String reportExtend(String object) {
 			return report(classKey, new RubyMixinElementInfo(
 					RubyMixinElementInfo.K_EXTEND, object));
@@ -290,15 +311,18 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			this.methodKey = methodKey;
 		}
 
+		@Override
 		public String reportMethod(String name, IMethod object) {
 			return classScope.reportMethod(name, object);
 		}
 
+		@Override
 		public String reportType(String name, IType obj, boolean module) {
 			// throw new RuntimeException();
 			return null;
 		}
 
+		@Override
 		public String reportVariable(String name, IField obj) {
 			RubyMixinElementInfo info = (name.endsWith(VIRTUAL_SUFFIX)) ? RubyMixinElementInfo
 					.createVirtualClass()
@@ -327,18 +351,22 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			}
 		}
 
+		@Override
 		public String getClassKey() {
 			return classScope.getClassKey();
 		}
 
+		@Override
 		public String getKey() {
 			return methodKey;
 		}
 
+		@Override
 		public String reportInclude(String object) {
 			return classScope.reportInclude(object);
 		}
 
+		@Override
 		public String reportExtend(String object) {
 			return classScope.reportExtend(object);
 		}
@@ -362,11 +390,13 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return (Scope) scopes.peek();
 	}
 
+	@Override
 	public boolean visit(ModuleDeclaration s) throws Exception {
 		this.scopes.add(new SourceModuleScope(s));
 		return true;
 	}
 
+	@Override
 	public boolean visit(MethodDeclaration decl) throws Exception {
 		IMethod obj = null;
 		String name = decl.getName();
@@ -413,6 +443,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return sourceModule.getElementAt(decl.sourceStart() + 1);
 	}
 
+	@Override
 	public boolean visitGeneral(ASTNode s) throws Exception {
 		if (s instanceof RubyMethodArgument) {
 			RubyMethodArgument argument = (RubyMethodArgument) s;
@@ -592,6 +623,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return true;
 	}
 
+	@Override
 	public boolean visit(TypeDeclaration decl) throws Exception {
 		IType obj = null;
 		if (moduleAvailable) {
@@ -722,6 +754,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		return null;
 	}
 
+	@Override
 	public void endvisitGeneral(ASTNode node) throws Exception {
 		Scope scope = (Scope) scopes.peek();
 		if (scope.getNode() == node) {

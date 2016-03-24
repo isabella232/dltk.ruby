@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference;
 
@@ -68,6 +67,7 @@ public class RubyTypeInferencingUtils {
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 
+			@Override
 			public void acceptTypeNameMatch(TypeNameMatch match) {
 				IType type = match.getType();
 				if (type.getParent() instanceof ISourceModule) {
@@ -87,26 +87,31 @@ public class RubyTypeInferencingUtils {
 			final int requestedOffset) {
 		final Collection scopes = new ArrayList();
 		ASTVisitor visitor = new OffsetTargetedASTVisitor(requestedOffset) {
+			@Override
 			public boolean visitInteresting(MethodDeclaration s) {
 				scopes.add(s);
 				return true;
 			}
 
+			@Override
 			public boolean visitInteresting(ModuleDeclaration s) {
 				scopes.add(s);
 				return true;
 			}
 
+			@Override
 			public boolean visitInteresting(TypeDeclaration s) {
 				scopes.add(s);
 				return true;
 			}
 
+			@Override
 			protected boolean visitInteresting(RubyBlock b) {
 				scopes.add(b);
 				return true;
 			}
 
+			@Override
 			protected boolean visitGeneralInteresting(ASTNode s) {
 				if (ASTUtils.isNodeScoping(s)) {
 					scopes.add(s);
@@ -207,18 +212,21 @@ public class RubyTypeInferencingUtils {
 		final Collection assignments = new ArrayList();
 		ASTVisitor visitor = new ASTVisitor() {
 
+			@Override
 			public boolean visit(MethodDeclaration s) throws Exception {
 				if (s == scope)
 					return true;
 				return false;
 			}
 
+			@Override
 			public boolean visit(TypeDeclaration s) throws Exception {
 				if (s == scope)
 					return true;
 				return false;
 			}
 
+			@Override
 			public boolean visit(ASTNode node) throws Exception {
 				if (node instanceof RubyAssignment) {
 					RubyAssignment assignment = (RubyAssignment) node;
@@ -348,6 +356,7 @@ public class RubyTypeInferencingUtils {
 			this.level.clear();
 		}
 
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (node == root)
 				return true;
@@ -381,6 +390,7 @@ public class RubyTypeInferencingUtils {
 			return true;
 		}
 
+		@Override
 		public void endvisitGeneral(ASTNode node) throws Exception {
 			if (level.size() > 0 && level.peek().equals(node)) {
 				level.pop();

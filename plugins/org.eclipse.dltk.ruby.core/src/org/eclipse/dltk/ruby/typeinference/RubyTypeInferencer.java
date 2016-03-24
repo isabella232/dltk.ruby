@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference;
 
@@ -50,6 +49,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		super(new RubyEvaluatorFactory());
 	}
 
+	@Override
 	public synchronized IEvaluatedType evaluateType(AbstractTypeGoal goal,
 			int timeLimit) {
 		IEvaluatedType type = super.evaluateType(goal, new SimplestRubyPruner(
@@ -61,6 +61,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		return type;
 	}
 
+	@Override
 	public synchronized Object evaluateGoal(IGoal goal, IPruner pruner) {
 		return super.evaluateGoal(goal, pruner);
 	}

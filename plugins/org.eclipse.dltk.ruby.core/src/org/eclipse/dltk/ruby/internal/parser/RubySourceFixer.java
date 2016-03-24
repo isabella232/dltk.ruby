@@ -112,6 +112,7 @@ public class RubySourceFixer {
 	// missingName.len should == missingName2.len, etc
 
 	private final class ASTPositionsCorrector extends ASTVisitor {
+		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (node.sourceStart() < 0 || node.sourceEnd() < 0)
 				return true;

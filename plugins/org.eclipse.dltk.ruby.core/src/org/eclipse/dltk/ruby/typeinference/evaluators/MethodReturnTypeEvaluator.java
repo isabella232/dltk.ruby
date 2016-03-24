@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference.evaluators;
 
@@ -63,6 +62,7 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 		return (InstanceContext) this.getGoal().getContext();
 	}
 
+	@Override
 	public Object produceResult() {
 		if (rdocResult != null)
 			return rdocResult;
@@ -72,6 +72,7 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 		return null;
 	}
 
+	@Override
 	public IGoal[] init() {
 		MethodReturnTypeGoal typedGoal = getTypedGoal();
 		InstanceContext typedContext = getTypedContext();
@@ -157,6 +158,7 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 
 		ASTVisitor visitor = new ASTVisitor() {
 
+			@Override
 			public boolean visitGeneral(ASTNode node) throws Exception {
 				if (node instanceof RubyReturnStatement) {
 					RubyReturnStatement statement = (RubyReturnStatement) node;
@@ -212,6 +214,7 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 		return null;
 	}
 
+	@Override
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (result != null)
 			evaluated.add(result);
