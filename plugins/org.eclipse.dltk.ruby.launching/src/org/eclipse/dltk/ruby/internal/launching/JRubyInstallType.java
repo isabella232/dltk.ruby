@@ -15,10 +15,12 @@ public class JRubyInstallType extends AbstractInterpreterInstallType {
 
 	private static final String[] INTERPRETER_NAMES = { "jruby" }; //$NON-NLS-1$
 
+	@Override
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
+	@Override
 	public String getName() {
 		return INSTALL_TYPE_NAME;
 	}

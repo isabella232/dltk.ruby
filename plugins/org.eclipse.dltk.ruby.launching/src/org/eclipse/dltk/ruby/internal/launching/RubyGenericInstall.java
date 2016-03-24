@@ -71,6 +71,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 							.toOSString(), config);
 
 			Thread readerThread = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					BufferedReader input = null;
 					try {

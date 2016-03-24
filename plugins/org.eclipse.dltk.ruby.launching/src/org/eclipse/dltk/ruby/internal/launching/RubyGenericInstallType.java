@@ -33,10 +33,12 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 	private static final String[] INTERPRETER_NAMES = {
 			"ruby", "rubyw", "ruby18", "ruby19" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
+	@Override
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
+	@Override
 	public String getName() {
 		return INSTALL_TYPE_NAME;
 	}
