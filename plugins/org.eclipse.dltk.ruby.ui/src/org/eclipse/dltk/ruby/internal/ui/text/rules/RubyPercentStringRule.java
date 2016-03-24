@@ -28,6 +28,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 	 * @since 3.1
 	 */
 	private static class DecreasingCharArrayLengthComparator implements Comparator<char[]> {
+		@Override
 		public int compare(char[] o1, char[] o2) {
 			return o2.length - o1.length;
 		}
@@ -150,9 +151,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 		return Token.UNDEFINED;
 	}
 
-	/*
-	 * @see IRule#evaluate(ICharacterScanner)
-	 */
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		return evaluate(scanner, false);
 	}
@@ -257,6 +256,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 		return true;
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		int c= scanner.read();
 		scanner.unread();
@@ -269,6 +269,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 		return Token.UNDEFINED;
 	}
 
+	@Override
 	public IToken getSuccessToken() {
 		return fToken;
 	}

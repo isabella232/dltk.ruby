@@ -28,6 +28,7 @@ public class BeginOfLineRule implements IRule {
 		return new char[0];
 	}
 
+	@Override
 	public IToken evaluate(ICharacterScanner scanner) {
 		int beforeNewLine = 0;
 		if (scanner.getColumn() > 0) {

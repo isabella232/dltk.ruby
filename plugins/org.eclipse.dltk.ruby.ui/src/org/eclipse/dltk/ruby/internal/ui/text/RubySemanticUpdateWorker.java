@@ -53,6 +53,7 @@ import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 public class RubySemanticUpdateWorker extends ASTVisitor implements
 		ISemanticHighlighter, ISemanticHighlighterExtension {
 
+	@Override
 	public SemanticHighlighting[] getSemanticHighlightings() {
 		return new SemanticHighlighting[] {
 				new RubySemanticHighlighting(
@@ -248,6 +249,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 		requestor.addPosition(start, end, HL_REGEXP);
 	}
 
+	@Override
 	public String[] getHighlightingKeys() {
 		final Set<String> result = new HashSet<String>();
 		for (SemanticHighlighting highlighting : getSemanticHighlightings()) {
@@ -256,6 +258,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 		return result.toArray(new String[result.size()]);
 	}
 
+	@Override
 	public void process(IModuleSource code,
 			ISemanticHighlightingRequestor requestor) {
 		this.requestor = requestor;

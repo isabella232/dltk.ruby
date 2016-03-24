@@ -85,10 +85,12 @@ public class RubyUILanguageToolkit extends AbstractDLTKUILanguageToolkit {
 		return sInstance;
 	}
 
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return RubyUI.getDefault().getPreferenceStore();
 	}
 
+	@Override
 	public IDLTKLanguageToolkit getCoreToolkit() {
 		return RubyLanguageToolkit.getDefault();
 	}

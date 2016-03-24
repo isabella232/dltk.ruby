@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text;
 
@@ -40,20 +39,24 @@ public class RubyPreferenceInterpreter implements ITabPreferencesProvider {
 		return store.getBoolean(PreferenceConstants.EDITOR_CLOSE_BRACES);
 	}
 
+	@Override
 	public int getIndentSize() {
 		return store.getInt(CodeFormatterConstants.FORMATTER_INDENTATION_SIZE);
 	}
 
+	@Override
 	public int getTabSize() {
 		return store.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
 
+	@Override
 	public TabStyle getTabStyle() {
 		return TabStyle.forName(store
 				.getString(CodeFormatterConstants.FORMATTER_TAB_CHAR),
 				TabStyle.TAB);
 	}
 
+	@Override
 	public String getIndent() {
 		if (getTabStyle() == TabStyle.SPACES) {
 			return AutoEditUtils.getNSpaces(getIndentSize());
@@ -61,6 +64,7 @@ public class RubyPreferenceInterpreter implements ITabPreferencesProvider {
 			return "\t"; //$NON-NLS-1$
 	}
 
+	@Override
 	public String getIndentByVirtualSize(int size) {
 		if (getTabStyle() == TabStyle.SPACES) {
 			return AutoEditUtils.getNSpaces(size);
@@ -72,6 +76,7 @@ public class RubyPreferenceInterpreter implements ITabPreferencesProvider {
 		}
 	}
 
+	@Override
 	public String getIndent(int count) {
 		String indent = getIndent();
 		StringBuffer result = new StringBuffer(indent.length() * count);

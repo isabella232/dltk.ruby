@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,6 +29,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  */
 public class RubyRequireHyperlinkDetector extends AbstractHyperlinkDetector {
 
+	@Override
 	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
 			IRegion inputRegion, boolean canShowMultipleHyperlinks) {
 		if (inputRegion == null || textViewer == null) {

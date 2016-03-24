@@ -195,6 +195,7 @@ public class RubySourceViewerConfiguration extends
 	private IInformationControlCreator getHierarchyPresenterControlCreator(
 			ISourceViewer sourceViewer) {
 		return new IInformationControlCreator() {
+			@Override
 			public IInformationControl createInformationControl(Shell parent) {
 				int shellStyle = SWT.RESIZE;
 				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;

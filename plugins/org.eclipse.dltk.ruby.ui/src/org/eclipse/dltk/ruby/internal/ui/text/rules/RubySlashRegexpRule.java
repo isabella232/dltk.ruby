@@ -38,6 +38,7 @@ public class RubySlashRegexpRule extends PatternRule {
 	 */
 	private static class DecreasingCharArrayLengthComparator implements
 			Comparator<char[]> {
+		@Override
 		public int compare(char[] o1, char[] o2) {
 			return o2.length - o1.length;
 		}

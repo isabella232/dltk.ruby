@@ -117,6 +117,7 @@ public class RiHelper {
 				final Watchdog watchdog = new Watchdog(TERMINATE_WAIT_TIMEOUT);
 				watchdog.addListener(new WatchdogListener() {
 
+					@Override
 					public void timeoutOccured() {
 						riProcess.destroy();
 					}
@@ -216,24 +217,29 @@ public class RiHelper {
 	protected RiHelper() {
 		ScriptRuntime
 				.addInterpreterInstallChangedListener(new IInterpreterInstallChangedListener() {
+					@Override
 					public void defaultInterpreterInstallChanged(
 							IInterpreterInstall previous,
 							IInterpreterInstall current) {
 						destroyRiProcess();
 					}
 
+					@Override
 					public void interpreterAdded(IInterpreterInstall Interpreter) {
 					}
 
+					@Override
 					public void interpreterChanged(PropertyChangeEvent event) {
 					}
 
+					@Override
 					public void interpreterRemoved(
 							IInterpreterInstall Interpreter) {
 					}
 				});
 		RubyUI.getDefault().addShutdownListener(new IShutdownListener() {
 
+			@Override
 			public void shutdown() {
 				destroyRiProcess();
 			}

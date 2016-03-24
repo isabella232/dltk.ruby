@@ -25,6 +25,7 @@ public class RubyGlobalPreferencesPage extends
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {
 		return new AbstractConfigurationBlock(overlayPreferenceStore, this) {
+			@Override
 			public Control createControl(Composite parent) {
 				Composite composite = SWTFactory.createComposite(parent, parent
 						.getFont(), 1, 1, GridData.FILL_HORIZONTAL);

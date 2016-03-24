@@ -61,6 +61,7 @@ public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal
 		return true;
 	}
 	
+	@Override
 	public boolean isAutoInsertable() {
 		return false;
 	}

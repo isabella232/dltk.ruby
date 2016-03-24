@@ -44,18 +44,22 @@ public class RubyRequireHyperlink implements IHyperlink {
 		this.editor = editor;
 	}
 
+	@Override
 	public IRegion getHyperlinkRegion() {
 		return region;
 	}
 
+	@Override
 	public String getHyperlinkText() {
 		return NLS.bind(RubyHyperlinkMessages.RequireHyperlink_text, path);
 	}
 
+	@Override
 	public String getTypeLabel() {
 		return RubyHyperlinkMessages.RequireHyperlink_label;
 	}
 
+	@Override
 	public void open() {
 		try {
 			doOpen();

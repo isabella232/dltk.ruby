@@ -22,6 +22,7 @@ import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
 public class RubyTypeDocumentationProvider implements
 		IScriptDocumentationProvider {
 
+	@Override
 	public Reader getInfo(IMember element, boolean lookIntoParents,
 			boolean lookIntoExternal) {
 		ISourceModule module = (ISourceModule) element
@@ -50,6 +51,7 @@ public class RubyTypeDocumentationProvider implements
 		return null;
 	}
 
+	@Override
 	public Reader getInfo(String content) {
 		return null;
 	}
