@@ -1,3 +1,12 @@
+###############################################################################
+# Copyright (c) 2005, 2016 IBM Corporation and others.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+#
+###############################################################################
+
 require 'monitor'
 require 'common/Logger'
 require 'debugger/AbstractContext'
@@ -95,7 +104,7 @@ module XoredDebugger
             end
             binding = frame[ :binding ]
             info = frame[ :info ]
-            Kernel.eval(text, binding, info.file, info.line)            
+            Kernel.eval(text.to_s, binding, info.file, info.line)            
         end
                     
         # Stack depth
