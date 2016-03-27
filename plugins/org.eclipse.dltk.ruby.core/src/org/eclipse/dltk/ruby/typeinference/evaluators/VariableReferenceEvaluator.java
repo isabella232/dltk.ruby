@@ -108,7 +108,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 			info = RubyTypeInferencingUtils.inspectLocalVariable(rootNode,
 					expression.sourceStart(), varName);
 
-			List poss = new ArrayList();
+			List<IGoal> poss = new ArrayList<IGoal>();
 
 			if (info != null) {
 				if (info.getLastAssignment() != null
@@ -149,7 +149,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 				}
 			}
 
-			return (IGoal[]) poss.toArray(new IGoal[poss.size()]);
+			return poss.toArray(new IGoal[poss.size()]);
 
 		} else {
 			IEvaluatedType selfClass = RubyTypeInferencingUtils
@@ -161,7 +161,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 						ref.getName(), selfKey, ref.getVariableKind()) };
 			} else if (selfClass instanceof AmbiguousType) {
 				AmbiguousType ambiType = (AmbiguousType) selfClass;
-				List goalList = new ArrayList();
+				List<IGoal> goalList = new ArrayList<IGoal>();
 				IEvaluatedType[] possibleTypes = ambiType.getPossibleTypes();
 				for (int cnt = 0, max = possibleTypes.length; cnt < max; cnt++) {
 					if (possibleTypes[cnt] instanceof RubyClassType) {
@@ -171,7 +171,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 								ref.getName(), selfKey, ref.getVariableKind()));
 					}
 				}
-				return (IGoal[]) goalList.toArray(new IGoal[goalList.size()]);
+				return goalList.toArray(new IGoal[goalList.size()]);
 			}
 		}
 		return IGoal.NO_GOALS;
@@ -240,7 +240,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 	@Override
 	public IGoal[] subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (subgoal == callsGoal) {
-			List possibles = new ArrayList();
+			List<IGoal> possibles = new ArrayList<IGoal>();
 			if (result != null) {
 				ItemReference[] refs = (ItemReference[]) result;
 				for (int i = 0; i < refs.length; i++) { // TODO: for performance
@@ -269,7 +269,7 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 					}
 				}
 			}
-			return (IGoal[]) possibles.toArray(new IGoal[possibles.size()]);
+			return possibles.toArray(new IGoal[possibles.size()]);
 		} else if ((result != null) && !(result instanceof UnknownType))
 			results.add(result);
 		return IGoal.NO_GOALS;

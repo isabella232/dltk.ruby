@@ -41,7 +41,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	}
 
 	static {
-		List factories = new ArrayList();
+		List<FactoryInfo> factories = new ArrayList<FactoryInfo>();
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
 				.getConfigurationElementsFor(GOAL_EVALUATOR_FACTORIES_EXT);
 		for (int i = 0; i < elements.length; i++) {
@@ -56,15 +56,11 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 				e.printStackTrace();
 			}
 		}
-		f = (FactoryInfo[]) factories.toArray(new FactoryInfo[factories.size()]);
-		Arrays.sort(f, new Comparator() {
-
-			public int compare(Object arg0, Object arg1) {
-				FactoryInfo f1 = (FactoryInfo) arg0;
-				FactoryInfo f2 = (FactoryInfo) arg1;
+		f = factories.toArray(new FactoryInfo[factories.size()]);
+		Arrays.sort(f, new Comparator<FactoryInfo>() {
+			public int compare(FactoryInfo f1, FactoryInfo f2) {
 				return f2.priority - f1.priority; 
 			}
-			
 		});
 	}
 

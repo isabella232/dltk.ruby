@@ -83,28 +83,28 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		final IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement != null) {
 			final Object[] allObjects = mixinElement.getAllObjects();
-			final List result = new ArrayList();
+			final List<IMethod> result = new ArrayList<IMethod>();
 			for (int i = 0; i < allObjects.length; i++) {
 				RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 				if (info.getKind() == RubyMixinElementInfo.K_METHOD) {
-					result.add(info.getObject());
+					result.add((IMethod) info.getObject());
 				}
 			}
-			return (IMethod[]) result.toArray(new IMethod[result.size()]);
+			return result.toArray(new IMethod[result.size()]);
 		}
 		return new IMethod[0];
 	}
 
 	public RubyMixinVariable[] getVariables() {
-		List result = new ArrayList();
+		List<RubyMixinVariable> result = new ArrayList<RubyMixinVariable>();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			IRubyMixinElement element = model.createRubyElement(children[i]);
 			if (element instanceof RubyMixinVariable)
-				result.add(element);
+				result.add((RubyMixinVariable) element);
 		}
-		return (RubyMixinVariable[]) result
+		return result
 				.toArray(new RubyMixinVariable[result.size()]);
 	}
 	

@@ -426,7 +426,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			IMixinSearchRequestor {
 		private String lastParent = null;
 		private boolean lastParentIsSuperClass = true;
-		private final List group = new ArrayList();
+		private final List<RubyMixinMethod> group = new ArrayList<RubyMixinMethod>();
 		private final RubyMixinClass klass;
 		private final boolean isSelf;
 
@@ -499,8 +499,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		public void flush() {
 			if (group.size() > 0) {
-				RubyMixinMethod[] mixinMethods = (RubyMixinMethod[]) group
-						.toArray(new RubyMixinMethod[group.size()]);
+				RubyMixinMethod[] mixinMethods = group.toArray(new RubyMixinMethod[group.size()]);
 				final List methods = RubyModelUtils.getAllSourceMethods(
 						mixinMethods, klass);
 				int skew = 0;

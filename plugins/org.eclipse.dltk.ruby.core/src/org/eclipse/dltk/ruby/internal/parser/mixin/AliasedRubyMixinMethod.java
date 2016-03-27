@@ -58,16 +58,15 @@ public class AliasedRubyMixinMethod extends RubyMixinMethod {
 
 	@Override
 	public RubyMixinVariable[] getVariables() {
-		List result = new ArrayList();
+		List<RubyMixinVariable> result = new ArrayList<RubyMixinVariable>();
 		IMixinElement mixinElement = model.getRawModel().get(alias.getOldKey());
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			IRubyMixinElement element = model.createRubyElement(children[i]);
 			if (element instanceof RubyMixinVariable)
-				result.add(element);
+				result.add((RubyMixinVariable) element);
 		}
-		return (RubyMixinVariable[]) result
-				.toArray(new RubyMixinVariable[result.size()]);
+		return result.toArray(new RubyMixinVariable[result.size()]);
 	}
 
 }

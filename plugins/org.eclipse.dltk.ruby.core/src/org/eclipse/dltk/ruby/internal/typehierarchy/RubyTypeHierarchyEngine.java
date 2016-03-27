@@ -29,7 +29,7 @@ public class RubyTypeHierarchyEngine {
 	public static IType[] locateSuperTypes( IType type, IProgressMonitor monitor ) {
 		try {
 			String[] superTypes = type.getSuperClasses();
-			List types = new ArrayList();
+			List<IType> types = new ArrayList<IType>();
 			if (superTypes != null) {
 				monitor.beginTask(Messages.RubyTypeHierarchyEngine_collectingTypes, superTypes.length);
 				IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(type));
@@ -46,7 +46,7 @@ public class RubyTypeHierarchyEngine {
 					}
 				}
 			}
-			return (IType[])types.toArray(new IType[types.size()]);
+			return types.toArray(new IType[types.size()]);
 		} catch (ModelException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {
@@ -84,14 +84,14 @@ public class RubyTypeHierarchyEngine {
 	private static class SearchRequestor extends TypeNameMatchRequestor {
 		private volatile boolean fStop;
 
-		private List fResult;
+		private List<TypeNameMatch> fResult;
 		
 		public SearchRequestor() {
 			super();
-			fResult= new ArrayList(5);
+			fResult= new ArrayList<TypeNameMatch>(5);
 		}
 		public TypeNameMatch[] getResult() {
-			return (TypeNameMatch[])fResult.toArray(new TypeNameMatch[fResult.size()]);
+			return fResult.toArray(new TypeNameMatch[fResult.size()]);
 		}
 		public void cancel() {
 			fStop= true;

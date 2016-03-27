@@ -1,15 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
-/**
- * 
- */
 package org.eclipse.dltk.ruby.typeinference;
 
 import java.util.List;
@@ -112,8 +108,8 @@ public class LocalVariableInfo {
 		this.conditionalAssignments = conditionalAssignments;
 	}
 
-	public void setConditionalAssignments(List conditionalAssignments) {
-		this.conditionalAssignments = (RubyAssignment[]) conditionalAssignments
+	public void setConditionalAssignments(List<RubyAssignment> conditionalAssignments) {
+		this.conditionalAssignments = conditionalAssignments
 				.toArray(new RubyAssignment[conditionalAssignments.size()]);
 	}
 

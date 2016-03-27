@@ -63,7 +63,7 @@ public class RubyTypeInferencingUtils {
 	 * Searches all top level types, which starts with prefix
 	 */
 	public static IType[] getAllTypes(ISourceModule module, String prefix) {
-		final List types = new ArrayList();
+		final List<IType> types = new ArrayList<IType>();
 
 		TypeNameMatchRequestor requestor = new TypeNameMatchRequestor() {
 
@@ -80,12 +80,12 @@ public class RubyTypeInferencingUtils {
 		ScriptModelUtil.searchTypeDeclarations(module.getScriptProject(),
 				prefix + "*", requestor); //$NON-NLS-1$
 
-		return (IType[]) types.toArray(new IType[types.size()]);
+		return types.toArray(new IType[types.size()]);
 	}
 
 	public static ASTNode[] getAllStaticScopes(ModuleDeclaration rootNode,
 			final int requestedOffset) {
-		final Collection scopes = new ArrayList();
+		final Collection<ASTNode> scopes = new ArrayList<ASTNode>();
 		ASTVisitor visitor = new OffsetTargetedASTVisitor(requestedOffset) {
 			@Override
 			public boolean visitInteresting(MethodDeclaration s) {
@@ -128,7 +128,7 @@ public class RubyTypeInferencingUtils {
 		}
 		if (scopes.size() == 0)
 			scopes.add(rootNode);
-		return (ASTNode[]) scopes.toArray(new ASTNode[scopes.size()]);
+		return scopes.toArray(new ASTNode[scopes.size()]);
 	}
 
 	public static IMixinElement[] getModelStaticScopes(MixinModel model,
@@ -209,7 +209,7 @@ public class RubyTypeInferencingUtils {
 
 	public static RubyAssignment[] findLocalVariableAssignments(
 			final ASTNode scope, final ASTNode nextScope, final String varName) {
-		final Collection assignments = new ArrayList();
+		final Collection<RubyAssignment> assignments = new ArrayList<RubyAssignment>();
 		ASTVisitor visitor = new ASTVisitor() {
 
 			@Override
@@ -249,8 +249,7 @@ public class RubyTypeInferencingUtils {
 		} catch (Exception e) {
 			RubyPlugin.log(e);
 		}
-		return (RubyAssignment[]) assignments
-				.toArray(new RubyAssignment[assignments.size()]);
+		return assignments.toArray(new RubyAssignment[assignments.size()]);
 	}
 
 	public static boolean isRootLocalScope(ASTNode node) {
@@ -260,12 +259,11 @@ public class RubyTypeInferencingUtils {
 	}
 
 	public static IEvaluatedType combineTypes(Collection evaluaedTypes) {
-		Set types = new HashSet(evaluaedTypes);
+		Set<IEvaluatedType> types = new HashSet<IEvaluatedType>(evaluaedTypes);
 		types.remove(null);
 		if (types.size() > 1 && types.contains(RecursionTypeCall.INSTANCE))
 			types.remove(RecursionTypeCall.INSTANCE);
-		return combineUniqueTypes((IEvaluatedType[]) types
-				.toArray(new IEvaluatedType[types.size()]));
+		return combineUniqueTypes(types.toArray(new IEvaluatedType[types.size()]));
 	}
 
 	private static IEvaluatedType combineUniqueTypes(IEvaluatedType[] types) {
@@ -338,7 +336,7 @@ public class RubyTypeInferencingUtils {
 
 		}
 
-		private List assignements;
+		private List<VariableAssignment> assignements;
 		private Stack level = new Stack();
 		private int maxLevel;
 
@@ -352,7 +350,7 @@ public class RubyTypeInferencingUtils {
 			this.root = root;
 			this.offset = offset;
 			this.maxLevel = 0;
-			this.assignements = new ArrayList();
+			this.assignements = new ArrayList<VariableAssignment>();
 			this.level.clear();
 		}
 
@@ -398,7 +396,7 @@ public class RubyTypeInferencingUtils {
 		}
 
 		public RubyAssignment getUnconditionalAssignment() {
-			VariableAssignment[] array = (VariableAssignment[]) assignements
+			VariableAssignment[] array = assignements
 					.toArray(new VariableAssignment[assignements.size()]);
 			for (int i = array.length - 1; i >= 0; i--) {
 				VariableAssignment a = array[i];

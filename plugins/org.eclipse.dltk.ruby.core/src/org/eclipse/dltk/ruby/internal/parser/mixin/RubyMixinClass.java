@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
@@ -84,7 +83,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 	}
 
 	public IType[] getSourceTypes() {
-		List result = new ArrayList();
+		List<IType> result = new ArrayList<IType>();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
@@ -94,10 +93,10 @@ public class RubyMixinClass implements IRubyMixinElement {
 			if (info.getKind() == RubyMixinElementInfo.K_CLASS
 					|| info.getKind() == RubyMixinElementInfo.K_MODULE) {
 				if (info.getObject() != null)
-					result.add(info.getObject());
+					result.add((IType) info.getObject());
 			}
 		}
-		return (IType[]) result.toArray(new IType[result.size()]);
+		return result.toArray(new IType[result.size()]);
 	}
 
 	public RubyMixinClass getSuperclass() {
@@ -173,7 +172,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
 			return new RubyMixinClass[0];
-		List result = new ArrayList();
+		List<RubyMixinClass> result = new ArrayList<RubyMixinClass>();
 		HashSet names = new HashSet();
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
@@ -192,12 +191,11 @@ public class RubyMixinClass implements IRubyMixinElement {
 					// TODO if element is not found - try to use different path
 					// combinations
 					if (element instanceof RubyMixinClass)
-						result.add(element);
+						result.add((RubyMixinClass) element);
 				}
 			}
 		}
-		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result
-				.size()]);
+		return result.toArray(new RubyMixinClass[result.size()]);
 	}
 
 	/**
@@ -209,7 +207,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
 			return new RubyMixinClass[0];
-		List result = new ArrayList();
+		List<RubyMixinClass> result = new ArrayList<RubyMixinClass>();
 		HashSet names = new HashSet();
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
@@ -225,12 +223,11 @@ public class RubyMixinClass implements IRubyMixinElement {
 						extKey += RubyMixin.INSTANCE_SUFFIX;
 					IRubyMixinElement element = model.createRubyElement(extKey);
 					if (element instanceof RubyMixinClass)
-						result.add(element);
+						result.add((RubyMixinClass) element);
 				}
 			}
 		}
-		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result
-				.size()]);
+		return result.toArray(new RubyMixinClass[result.size()]);
 	}
 
 	public void findMethods(IMixinSearchPattern pattern,
@@ -296,7 +293,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 	}
 
 	public RubyMixinMethod[] findMethods(IMixinSearchPattern pattern) {
-		final List result = new ArrayList();
+		final List<RubyMixinMethod> result = new ArrayList<RubyMixinMethod>();
 		this.findMethods(pattern, new IMixinSearchRequestor() {
 			final Set names = new HashSet();
 
@@ -310,8 +307,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 			}
 
 		}, new HashSet());
-		return (RubyMixinMethod[]) result.toArray(new RubyMixinMethod[result
-				.size()]);
+		return result.toArray(new RubyMixinMethod[result.size()]);
 	}
 
 	public RubyMixinMethod getMethod(String name) {
@@ -368,26 +364,25 @@ public class RubyMixinClass implements IRubyMixinElement {
 	}
 
 	public RubyMixinClass[] getClasses() {
-		List result = new ArrayList();
+		List<RubyMixinClass> result = new ArrayList<RubyMixinClass>();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			IRubyMixinElement element = model.createRubyElement(children[i]);
 			if (element instanceof RubyMixinClass)
-				result.add(element);
+				result.add((RubyMixinClass) element);
 		}
-		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result
-				.size()]);
+		return result.toArray(new RubyMixinClass[result.size()]);
 	}
 
 	public RubyMixinVariable[] getFields() {
-		List result = new ArrayList();
+		List<RubyMixinVariable> result = new ArrayList<RubyMixinVariable>();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			IRubyMixinElement element = model.createRubyElement(children[i]);
 			if (element instanceof RubyMixinVariable)
-				result.add(element);
+				result.add((RubyMixinVariable) element);
 		}
 		RubyMixinClass superclass = getSuperclass();
 		if (superclass != null && superclass.key != "Object" //$NON-NLS-1$
@@ -398,8 +393,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 			result.addAll(Arrays.asList(superFields));
 		}
 
-		return (RubyMixinVariable[]) result
-				.toArray(new RubyMixinVariable[result.size()]);
+		return result.toArray(new RubyMixinVariable[result.size()]);
 	}
 
 }

@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
@@ -31,16 +30,16 @@ public class RubyMixinVariable implements IRubyMixinElement {
 	}
 	
 	public IField[] getSourceFields () {
-		List result = new ArrayList ();
+		List<IField> result = new ArrayList<IField> ();
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 			if (info.getKind() == RubyMixinElementInfo.K_VARIABLE) {
-				result.add (info.getObject());							
+				result.add ((IField) info.getObject());							
 			}
 		}
-		return (IField[]) result.toArray(new IField[result.size()]);
+		return result.toArray(new IField[result.size()]);
 	}
 	
 

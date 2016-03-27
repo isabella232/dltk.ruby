@@ -83,7 +83,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 	protected int actualSelectionEnd;
 
-	private Set selectionElements = new HashSet();
+	private Set<IModelElement> selectionElements = new HashSet<IModelElement>();
 
 	private RubySelectionParser parser = new RubySelectionParser();
 
@@ -179,8 +179,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			RubyPlugin.log(e);
 		}
 
-		return (IModelElement[]) selectionElements
-				.toArray(new IModelElement[selectionElements.size()]);
+		return selectionElements.toArray(new IModelElement[selectionElements.size()]);
 	}
 
 	private void selectOnSuper(ModuleDeclaration parsedUnit,
@@ -248,7 +247,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 					RubyMixinElementInfo info = (RubyMixinElementInfo) eObjects[i];
 					Object obj = info.getObject();
 					if (obj instanceof IModelElement) {
-						this.selectionElements.add(obj);
+						this.selectionElements.add((IModelElement) obj);
 					}
 				}
 			}

@@ -188,7 +188,7 @@ public class RubyModelUtils {
 			ISourceModule modelModule, ModuleDeclaration parsedUnit,
 			String prefix, int position) {
 		Assert.isNotNull(prefix);
-		List result = new ArrayList();
+		List<IField> result = new ArrayList<IField>();
 
 		String[] keys = RubyTypeInferencingUtils.getModelStaticScopesKeys(
 				rubyModel.getRawModel(), parsedUnit, position);
@@ -244,7 +244,7 @@ public class RubyModelUtils {
 			}
 		}
 
-		return (IField[]) result.toArray(new IField[result.size()]);
+		return result.toArray(new IField[result.size()]);
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class RubyModelUtils {
 			org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration moduleDeclaration, IEvaluatedType type,
 			String prefix) {
-		List result = new ArrayList();
+		List<IMethod> result = new ArrayList<IMethod>();
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			RubyMixinClass rubyClass = mixinModel
@@ -348,7 +348,7 @@ public class RubyModelUtils {
 				}
 			}
 		}
-		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+		return result.toArray(new IMethod[result.size()]);
 	}
 
 	public static IMethod[] searchClassMethodsExact(
@@ -356,7 +356,7 @@ public class RubyModelUtils {
 			org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration moduleDeclaration, IEvaluatedType type,
 			String methodName) {
-		List result = new ArrayList();
+		List<IMethod> result = new ArrayList<IMethod>();
 		if (type instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) type;
 			RubyMixinClass rubyClass = mixinModel
@@ -378,7 +378,7 @@ public class RubyModelUtils {
 				}
 			}
 		}
-		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+		return result.toArray(new IMethod[result.size()]);
 	}
 
 	private static void addVariablesFrom(RubyMixinVariable[] fields2,
@@ -466,22 +466,21 @@ public class RubyModelUtils {
 	public static FakeMethod[] getFakeMethods(ModelElement parent, String klass) {
 		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
 		if (metaclass != null) {
-			List fakeMethods = new ArrayList();
+			List<FakeMethod> fakeMethods = new ArrayList<FakeMethod>();
 			addFakeMethods(parent, metaclass, fakeMethods);
-			return (FakeMethod[]) fakeMethods
-					.toArray(new FakeMethod[fakeMethods.size()]);
+			return fakeMethods.toArray(new FakeMethod[fakeMethods.size()]);
 		}
 		// XXX the following code is legacy
 		String[] names = getBuiltinMethodNames(klass);
 		if (names == null)
 			return new FakeMethod[0];
-		List methods = new ArrayList();
+		List<FakeMethod> methods = new ArrayList<FakeMethod>();
 		for (int i = 0; i < names.length; i++) {
 			FakeMethod method = new FakeMethod(parent, names[i]);
 			method.setReceiver(klass);
 			methods.add(method);
 		}
-		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
+		return methods.toArray(new FakeMethod[methods.size()]);
 	}
 
 	private static void addFakeMethods(ModelElement parent,
@@ -535,21 +534,20 @@ public class RubyModelUtils {
 		Metaclass metaclass = BuiltinMethodsDatabase.get(klass);
 		if (metaclass != null) {
 			ClassMetaclass metaMetaclass = metaclass.getMetaClass();
-			List fakeMethods = new ArrayList();
+			List<FakeMethod> fakeMethods = new ArrayList<FakeMethod>();
 			addFakeMethods(parent, metaMetaclass, fakeMethods);
-			return (FakeMethod[]) fakeMethods
-					.toArray(new FakeMethod[fakeMethods.size()]);
+			return fakeMethods.toArray(new FakeMethod[fakeMethods.size()]);
 		}
 		String[] names = getBuiltinMetaMethodNames(klass);
 		if (names == null)
 			return new FakeMethod[0];
-		List methods = new ArrayList();
+		List<FakeMethod> methods = new ArrayList<FakeMethod>();
 		for (int i = 0; i < names.length; i++) {
 			FakeMethod method = new FakeMethod(parent, names[i]);
 			method.setReceiver(klass);
 			methods.add(method);
 		}
-		return (FakeMethod[]) methods.toArray(new FakeMethod[methods.size()]);
+		return methods.toArray(new FakeMethod[methods.size()]);
 	}
 
 	public static String[] getBuiltinMethodNames(String klass) {
@@ -578,7 +576,7 @@ public class RubyModelUtils {
 
 	public static IType[] findTopLevelTypes(ISourceModule module,
 			String namePrefix) {
-		List result = new ArrayList();
+		List<IType> result = new ArrayList<IType>();
 
 		try {
 			// TODO: add handling of "require"
@@ -586,36 +584,36 @@ public class RubyModelUtils {
 			for (int i = 0; i < children.length; i++) {
 				if (children[i] instanceof IType
 						&& children[i].getElementName().startsWith(namePrefix))
-					result.add(children[i]);
+					result.add((IType) children[i]);
 			}
 		} catch (ModelException e) {
 			e.printStackTrace();
 		}
 
-		return (IType[]) result.toArray(new IType[result.size()]);
+		return result.toArray(new IType[result.size()]);
 	}
 
 	public static IField[] findTopLevelFields(ISourceModule module,
 			String namePrefix) {
-		List result = new ArrayList();
+		List<IField> result = new ArrayList<IField>();
 
 		try {
 			IModelElement[] children = module.getChildren();
 			for (int i = 0; i < children.length; i++) {
 				if (children[i] instanceof IField
 						&& children[i].getElementName().startsWith(namePrefix))
-					result.add(children[i]);
+					result.add((IField) children[i]);
 			}
 		} catch (ModelException e) {
 			e.printStackTrace();
 		}
 
-		return (IField[]) result.toArray(new IField[result.size()]);
+		return result.toArray(new IField[result.size()]);
 	}
 
 	public static IMethod[] findTopLevelMethods(IScriptProject project,
 			String namePattern) {
-		final List result = new ArrayList();
+		final List<IMethod> result = new ArrayList<IMethod>();
 		SearchRequestor requestor = new SearchRequestor() {
 
 			@Override
@@ -650,7 +648,7 @@ public class RubyModelUtils {
 				e.printStackTrace();
 		}
 
-		return (IMethod[]) result.toArray(new IMethod[result.size()]);
+		return result.toArray(new IMethod[result.size()]);
 	}
 
 	/**

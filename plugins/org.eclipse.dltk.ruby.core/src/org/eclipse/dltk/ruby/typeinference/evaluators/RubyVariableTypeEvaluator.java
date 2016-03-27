@@ -31,7 +31,7 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class RubyVariableTypeEvaluator extends GoalEvaluator {
 
-	private List possibilities = new ArrayList();
+	private List<IGoal> possibilities = new ArrayList<IGoal>();
 	private List results = new ArrayList();
 
 	private boolean init = false;
@@ -88,8 +88,7 @@ public class RubyVariableTypeEvaluator extends GoalEvaluator {
 					}
 				}
 			}
-			return (IGoal[]) possibilities.toArray(new IGoal[possibilities
-					.size()]);
+			return possibilities.toArray(new IGoal[possibilities.size()]);
 		} else {
 			if (result != null)
 				results.add(result);

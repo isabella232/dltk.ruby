@@ -1,15 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
-/**
- * 
- */
 package org.eclipse.dltk.ruby.internal.core.codeassist;
 
 import java.util.ArrayList;
@@ -23,11 +19,11 @@ public class RubyKeyword {
 		"sub", "sub!", "gsub", "gsub!", "scan", "index", "match", "require" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 	
 	public static String[] findByPrefix (String prefix) {
-		List result = new ArrayList ();
+		List<String> result = new ArrayList<String> ();
 		for (int i = 0; i < sKeywords.length; i++) {
 			if (sKeywords[i].startsWith(prefix))
 				result.add(sKeywords[i]);
 		}		
-		return (String[]) result.toArray(new String[result.size()]);
+		return result.toArray(new String[result.size()]);
 	}
 }

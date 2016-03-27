@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.callhierarchy;
 
@@ -87,7 +86,7 @@ public class RubyCalleeProcessor implements ICalleeProcessor {
 
 	public IMethod[] findMethods(final String methodName, int argCount,
 			int sourcePosition) {
-		final List methods = new ArrayList();
+		final List<IMethod> methods = new ArrayList<IMethod>();
 		ISourceModule module = this.method.getSourceModule();
 		try {
 			IModelElement[] elements = module.codeSelect(sourcePosition, /*
@@ -98,14 +97,14 @@ public class RubyCalleeProcessor implements ICalleeProcessor {
 			1);
 			for (int i = 0; i < elements.length; ++i) {
 				if (elements[i] instanceof IMethod) {
-					methods.add(elements[i]);
+					methods.add((IMethod) elements[i]);
 				}
 			}
 		} catch (ModelException e) {
 			e.printStackTrace();
 		}
 
-		return (IMethod[]) methods.toArray(new IMethod[methods.size()]);
+		return methods.toArray(new IMethod[methods.size()]);
 	}
 
 	protected void search(String patternString, int searchFor, int limitTo,
