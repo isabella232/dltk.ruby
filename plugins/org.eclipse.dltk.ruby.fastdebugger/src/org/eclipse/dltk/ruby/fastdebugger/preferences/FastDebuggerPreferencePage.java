@@ -14,11 +14,7 @@ public class FastDebuggerPreferencePage extends
 	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.railsdebugger"; //$NON-NLS-1$
 	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.railsdebugger"; //$NON-NLS-1$
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
-	 *      org.eclipse.core.resources.IProject,
-	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
-	 */
+	@Override
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
@@ -26,49 +22,38 @@ public class FastDebuggerPreferencePage extends
 				project, container);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
-	 */
+	@Override
 	protected String getHelpId() {
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
-	 */
+	@Override
 	protected String getPreferencePageId() {
 		return PREFERENCE_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
-	 */
+	@Override
 	protected String getProjectHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
-	 */
+	@Override
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
-	 */
+	@Override
 	protected void setDescription() {
 		setDescription(FastDebuggerPreferenceMessages.PreferencesDescription);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
-	 */
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(FastDebuggerPlugin.getDefault().getPreferenceStore());
 	}

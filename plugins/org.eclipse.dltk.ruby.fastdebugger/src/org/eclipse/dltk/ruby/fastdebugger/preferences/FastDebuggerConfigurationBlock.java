@@ -40,10 +40,12 @@ public class FastDebuggerConfigurationBlock extends
 				LOG_FILE_NAME, CHECK_RUBY_DEBUG };
 	}
 
+	@Override
 	protected void createEngineBlock(Composite composite) {
 		// no engine preferences, yet...
 	}
 
+	@Override
 	protected void createOtherBlock(Composite parent) {
 		final Label noteLabel = new Label(parent, SWT.WRAP);
 		noteLabel
@@ -61,14 +63,17 @@ public class FastDebuggerConfigurationBlock extends
 		bindControl(checkRubyDebug, CHECK_RUBY_DEBUG, null);
 	}
 
+	@Override
 	protected PreferenceKey getEnableLoggingPreferenceKey() {
 		return ENABLE_LOGGING;
 	}
 
+	@Override
 	protected PreferenceKey getLogFileNamePreferenceKey() {
 		return LOG_FILE_NAME;
 	}
 
+	@Override
 	protected PreferenceKey getLogFilePathPreferenceKey() {
 		return LOG_FILE_PATH;
 	}

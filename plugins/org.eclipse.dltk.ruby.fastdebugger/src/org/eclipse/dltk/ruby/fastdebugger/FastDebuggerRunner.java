@@ -58,6 +58,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		super(install);
 	}
 
+	@Override
 	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate, ILaunch launch)
 			throws CoreException {
@@ -111,6 +112,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		return newConfig;
 	}
 
+	@Override
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
 	}
@@ -120,6 +122,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier
 	 * ()
 	 */
+	@Override
 	protected String getDebugPreferenceQualifier() {
 		return RubyDebugPlugin.PLUGIN_ID;
 	}
@@ -172,6 +175,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		return output.startsWith("true");
 	}
 
+	@Override
 	protected void checkConfig(InterpreterConfig config,
 			IEnvironment environment) throws CoreException {
 		super.checkConfig(config, environment);
@@ -195,40 +199,25 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		}
 	}
 
-	/*
-	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#
-	 * getDebuggingEnginePreferenceQualifier()
-	 */
+	@Override
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return FastDebuggerPlugin.PLUGIN_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#
-	 * getLoggingEnabledPreferenceKey()
-	 */
 	protected String getLoggingEnabledPreferenceKey() {
 		return FastDebuggerConstants.ENABLE_LOGGING;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey
-	 * ()
-	 */
+	@Override
 	protected String getLogFileNamePreferenceKey() {
 		return FastDebuggerConstants.LOG_FILE_NAME;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey
-	 * ()
-	 */
 	protected String getLogFilePathPreferenceKey() {
 		return FastDebuggerConstants.LOG_FILE_PATH;
 	}
 
+	@Override
 	protected String getProcessType() {
 		return RubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
 	}

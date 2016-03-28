@@ -12,6 +12,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class FastDebuggerPreferenceInitializer extends
 		AbstractPreferenceInitializer {
 
+	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = FastDebuggerPlugin.getDefault()
 				.getPreferenceStore();
