@@ -62,7 +62,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	private final ISourceModule sourceModule;
 	private final boolean moduleAvailable;
 	private final IMixinRequestor requestor;
-	private final HashSet allReportedKeys = new HashSet();
+	private final HashSet<String> allReportedKeys = new HashSet<String>();
 
 	private abstract class Scope {
 		private final ASTNode node;
@@ -373,7 +373,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	}
 
-	private Stack scopes = new Stack();
+	private Stack<Scope> scopes = new Stack<Scope>();
 	private final ModuleDeclaration module;
 
 	public RubyMixinBuildVisitor(ModuleDeclaration module,
@@ -387,7 +387,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	private Scope peekScope() {
-		return (Scope) scopes.peek();
+		return scopes.peek();
 	}
 
 	@Override
@@ -556,9 +556,9 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				metaScope = null;
 			}
 			RubyAttributeHandler info = new RubyAttributeHandler(call);
-			List readers = info.getReaders();
-			for (Iterator iterator = readers.iterator(); iterator.hasNext();) {
-				ASTNode n = (ASTNode) iterator.next();
+			List<ASTNode> readers = info.getReaders();
+			for (Iterator<ASTNode> iterator = readers.iterator(); iterator.hasNext();) {
+				ASTNode n = iterator.next();
 				String attr = RubyAttributeHandler.getText(n);
 				if (attr == null)
 					continue;
@@ -573,8 +573,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					scopes.pop();
 				}
 			}
-			List writers = info.getWriters();
-			for (Iterator iterator = writers.iterator(); iterator.hasNext();) {
+			List<?> writers = info.getWriters();
+			for (Iterator<?> iterator = writers.iterator(); iterator.hasNext();) {
 				ASTNode n = (ASTNode) iterator.next();
 				String attr = RubyAttributeHandler.getText(n);
 				if (attr == null)
@@ -600,7 +600,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				&& call.getArgs().getChilds().size() > 0) {
 			RubyCallArgument argNode;
 			String name;
-			for (Iterator iterator = call.getArgs().getChilds().iterator(); iterator
+			for (Iterator<?> iterator = call.getArgs().getChilds().iterator(); iterator
 					.hasNext();) {
 				argNode = (RubyCallArgument) iterator.next();
 				name = null;
@@ -740,7 +740,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			for (int i = size - 1; i >= 0; i--) {
 				String possibleKey = ""; //$NON-NLS-1$
 				if (i > 0) {
-					Scope s = (Scope) this.scopes.get(i);
+					Scope s = this.scopes.get(i);
 					possibleKey = s.getKey() + SEPARATOR
 							+ constantReference.getName();
 				} else
@@ -756,7 +756,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	@Override
 	public void endvisitGeneral(ASTNode node) throws Exception {
-		Scope scope = (Scope) scopes.peek();
+		Scope scope = scopes.peek();
 		if (scope.getNode() == node) {
 			scopes.pop();
 		}

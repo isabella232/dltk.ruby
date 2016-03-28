@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ast;
 
@@ -23,11 +22,11 @@ public class RubyCallArgumentsList extends CallArgumentsList {
 	}
 	
 	public void autosetOffsets() {
-		final List expressions = this.getChilds();
+		final List<ASTNode> expressions = this.getChilds();
 		final int size = expressions.size();
 		if (size > 0) {
-			final ASTNode first = (ASTNode) expressions.get(0);
-			final ASTNode last = (ASTNode) expressions.get(size - 1);
+			final ASTNode first = expressions.get(0);
+			final ASTNode last = expressions.get(size - 1);
 			this.setStart(first.sourceStart());
 			this.setEnd(last.sourceEnd());
 		}

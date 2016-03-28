@@ -21,7 +21,7 @@ import org.eclipse.dltk.ti.goals.IGoal;
 
 public class NonTypeConstantTypeEvaluator extends GoalEvaluator {
 
-	private HashMap hardcoredTypes = new HashMap();
+	private HashMap<String, RubyClassType> hardcoredTypes = new HashMap<String, RubyClassType>();
 	private Object result;
 
 	public NonTypeConstantTypeEvaluator(IGoal goal) {

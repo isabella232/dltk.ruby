@@ -18,7 +18,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 
 public class RubyBlock extends ASTNode {
 
-	private Map vars = new HashMap();
+	private Map<ASTNode, ASTNode> vars = new HashMap<ASTNode, ASTNode>();
 	private ASTNode asterixParameter = null;
 	private ASTNode body;
 
@@ -39,7 +39,7 @@ public class RubyBlock extends ASTNode {
 		super(start, end);
 	}
 
-	public Set getVars() {
+	public Set<ASTNode> getVars() {
 		return vars.keySet();
 	}
 
@@ -67,15 +67,15 @@ public class RubyBlock extends ASTNode {
 	@Override
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			for (Iterator iterator = vars.keySet().iterator(); iterator
+			for (Iterator<ASTNode> iterator = vars.keySet().iterator(); iterator
 					.hasNext();) {
-				ASTNode var = (ASTNode) iterator.next();
+				ASTNode var = iterator.next();
 				if (var != null)
 					var.traverse(visitor);
 			}
-			for (Iterator iterator = vars.values().iterator(); iterator
+			for (Iterator<ASTNode> iterator = vars.values().iterator(); iterator
 					.hasNext();) {
-				ASTNode var = (ASTNode) iterator.next();
+				ASTNode var = iterator.next();
 				if (var != null)
 					var.traverse(visitor);
 			}

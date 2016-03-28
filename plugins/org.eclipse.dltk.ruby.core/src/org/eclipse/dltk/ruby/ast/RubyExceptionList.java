@@ -18,7 +18,7 @@ import org.eclipse.dltk.ast.references.VariableReference;
 
 public class RubyExceptionList extends ASTNode {
 	
-	private final List args = new ArrayList ();
+	private final List<ASTNode> args = new ArrayList<ASTNode> ();
 	private VariableReference var;
 	
 	public RubyExceptionList(int start, int end, VariableReference var) {
@@ -30,7 +30,7 @@ public class RubyExceptionList extends ASTNode {
 		args.add(e);
 	}
 	
-	public List getArgs () {
+	public List<ASTNode> getArgs () {
 		return args;
 	}
 	
@@ -53,8 +53,9 @@ public class RubyExceptionList extends ASTNode {
 			if (var != null)
 				var.traverse(visitor);
 			if (args != null) {
-				for (Iterator iterator = args.iterator(); iterator
-						.hasNext();) { ASTNode a = (ASTNode) iterator.next();
+				for (Iterator<ASTNode> iterator = args.iterator(); iterator
+						.hasNext();) {
+					ASTNode a = iterator.next();
 					if (a != null)
 						a.traverse(visitor);
 				}

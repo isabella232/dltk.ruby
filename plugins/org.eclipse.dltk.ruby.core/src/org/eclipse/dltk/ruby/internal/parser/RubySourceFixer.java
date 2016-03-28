@@ -120,9 +120,9 @@ public class RubySourceFixer {
 			int en = 0;
 			int n_st = 0;
 			int n_en = 0;
-			for (Iterator iterator = fixPositions.iterator(); iterator
+			for (Iterator<Integer> iterator = fixPositions.iterator(); iterator
 					.hasNext();) {
-				Integer pos = (Integer) iterator.next();
+				Integer pos = iterator.next();
 				int fixPos = pos.intValue();
 				// starts
 				if (node.sourceStart() > fixPos) {
@@ -158,7 +158,7 @@ public class RubySourceFixer {
 		}
 	}
 
-	public static Set FIXUP_NAMES = new HashSet();
+	public static Set<String> FIXUP_NAMES = new HashSet<String>();
 	{
 		FIXUP_NAMES.add(missingKey);
 		FIXUP_NAMES.add(missingValue);
@@ -169,7 +169,7 @@ public class RubySourceFixer {
 		FIXUP_NAMES.add(missingName4a);
 	}
 
-	private final List fixPositions = new ArrayList();
+	private final List<Integer> fixPositions = new ArrayList<Integer>();
 
 	private String fixBrokenThings(Pattern pattern, String content,
 			String replacement, int delta) {

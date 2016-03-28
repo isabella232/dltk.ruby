@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.typeinference;
 
@@ -55,7 +54,7 @@ public class BuiltinMethods {
 					return new RubyClassType(key + "%"); //$NON-NLS-1$
 				return null;
 			} else if (receiver instanceof AmbiguousType) {
-				Set possibleReturns = new HashSet();
+				Set<IEvaluatedType> possibleReturns = new HashSet<IEvaluatedType>();
 				AmbiguousType ambiguousType = (AmbiguousType) receiver;
 				IEvaluatedType[] possibleTypes = ambiguousType.getPossibleTypes();
 				for (int i = 0; i < possibleTypes.length; i++) {
@@ -152,7 +151,7 @@ public class BuiltinMethods {
 			this.name = name;
 		}
 
-		private Map methods = new HashMap();
+		private Map<String, IntrinsicMethod> methods = new HashMap<String, IntrinsicMethod>();
 
 		public void addMethod(String name, IntrinsicMethod method) {
 			methods.put(name, method);
@@ -163,16 +162,16 @@ public class BuiltinMethods {
 		}
 
 		IntrinsicMethod getMethod(String name) {
-			return (IntrinsicMethod) methods.get(name);
+			return methods.get(name);
 		}
 		
-		public Collection getMethods(){
+		public Collection<IntrinsicMethod> getMethods(){
 			return methods.values();
 		}
 
 	}
 
-	private static Map builtinClasses = new HashMap();
+	private static Map<String, BuiltinClass> builtinClasses = new HashMap<String, BuiltinClass>();
 
 	private static BuiltinClass addClass(BuiltinClass klass) {
 		builtinClasses.put(klass.getName(), klass);
@@ -219,7 +218,7 @@ public class BuiltinMethods {
 		if (receiver instanceof IClassType)
 			return getIntrinsicMethodReturnType((IClassType) receiver, methodName, arguments);
 		else if (receiver instanceof AmbiguousType) {
-			Set possibleReturns = new HashSet();
+			Set<IEvaluatedType> possibleReturns = new HashSet<IEvaluatedType>();
 			AmbiguousType ambiguousType = (AmbiguousType) receiver;
 			IEvaluatedType[] possibleTypes = ambiguousType.getPossibleTypes();
 			for (int i = 0; i < possibleTypes.length; i++) {
@@ -236,7 +235,7 @@ public class BuiltinMethods {
 	public static IEvaluatedType getIntrinsicMethodReturnType(IClassType receiver,
 			String methodName, IEvaluatedType[] arguments) {
 		String className = getPossibleIntrinsicClassName(receiver);
-		BuiltinClass klass = (BuiltinClass) builtinClasses.get(className);
+		BuiltinClass klass = builtinClasses.get(className);
 		if (klass != null) {
 			IntrinsicMethod method = klass.getMethod(methodName);
 			if (method != null) {
@@ -246,21 +245,21 @@ public class BuiltinMethods {
 		return null;
 	}
 	
-	public static Collection getIntrinsicMethods(IEvaluatedType receiver) {
+	public static Collection<IntrinsicMethod> getIntrinsicMethods(IEvaluatedType receiver) {
 		if (receiver instanceof IClassType) {
 			String className = getPossibleIntrinsicClassName((IClassType) receiver);
-			BuiltinClass klass = (BuiltinClass) builtinClasses.get(className);
+			BuiltinClass klass = builtinClasses.get(className);
 			if (klass != null)
 				return klass.getMethods();
 			else
 				return null;
 		} else if (receiver instanceof AmbiguousType) {
-			Set methods = new HashSet();
+			Set<IntrinsicMethod> methods = new HashSet<IntrinsicMethod>();
 			AmbiguousType ambiguousType = (AmbiguousType) receiver;
 			IEvaluatedType[] possibleTypes = ambiguousType.getPossibleTypes();
 			for (int i = 0; i < possibleTypes.length; i++) {
 				IEvaluatedType type = possibleTypes[i];
-				Collection typeMethods = getIntrinsicMethods(type);
+				Collection<IntrinsicMethod> typeMethods = getIntrinsicMethods(type);
 				methods.addAll(typeMethods);
 			}
 			return methods;

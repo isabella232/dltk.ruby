@@ -455,7 +455,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 		String methodName = parentCall.getName();
 		ASTNode receiver = parentCall.getReceiver();
 
-		final List availableMethods = new ArrayList();
+		final List<IModelElement> availableMethods = new ArrayList<IModelElement>();
 
 		if (receiver == null) {
 			IEvaluatedType type = RubyTypeInferencingUtils.determineSelfClass(
@@ -504,7 +504,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 	}
 
 	private static void searchMethodDeclarations(IScriptProject project,
-			String methodName, final List availableMethods) {
+			String methodName, final List<IModelElement> availableMethods) {
 		final SearchRequestor requestor = new SearchRequestor() {
 
 			@Override
@@ -541,7 +541,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 	 * @param src
 	 * @param dest
 	 */
-	private static void addArrayToCollection(IMember[] src, Collection dest) {
+	private static void addArrayToCollection(IMember[] src, Collection<IModelElement> dest) {
 		if (src != null) {
 			for (int i = 0, size = src.length; i < size; ++i) {
 				dest.add(src[i]);

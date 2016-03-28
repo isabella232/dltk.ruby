@@ -114,23 +114,23 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 		}
 	}
 
-	private List fNotAddedFields = new ArrayList(); // Used to prehold fields if
+	private List<TypeField> fNotAddedFields = new ArrayList<TypeField>(); // Used to prehold fields if
 	// adding in methods.
-	private Map fTypeVariables = new HashMap(); // Used to depermine duplicate
+	private Map<ASTNode, List<String>> fTypeVariables = new HashMap<ASTNode, List<String>>(); // Used to depermine duplicate
 
 	// names, ASTNode -> List of
 	// variables
 
 	private boolean canAddVariables(ASTNode type, String name) {
 		if (fTypeVariables.containsKey(type)) {
-			List variables = (List) fTypeVariables.get(type);
+			List<String> variables = fTypeVariables.get(type);
 			if (variables.contains(name)) {
 				return false;
 			}
 			variables.add(name);
 			return true;
 		} else {
-			List variables = new ArrayList();
+			List<String> variables = new ArrayList<String>();
 			variables.add(name);
 			fTypeVariables.put(type, variables);
 			return true;
@@ -197,10 +197,10 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 			System.out.println("==> Method: " + method.getName()); //$NON-NLS-1$
 		}
 
-		Iterator it = fNotAddedFields.iterator();
+		Iterator<TypeField> it = fNotAddedFields.iterator();
 
 		while (it.hasNext()) {
-			TypeField field = (TypeField) it.next();
+			TypeField field = it.next();
 
 			if (canAddVariables(field.getASTNode(), field.getName())) {
 				PositionInformation pos = field.getPosition();
@@ -264,9 +264,9 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 			if (RubyAttributeHandler.isAttributeCreationCall(callExpression)) {
 				RubyAttributeHandler info = new RubyAttributeHandler(
 						callExpression);
-				List readers = info.getReaders();
-				for (Iterator iterator = readers.iterator(); iterator.hasNext();) {
-					ASTNode n = (ASTNode) iterator.next();
+				List<ASTNode> readers = info.getReaders();
+				for (Iterator<ASTNode> iterator = readers.iterator(); iterator.hasNext();) {
+					ASTNode n = iterator.next();
 					String attr = RubyAttributeHandler.getText(n);
 					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 					mi.name = attr;
@@ -278,9 +278,9 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 					fRequestor.enterMethod(mi);
 					fRequestor.exitMethod(n.sourceEnd());
 				}
-				List writers = info.getWriters();
-				for (Iterator iterator = writers.iterator(); iterator.hasNext();) {
-					ASTNode n = (ASTNode) iterator.next();
+				List<ASTNode> writers = info.getWriters();
+				for (Iterator<ASTNode> iterator = writers.iterator(); iterator.hasNext();) {
+					ASTNode n = iterator.next();
 					String attr = RubyAttributeHandler.getText(n);
 					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 					mi.parameterNames = new String[] { VALUE };
@@ -298,11 +298,11 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 				RubyHashPairExpression hashNode;
 				String oldName = ""; //$NON-NLS-1$
 				String dName;
-				for (Iterator iterator = callExpression.getArgs().getChilds()
+				for (Iterator<ASTNode> iterator = callExpression.getArgs().getChilds()
 						.iterator(); iterator.hasNext();) {
 					argNode = (RubyCallArgument) iterator.next();
 					if (argNode.getValue() instanceof RubyHashExpression) {
-						for (Iterator iterator2 = argNode.getValue()
+						for (Iterator<ASTNode> iterator2 = argNode.getValue()
 								.getChilds().iterator(); iterator2.hasNext();) {
 							hashNode = (RubyHashPairExpression) iterator2
 									.next();
@@ -316,7 +316,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 						}
 					}
 				}
-				for (Iterator iterator = callExpression.getArgs().getChilds()
+				for (Iterator<ASTNode> iterator = callExpression.getArgs().getChilds()
 						.iterator(); iterator.hasNext();) {
 					argNode = (RubyCallArgument) iterator.next();
 					dName = null;

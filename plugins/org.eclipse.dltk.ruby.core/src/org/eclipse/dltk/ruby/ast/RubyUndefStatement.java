@@ -17,9 +17,9 @@ import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubyUndefStatement extends ASTNode {
 
-	private final List parameters = new ArrayList ();
+	private final List<String> parameters = new ArrayList<String> ();
 
-	public List getParameters() {
+	public List<String> getParameters() {
 		return parameters;
 	}
 

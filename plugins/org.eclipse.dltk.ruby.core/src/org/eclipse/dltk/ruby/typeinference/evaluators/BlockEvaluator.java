@@ -40,10 +40,9 @@ public class BlockEvaluator extends GoalEvaluator {
 	public IGoal[] init() {
 		ExpressionTypeGoal typedGoal = getTypedGoal();
 		Block block = (Block) typedGoal.getExpression();
-		List statements = block.getStatements();
+		List<ASTNode> statements = block.getStatements();
 		if (statements.size() > 0) {
-			this.lastStatement = (ASTNode) statements
-					.get(statements.size() - 1);
+			this.lastStatement = statements.get(statements.size() - 1);
 			ExpressionTypeGoal subgoal = new ExpressionTypeGoal(goal
 					.getContext(), this.lastStatement);
 			return new IGoal[] { subgoal };

@@ -258,7 +258,7 @@ public class RubyTypeInferencingUtils {
 				|| node instanceof MethodDeclaration;
 	}
 
-	public static IEvaluatedType combineTypes(Collection evaluaedTypes) {
+	public static IEvaluatedType combineTypes(Collection<IEvaluatedType> evaluaedTypes) {
 		Set<IEvaluatedType> types = new HashSet<IEvaluatedType>(evaluaedTypes);
 		types.remove(null);
 		if (types.size() > 1 && types.contains(RecursionTypeCall.INSTANCE))
@@ -284,7 +284,7 @@ public class RubyTypeInferencingUtils {
 
 	public static IEvaluatedType getAmbiguousMetaType(IEvaluatedType receiver) {
 		if (receiver instanceof AmbiguousType) {
-			Set possibleReturns = new HashSet();
+			Set<IEvaluatedType> possibleReturns = new HashSet<IEvaluatedType>();
 			AmbiguousType ambiguousType = (AmbiguousType) receiver;
 			IEvaluatedType[] possibleTypes = ambiguousType.getPossibleTypes();
 			for (int i = 0; i < possibleTypes.length; i++) {
@@ -337,7 +337,7 @@ public class RubyTypeInferencingUtils {
 		}
 
 		private List<VariableAssignment> assignements;
-		private Stack level = new Stack();
+		private Stack<ASTNode> level = new Stack<ASTNode>();
 		private int maxLevel;
 
 		private final String name;
@@ -407,11 +407,11 @@ public class RubyTypeInferencingUtils {
 			return null;
 		}
 
-		public List getConditionals() {
+		public List<RubyAssignment> getConditionals() {
 			RubyAssignment unconditionalAssignment = getUnconditionalAssignment();
-			List result = new ArrayList();
-			for (Iterator iter = assignements.iterator(); iter.hasNext();) {
-				VariableAssignment assign = (VariableAssignment) iter.next();
+			List<RubyAssignment> result = new ArrayList<RubyAssignment>();
+			for (Iterator<VariableAssignment> iter = assignements.iterator(); iter.hasNext();) {
+				VariableAssignment assign = iter.next();
 				if (unconditionalAssignment == null
 						|| assign.assignment.sourceStart() > unconditionalAssignment
 								.sourceStart())
@@ -425,7 +425,7 @@ public class RubyTypeInferencingUtils {
 	}
 
 	private static RubyAssignment findAssignments(String variableName,
-			ASTNode scopeNode, int tillOffset, List conditionals) {
+			ASTNode scopeNode, int tillOffset, List<RubyAssignment> conditionals) {
 		LocalVariablesSearchVisitor visitor = new LocalVariablesSearchVisitor(
 				variableName, scopeNode, tillOffset);
 		try {
@@ -448,7 +448,7 @@ public class RubyTypeInferencingUtils {
 			ASTNode scope = scopes[i];
 			if (scope instanceof TypeDeclaration) {
 				info.setDeclaringScope(scope);
-				List conditionals = new ArrayList();
+				List<RubyAssignment> conditionals = new ArrayList<RubyAssignment>();
 				RubyAssignment last = findAssignments(name, scope, offset,
 						conditionals);
 				info.setLastAssignment(last);
@@ -458,11 +458,10 @@ public class RubyTypeInferencingUtils {
 			} else if (scope instanceof MethodDeclaration) {
 				MethodDeclaration method = (MethodDeclaration) scope;
 				boolean isArgument = false;
-				List arguments = method.getArguments();
-				for (Iterator iterator = arguments.iterator(); iterator
+				List<RubyMethodArgument> arguments = method.getArguments();
+				for (Iterator<RubyMethodArgument> iterator = arguments.iterator(); iterator
 						.hasNext();) {
-					RubyMethodArgument arg = (RubyMethodArgument) iterator
-							.next();
+					RubyMethodArgument arg = iterator.next();
 					String argName = arg.getName();
 					if (argName.equals(name)) {
 						isArgument = true;
@@ -472,7 +471,7 @@ public class RubyTypeInferencingUtils {
 				if (isArgument
 						&& (info.getKind() == LocalVariableInfo.KIND_DEFAULT))
 					info.setKind(LocalVariableInfo.KIND_METHOD_ARG);
-				List conditionals = new ArrayList();
+				List<RubyAssignment> conditionals = new ArrayList<RubyAssignment>();
 				RubyAssignment last = findAssignments(name, scope, offset,
 						conditionals);
 				info.setLastAssignment(last);
@@ -482,9 +481,9 @@ public class RubyTypeInferencingUtils {
 			} else if (scope instanceof RubyBlock) {
 				boolean isArgument = false;
 				RubyBlock block = (RubyBlock) scope;
-				Set vars = block.getVars();
-				for (Iterator iterator = vars.iterator(); iterator.hasNext();) {
-					ASTNode vnode = (ASTNode) iterator.next();
+				Set<ASTNode> vars = block.getVars();
+				for (Iterator<ASTNode> iterator = vars.iterator(); iterator.hasNext();) {
+					ASTNode vnode = iterator.next();
 					if (vnode instanceof RubyDAssgnExpression) {
 						RubyDAssgnExpression v = (RubyDAssgnExpression) vnode;
 						if (v.getName().equals(name)) {
@@ -535,7 +534,7 @@ public class RubyTypeInferencingUtils {
 		}
 		if (i < 0) {
 			// consider the whole module
-			List conditionals = new ArrayList();
+			List<RubyAssignment> conditionals = new ArrayList<RubyAssignment>();
 			RubyAssignment last = findAssignments(name, module, offset,
 					conditionals);
 			info.setLastAssignment(last);

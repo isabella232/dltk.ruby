@@ -105,7 +105,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private DLTKTypeInferenceEngine inferencer;
 	private ISourceParser parser = null;
 	private RubyMixinModel mixinModel;
-	private HashSet completedNames = new HashSet();
+	private HashSet<String> completedNames = new HashSet<String>();
 	private WeakHashSet intresting = new WeakHashSet();
 
 	private ASTNode completionNode;
@@ -500,7 +500,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		public void flush() {
 			if (group.size() > 0) {
 				RubyMixinMethod[] mixinMethods = group.toArray(new RubyMixinMethod[group.size()]);
-				final List methods = RubyModelUtils.getAllSourceMethods(
+				final List<IMethod> methods = RubyModelUtils.getAllSourceMethods(
 						mixinMethods, klass);
 				int skew = 0;
 				if (klass.getKey().equals(lastParent)) {
@@ -510,8 +510,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					skew = 1;
 				}
 				for (int j = 0, size = methods.size(); j < size; j++) {
-					reportMethod((IMethod) methods.get(j), RELEVANCE_METHODS
-							+ skew);
+					reportMethod(methods.get(j), RELEVANCE_METHODS + skew);
 				}
 				group.clear();
 			}
@@ -597,9 +596,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		for (int i = wayToNode.length - 1; i > 0; i--) {
 			if (wayToNode[i] instanceof RubyBlock) {
 				RubyBlock rubyBlock = (RubyBlock) wayToNode[i];
-				Set vars = rubyBlock.getVars();
-				for (Iterator iterator = vars.iterator(); iterator.hasNext();) {
-					ASTNode n = (ASTNode) iterator.next();
+				Set<ASTNode> vars = rubyBlock.getVars();
+				for (Iterator<ASTNode> iterator = vars.iterator(); iterator.hasNext();) {
+					ASTNode n = iterator.next();
 					if (n instanceof RubyDAssgnExpression) {
 						RubyDAssgnExpression rd = (RubyDAssgnExpression) n;
 						if (rd.getName().startsWith(prefix)) {
@@ -633,9 +632,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		if (mixinElement == null) {
 			return;
 		}
-		List types = new ArrayList();
-		List methods = new ArrayList();
-		List fields = new ArrayList();
+		List<IType> types = new ArrayList<IType>();
+		List<IMethod> methods = new ArrayList<IMethod>();
+		List<IField> fields = new ArrayList<IField>();
 		IMixinElement[] children = mixinElement.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			Object[] infos = children[i].getAllObjects();
@@ -671,18 +670,18 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			}
 		}
 
-		for (Iterator iterator = fields.iterator(); iterator.hasNext();) {
-			IField t = (IField) iterator.next();
+		for (Iterator<IField> iterator = fields.iterator(); iterator.hasNext();) {
+			IField t = iterator.next();
 			reportField(t, RELEVANCE_VARIABLES);
 		}
 
-		for (Iterator iterator = types.iterator(); iterator.hasNext();) {
-			IType t = (IType) iterator.next();
+		for (Iterator<IType> iterator = types.iterator(); iterator.hasNext();) {
+			IType t = iterator.next();
 			reportType(t, RELEVANCE_TYPE);
 		}
 
-		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
-			IMethod t = (IMethod) iterator.next();
+		for (Iterator<IMethod> iterator = methods.iterator(); iterator.hasNext();) {
+			IMethod t = iterator.next();
 			reportMethod(t, RELEVANCE_METHODS);
 		}
 
@@ -726,7 +725,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		IType[] types = RubyTypeInferencingUtils.getAllTypes(currentModule,
 				prefix);
 		Arrays.sort(types, new ProjectTypeComparator(currentModule));
-		final Set names = new HashSet();
+		final Set<String> names = new HashSet<String>();
 		for (int i = 0; i < types.length; i++) {
 			final String elementName = types[i].getElementName();
 			if (names.add(elementName)) {

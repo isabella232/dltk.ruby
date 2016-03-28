@@ -18,8 +18,8 @@ import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubyMultipleAssignmentStatement extends ASTNode {
 
-	private List lhs = new ArrayList();
-	private List rhs = new ArrayList();
+	private List<ASTNode> lhs = new ArrayList<ASTNode>();
+	private List<ASTNode> rhs = new ArrayList<ASTNode>();
 
 	private ASTNode leftAsterix;
 	private ASTNode rightAsterix;
@@ -44,11 +44,11 @@ public class RubyMultipleAssignmentStatement extends ASTNode {
 		rhs.add(s);
 	}
 
-	public List getLhs() {
+	public List<ASTNode> getLhs() {
 		return lhs;
 	}
 
-	public List getRhs() {
+	public List<ASTNode> getRhs() {
 		return rhs;
 	}
 
@@ -91,14 +91,14 @@ public class RubyMultipleAssignmentStatement extends ASTNode {
 			if (this.rightAsterix != null)
 				rightAsterix.traverse(visitor);
 			if (this.lhs != null)
-				for (Iterator iterator = this.lhs.iterator(); iterator
-						.hasNext();) { ASTNode v = (ASTNode) iterator.next();
+				for (Iterator<ASTNode> iterator = this.lhs.iterator(); iterator
+						.hasNext();) { ASTNode v = iterator.next();
 					if (v != null)
 						v.traverse(visitor);
 				}
 			if (this.rhs != null)
-				for (Iterator iterator = this.rhs.iterator(); iterator
-						.hasNext();) { ASTNode v = (ASTNode) iterator.next();
+				for (Iterator<ASTNode> iterator = this.rhs.iterator(); iterator
+						.hasNext();) { ASTNode v = iterator.next();
 					if (v != null)
 						v.traverse(visitor);
 				}

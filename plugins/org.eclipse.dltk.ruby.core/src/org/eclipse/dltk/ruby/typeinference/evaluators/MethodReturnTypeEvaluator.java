@@ -43,7 +43,7 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 
-	private final List possibilities = new ArrayList();
+	private final List<ASTNode> possibilities = new ArrayList<ASTNode>();
 	private final List evaluated = new ArrayList();
 
 	private IEvaluatedType rdocResult = null;
@@ -92,7 +92,7 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 		}
 
 		MethodDeclaration decl = null;
-		List methods = new ArrayList();
+		List<IMethod> methods = new ArrayList<IMethod>();
 		if (instanceType == null) {
 			instanceType = new RubyClassType("Object"); //$NON-NLS-1$			
 		}
@@ -120,8 +120,8 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 		IMethod resultMethod = null;
 		// in case of ambiguity, prefer methods from the same module
 		IMethod resultMethodFromSameModule = null;
-		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
-			IMethod method = (IMethod) iterator.next();
+		for (Iterator<IMethod> iterator = methods.iterator(); iterator.hasNext();) {
+			IMethod method = iterator.next();
 			if (method instanceof FakeMethod || method == null)
 				continue;
 			String elementName = method.getElementName();
@@ -189,10 +189,9 @@ public class MethodReturnTypeEvaluator extends RubyMixinGoalEvaluator {
 
 		IGoal[] newGoals = new IGoal[possibilities.size()];
 		int i = 0;
-		for (Iterator iterator = possibilities.iterator(); iterator.hasNext();) {
-			ASTNode st = (ASTNode) iterator.next();
-			ExpressionTypeGoal subgoal = new ExpressionTypeGoal(innerContext,
-					st);
+		for (Iterator<ASTNode> iterator = possibilities.iterator(); iterator.hasNext();) {
+			ASTNode st = iterator.next();
+			ExpressionTypeGoal subgoal = new ExpressionTypeGoal(innerContext, st);
 			newGoals[i++] = subgoal;
 		}
 		return newGoals;

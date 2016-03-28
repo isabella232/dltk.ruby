@@ -229,17 +229,17 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	protected static class CollectingState implements IState {
-		private final ArrayList list;
+		private final ArrayList<ASTNode> list;
 
 		public CollectingState() {
-			list = new ArrayList();
+			list = new ArrayList<ASTNode>();
 		}
 
 		public void add(ASTNode s) {
 			list.add(s);
 		}
 
-		public ArrayList getList() {
+		public ArrayList<ASTNode> getList() {
 			return list;
 		}
 
@@ -363,10 +363,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	private static class StateManager {
-		private LinkedList states = new LinkedList();
+		private LinkedList<IState> states = new LinkedList<IState>();
 
 		public IState peek() {
-			return (IState) states.getLast();
+			return states.getLast();
 		}
 
 		public void pop() {
@@ -382,9 +382,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			if (state instanceof ClassLikeState) {
 				return true;
 			} else if (states.size() > 1) {
-				ListIterator i = states.listIterator(states.size());
+				ListIterator<IState> i = states.listIterator(states.size());
 				while (i.hasPrevious()) {
-					Object s = i.previous();
+					IState s = i.previous();
 					if (s instanceof ClassLikeState) {
 						return true;
 					}
@@ -398,9 +398,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			if (state instanceof ClassLikeState) {
 				return (ClassLikeState) state;
 			} else if (states.size() > 1) {
-				final ListIterator i = states.listIterator(states.size());
+				final ListIterator<IState> i = states.listIterator(states.size());
 				while (i.hasPrevious()) {
-					final Object s = i.previous();
+					final IState s = i.previous();
 					if (s instanceof ClassLikeState) {
 						return (ClassLikeState) s;
 					}
@@ -468,9 +468,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		node.accept(this);
 		states.pop();
 
-		ArrayList list = state.getList();
+		ArrayList<ASTNode> list = state.getList();
 		if (list.size() == 1)
-			return (ASTNode) list.iterator().next();
+			return list.iterator().next();
 
 		if (node instanceof NewlineNode) {
 			NewlineNode newlineNode = (NewlineNode) node;
@@ -478,16 +478,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		}
 		if (list.size() > 1) {
 			throw new RuntimeException(
-					NLS
-							.bind(
+					NLS.bind(
 									Messages.RubyASTBuildVisitor_jrubyNodeHasntBeenConvertedIntoAnyDltkAstNode,
 									node.getClass().getName()));
 		}
 		if (allowZero)
 			return null;
 		throw new RuntimeException(
-				NLS
-						.bind(
+				NLS.bind(
 								Messages.RubyASTBuildVisitor_jrubyNodeHasntBeenConvertedIntoAnyDltkAstNode,
 								node.getClass().getName()));
 	}
@@ -543,13 +541,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	private List processListNode(ListNode node) { // done
+	private List<ASTNode> processListNode(ListNode node) { // done
 		CollectingState coll = new CollectingState();
 
 		states.push(coll);
-		Iterator iterator = node.childNodes().iterator();
+		Iterator<Node> iterator = node.childNodes().iterator();
 		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
+			iterator.next().accept(this);
 		}
 		states.pop();
 
@@ -557,7 +555,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitArrayNode(ArrayNode iVisited) { // done
-		List exprs = processListNode(iVisited);
+		List<ASTNode> exprs = processListNode(iVisited);
 
 		ISourcePosition position = iVisited.getPosition();
 		RubyArrayExpression arr = new RubyArrayExpression();
@@ -595,9 +593,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		Block block = new Block(pos.getStartOffset(), pos.getEndOffset());
 		states.push(new BlockState(block));
-		Iterator iterator = iVisited.childNodes().iterator();
+		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
+			iterator.next().accept(this);
 		}
 		states.pop();
 		states.peek().add(block);
@@ -803,7 +801,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			recv.setStart(iVisited.getPosition().getStartOffset());
 			recv.setEnd(iVisited.getPosition().getEndOffset() + 1);
 		} else
-			recv = (ASTNode) collector.getList().get(0);
+			recv = collector.getList().get(0);
 
 		collector.reset();
 
@@ -817,9 +815,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			states.push(new ArgumentsState(argList));
 			if (argsNode instanceof ListNode) {
 				ListNode arrayNode = (ListNode) argsNode;
-				List list = arrayNode.childNodes();
-				for (Iterator iter = list.iterator(); iter.hasNext();) {
-					Node node = (Node) iter.next();
+				List<Node> list = arrayNode.childNodes();
+				for (Iterator<Node> iter = list.iterator(); iter.hasNext();) {
+					Node node = iter.next();
 					node.accept(this);
 				}
 			} else {
@@ -830,17 +828,17 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				argsNode.accept(this);
 			}
 			states.pop();
-			List children = argsNode.childNodes();
+			List<Node> children = argsNode.childNodes();
 			if (children.size() > 0) {
-				argsStart = ((Node) children.get(0)).getPosition()
+				argsStart = children.get(0).getPosition()
 						.getStartOffset();
-				argsEnd = ((Node) children.get(children.size() - 1))
+				argsEnd = children.get(children.size() - 1)
 						.getPosition().getEndOffset();
 				// correction for nodes with incorrect positions
-				List argListExprs = argList.getChilds();
+				List<ASTNode> argListExprs = argList.getChilds();
 				if (!argListExprs.isEmpty())
-					argsEnd = Math.max(argsEnd, ((ASTNode) argListExprs
-							.get(argListExprs.size() - 1)).sourceEnd());
+					argsEnd = Math.max(argsEnd, argListExprs
+							.get(argListExprs.size() - 1).sourceEnd());
 			}
 		}
 		if (iVisited.getIterNode() != null) {
@@ -981,9 +979,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			type.setBody(bl);
 
 			if (bodyNode instanceof BlockNode) {
-				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
+				for (Iterator<Node> iterator = bodyNode.childNodes().iterator(); iterator
 						.hasNext();) {
-					Node n = (Node) iterator.next();
+					Node n = iterator.next();
 					n.accept(this);
 				}
 			} else
@@ -1008,7 +1006,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ASTNode left = null;
 		if (collector.list.size() == 1) {
 
-			left = (ASTNode) collector.list.get(0);
+			left = collector.list.get(0);
 
 		}
 
@@ -1061,7 +1059,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitDRegxNode(DRegexpNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		List list = processListNode(iVisited);
+		List<ASTNode> list = processListNode(iVisited);
 		RubyDRegexpExpression ex = new RubyDRegexpExpression(pos
 				.getStartOffset(), pos.getEndOffset());
 		ex.setChilds(list);
@@ -1071,7 +1069,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitDStrNode(DStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		List list = processListNode(iVisited);
+		List<ASTNode> list = processListNode(iVisited);
 		RubyDynamicStringExpression ex = new RubyDynamicStringExpression(pos
 				.getStartOffset(), pos.getEndOffset());
 		ex.setChilds(list);
@@ -1084,7 +1082,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	 */
 	public Instruction visitDSymbolNode(DSymbolNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		List list = processListNode(iVisited);
+		List<ASTNode> list = processListNode(iVisited);
 		RubyDSymbolExpression ex = new RubyDSymbolExpression(pos
 				.getStartOffset(), pos.getEndOffset());
 		ex.setChilds(list);
@@ -1103,7 +1101,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitDXStrNode(DXStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
-		List list = processListNode(iVisited);
+		List<ASTNode> list = processListNode(iVisited);
 		RubyDynamicBackquoteStringExpression ex = new RubyDynamicBackquoteStringExpression(
 				pos.getStartOffset(), pos.getEndOffset());
 		ex.setChilds(list);
@@ -1120,16 +1118,16 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
-	private List processMethodArguments(ArgsNode args) {
-		List arguments = new ArrayList();
+	private List<Argument> processMethodArguments(ArgsNode args) {
+		List<Argument> arguments = new ArrayList<Argument>();
 		Arity arity = args.getArity();
 		int endPos = args.getPosition().getStartOffset() - 1;
 		if (arity.getValue() != 0) { // BIG XXX, PLEASE CHECK IT
 			ListNode argsList = args.getArgs();
 			if (argsList != null) {
-				Iterator i = argsList.childNodes().iterator();
+				Iterator<Node> i = argsList.childNodes().iterator();
 				while (i.hasNext()) {
-					Node nde = (Node) i.next();
+					Node nde = i.next();
 					if (nde instanceof ArgumentNode) {
 						ArgumentNode a = (ArgumentNode) nde;
 						Argument aa = new RubyMethodArgument();
@@ -1148,7 +1146,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			}
 			ListNode optArgs = args.getOptArgs();
 			if (optArgs != null) {
-				Iterator iterator = optArgs.childNodes().iterator();
+				Iterator<?> iterator = optArgs.childNodes().iterator();
 				while (iterator.hasNext()) {
 					Object obj = iterator.next();
 					if (obj instanceof LocalAsgnNode) {
@@ -1275,9 +1273,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			method.getBody().setStart(bodyPos.getStartOffset());
 			method.getBody().setEnd(bodyPos.getEndOffset());
 			if (bodyNode instanceof BlockNode) {
-				for (Iterator iterator = bodyNode.childNodes().iterator(); iterator
+				for (Iterator<Node> iterator = bodyNode.childNodes().iterator(); iterator
 						.hasNext();) {
-					Node n = (Node) iterator.next();
+					Node n = iterator.next();
 					n.accept(this);
 				}
 			} else
@@ -1285,7 +1283,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		}
 		ArgsNode args = iVisited.getArgsNode();
 		if (args != null) {
-			List arguments = processMethodArguments(args);
+			List<Argument> arguments = processMethodArguments(args);
 			method.acceptArguments(arguments);
 		}
 		states.pop();
@@ -1531,7 +1529,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 	public Instruction visitHashNode(HashNode iVisited) { // done
 		ListNode listNode = iVisited.getListNode();
-		List exprs = processListNode(listNode);
+		List<ASTNode> exprs = processListNode(listNode);
 
 		ISourcePosition position = iVisited.getPosition();
 		RubyHashExpression arr = new RubyHashExpression();
@@ -1543,13 +1541,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			arr.setEnd(listNode.getPosition().getEndOffset());
 		}
 
-		List hashPairs = new ArrayList();
+		List<ASTNode> hashPairs = new ArrayList<ASTNode>();
 
 		if (exprs.size() % 2 == 0) {
-			Iterator i = exprs.iterator();
+			Iterator<ASTNode> i = exprs.iterator();
 			while (i.hasNext()) {
-				ASTNode key = (ASTNode) i.next();
-				ASTNode value = (ASTNode) i.next();
+				ASTNode key = i.next();
+				ASTNode value = i.next();
 				RubyHashPairExpression e = new RubyHashPairExpression(key
 						.sourceStart(), value.sourceEnd(), key, value);
 				hashPairs.add(e);
@@ -1649,9 +1647,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				pos.getStartOffset(), pos.getEndOffset());
 		ListNode headNode = iVisited.getHeadNode();
 		if (headNode != null) {
-			for (Iterator iterator = headNode.childNodes().iterator(); iterator
+			for (Iterator<Node> iterator = headNode.childNodes().iterator(); iterator
 					.hasNext();) {
-				Node n = (Node) iterator.next();
+				Node n = iterator.next();
 				if (n instanceof LocalAsgnNode
 						&& ((LocalAsgnNode) n).getValueNode() == null) {
 					String name = ((LocalAsgnNode) n).getName();
@@ -1675,9 +1673,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			Node firstNode = argsCatNode.getFirstNode();
 			if (firstNode instanceof ListNode) {
 				ListNode list = (ListNode) firstNode;
-				for (Iterator iterator = list.childNodes().iterator(); iterator
+				for (Iterator<Node> iterator = list.childNodes().iterator(); iterator
 						.hasNext();) {
-					Node nd = (Node) iterator.next();
+					Node nd = iterator.next();
 					s.addRhs(collectSingleNodeSafe(nd));
 				}
 			} else if (firstNode != null)
@@ -1687,9 +1685,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				s.setRightAsterix(collectSingleNodeSafe(secondNode));
 		} else if (valueNode instanceof ListNode) {
 			ListNode list = (ListNode) valueNode;
-			for (Iterator iterator = list.childNodes().iterator(); iterator
+			for (Iterator<Node> iterator = list.childNodes().iterator(); iterator
 					.hasNext();) {
-				Node nd = (Node) iterator.next();
+				Node nd = iterator.next();
 				s.addRhs(collectSingleNodeSafe(nd));
 			}
 		} else if (valueNode != null) {
@@ -1984,9 +1982,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitSplatNode(SplatNode iVisited) {
-		Iterator iterator = iVisited.childNodes().iterator();
+		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
+			iterator.next().accept(this);
 		}
 
 		return null;
@@ -2040,9 +2038,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitSValueNode(SValueNode iVisited) {
-		Iterator iterator = iVisited.childNodes().iterator();
+		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
+			iterator.next().accept(this);
 		}
 		return null;
 	}
@@ -2053,9 +2051,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		if (argsNode instanceof ListNode) {
 			ListNode arrayNode = (ListNode) argsNode;
-			List list = arrayNode.childNodes();
-			for (Iterator iter = list.iterator(); iter.hasNext();) {
-				Node node = (Node) iter.next();
+			List<Node> list = arrayNode.childNodes();
+			for (Iterator<Node> iter = list.iterator(); iter.hasNext();) {
+				Node node = iter.next();
 				node.accept(this);
 			}
 		} else if (argsNode instanceof ArgsCatNode) {
@@ -2064,14 +2062,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 					.getFirstNode());
 			CallArgumentsList second = processCallArguments(argsCatNode
 					.getSecondNode());
-			for (Iterator iterator = first.getChilds().iterator(); iterator
+			for (Iterator<ASTNode> iterator = first.getChilds().iterator(); iterator
 					.hasNext();) {
-				ASTNode e = (ASTNode) iterator.next();
+				ASTNode e = iterator.next();
 				argList.addNode(e);
 			}
-			for (Iterator iterator = second.getChilds().iterator(); iterator
+			for (Iterator<ASTNode> iterator = second.getChilds().iterator(); iterator
 					.hasNext();) {
-				ASTNode e = (ASTNode) iterator.next();
+				ASTNode e = iterator.next();
 				argList.addNode(e);
 			}
 		} else if (argsNode != null) {
@@ -2101,9 +2099,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitToAryNode(ToAryNode iVisited) {
-		Iterator iterator = iVisited.childNodes().iterator();
+		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
-			((Node) iterator.next()).accept(this);
+			iterator.next().accept(this);
 		}
 		return null;
 	}
@@ -2180,7 +2178,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			org.eclipse.dltk.ast.ASTListNode list = (org.eclipse.dltk.ast.ASTListNode) expressionsStatement;
 			statement.setExpressions(list.getChilds());
 		} else {
-			List list = new ArrayList(1);
+			List<ASTNode> list = new ArrayList<ASTNode>(1);
 			list.add(expressionsStatement);
 			statement.setExpressions(list);
 		}
@@ -2343,9 +2341,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		Node bodyNode = arg0.getBodyNode();
 		if (bodyNode instanceof BlockNode) {
 			BlockNode blockNode = (BlockNode) bodyNode;
-			Iterator iterator = blockNode.childNodes().iterator();
+			Iterator<Node> iterator = blockNode.childNodes().iterator();
 			while (iterator.hasNext()) {
-				((Node) iterator.next()).accept(this);
+				iterator.next().accept(this);
 			}
 		} else if (bodyNode != null)
 			bodyNode.accept(this);

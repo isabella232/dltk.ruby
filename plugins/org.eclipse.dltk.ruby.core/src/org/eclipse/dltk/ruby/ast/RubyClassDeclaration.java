@@ -18,7 +18,7 @@ import org.eclipse.dltk.ast.statements.Block;
 public class RubyClassDeclaration extends RubyModuleDeclaration {
 
 	private static final String OBJECT = "Object"; //$NON-NLS-1$
-	private static final List OBJECT_SUPER_CLASS = Collections
+	private static final List<String> OBJECT_SUPER_CLASS = Collections
 			.singletonList(OBJECT);
 
 	public RubyClassDeclaration(ASTNode superClass, ASTNode name, Block body,

@@ -182,8 +182,8 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 
 		int pos = 0;
 		int argPos = -1;
-		for (Iterator iterator = methodArgs.iterator(); iterator.hasNext();) {
-			ASTNode marg = (ASTNode) iterator.next();
+		for (Iterator<ASTNode> iterator = methodArgs.iterator(); iterator.hasNext();) {
+			ASTNode marg = iterator.next();
 			if (marg instanceof RubyMethodArgument) {
 				RubyMethodArgument rubyMethodArgument = (RubyMethodArgument) marg;
 				if (rubyMethodArgument.getName().equals(varName)) {
@@ -221,9 +221,9 @@ public class VariableReferenceEvaluator extends RubyMixinGoalEvaluator {
 
 			CallArgumentsList args = expr.getArgs();
 			if (args != null) {
-				List list = args.getChilds();
+				List<ASTNode> list = args.getChilds();
 				if (argPos < list.size()) {
-					ASTNode st = (ASTNode) list.get(argPos);
+					ASTNode st = list.get(argPos);
 					if (st instanceof RubyCallArgument) {
 						RubyCallArgument rubyCallArgument = (RubyCallArgument) st;
 						st = rubyCallArgument.getValue();

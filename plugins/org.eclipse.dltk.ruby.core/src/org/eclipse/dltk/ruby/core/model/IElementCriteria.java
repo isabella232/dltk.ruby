@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.model;
 
@@ -26,7 +25,7 @@ public interface IElementCriteria {
 			return kind;
 		}
 		
-		protected static final Map elementKindsToCriterias = new HashMap();
+		protected static final Map<IElementKind, ByKind> elementKindsToCriterias = new HashMap<IElementKind, ByKind>();
 		
 		private static void add(IElementKind kind) {
 			elementKindsToCriterias.put(kind, new ByKind(kind));
@@ -47,7 +46,7 @@ public interface IElementCriteria {
 		}
 		
 		public static ByKind byElementKind(IElementKind kind) {
-			return (ByKind) elementKindsToCriterias.get(kind);
+			return elementKindsToCriterias.get(kind);
 		}
 		
 		public static final IElementCriteria MODEL = byElementKind(IElementKind.MODEL);

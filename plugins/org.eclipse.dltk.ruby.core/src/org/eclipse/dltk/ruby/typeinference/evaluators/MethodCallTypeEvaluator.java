@@ -116,7 +116,7 @@ public class MethodCallTypeEvaluator extends RubyMixinGoalEvaluator {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal
 					.getExpression();
-			List arguments = expression.getArgs().getChilds();
+			List<ASTNode> arguments = expression.getArgs().getChilds();
 			this.arguments = new IEvaluatedType[arguments.size()];
 		}
 		if (state >= STATE_WAITING_ARGUMENT_0
@@ -130,11 +130,11 @@ public class MethodCallTypeEvaluator extends RubyMixinGoalEvaluator {
 			ExpressionTypeGoal typedGoal = (ExpressionTypeGoal) goal;
 			CallExpression expression = (CallExpression) typedGoal
 					.getExpression();
-			List arguments = expression.getArgs().getChilds();
+			List<ASTNode> arguments = expression.getArgs().getChilds();
 			if (nextArg < arguments.size()) {
 				state = STATE_WAITING_ARGUMENT_0 + nextArg;
 				return new ExpressionTypeGoal(goal.getContext(),
-						(ASTNode) arguments.get(nextArg));
+						arguments.get(nextArg));
 			} else {
 				state = STATE_ARGS_DONE;
 			}

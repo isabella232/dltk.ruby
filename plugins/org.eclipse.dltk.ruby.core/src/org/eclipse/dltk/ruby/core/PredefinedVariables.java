@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core;
 
@@ -30,8 +29,8 @@ public class PredefinedVariables {
 
 	private static final String DOC = "doc"; //$NON-NLS-1$
 
-	static Map parseProperties(Properties props, String[] postfixes) {
-		Map entries = new HashMap();
+	static Map<String, Map<String, String>> parseProperties(Properties props, String[] postfixes) {
+		Map<String, Map<String, String>> entries = new HashMap<String, Map<String, String>>();
 
 		Iterator it = props.keySet().iterator();
 		while (it.hasNext()) {
@@ -44,14 +43,14 @@ public class PredefinedVariables {
 				if (index != -1) {
 					String name = key.substring(0, index);
 
-					Map entry = (Map) entries.get(name);
+					Map<String, String> entry = entries.get(name);
 
 					if (entry == null) {
-						entry = new HashMap();
+						entry = new HashMap<String, String>();
 						entries.put(name, entry);
 					}
 
-					entry.put(postfix, props.get(key));
+					entry.put(postfix, (String) props.get(key));
 				}
 			}
 		}
@@ -59,15 +58,15 @@ public class PredefinedVariables {
 		return entries;
 	}
 
-	private static Map nameToTypeMap = new HashMap();
-	private static Map nameToDocMap = new HashMap();
+	private static Map<String, String> nameToTypeMap = new HashMap<String, String>();
+	private static Map<String, String> nameToDocMap = new HashMap<String, String>();
 
 	public static String getTypeOf(String name) {
-		return (String) nameToDocMap.get(name);
+		return nameToDocMap.get(name);
 	}
 
 	public static String getDocOf(String name) {
-		return (String) nameToDocMap.get(name);
+		return nameToDocMap.get(name);
 	}
 
 	static {
@@ -80,17 +79,17 @@ public class PredefinedVariables {
 				Properties props = new Properties();
 				props.load(input);
 
-				Map parsedProps = parseProperties(props, new String[] { NAME,
+				Map<String, Map<String, String>> parsedProps = parseProperties(props, new String[] { NAME,
 						TYPE, DOC });
 
-				Iterator it = parsedProps.keySet().iterator();
+				Iterator<String> it = parsedProps.keySet().iterator();
 				while (it.hasNext()) {
-					Object key = it.next();
-					Map entry = (Map) parsedProps.get(key);
+					String key = it.next();
+					Map<String, String> entry = parsedProps.get(key);
 
-					String name = (String) entry.get(NAME);
-					String type = (String) entry.get(TYPE);
-					String doc = (String) entry.get(DOC);
+					String name = entry.get(NAME);
+					String type = entry.get(TYPE);
+					String doc = entry.get(DOC);
 
 					nameToTypeMap.put(name, type);
 					nameToDocMap.put(name, doc);

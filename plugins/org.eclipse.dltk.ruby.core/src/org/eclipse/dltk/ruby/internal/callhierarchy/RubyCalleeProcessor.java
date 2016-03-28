@@ -36,7 +36,7 @@ public class RubyCalleeProcessor implements ICalleeProcessor {
 	protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH
 			| SearchPattern.R_CASE_SENSITIVE;
 
-	private Map fSearchResults = new HashMap();
+	private Map<SimpleReference, IMethod[]> fSearchResults = new HashMap<SimpleReference, IMethod[]>();
 
 	private IMethod method;
 
@@ -69,7 +69,7 @@ public class RubyCalleeProcessor implements ICalleeProcessor {
 
 	}
 
-	public Map doOperation() {
+	public Map<SimpleReference, IMethod[]> doOperation() {
 		CaleeSourceElementRequestor requestor = new CaleeSourceElementRequestor();
 		ISourceElementParser parser = null;
 

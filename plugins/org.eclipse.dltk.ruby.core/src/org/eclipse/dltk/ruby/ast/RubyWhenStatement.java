@@ -17,18 +17,18 @@ import org.eclipse.dltk.utils.CorePrinter;
 
 public class RubyWhenStatement extends ASTNode {
 	
-	private List expressions;
+	private List<ASTNode> expressions;
 	private ASTNode body;
 	
 	public RubyWhenStatement(int start, int end) {
 		super(start, end);
 	}
 
-	public List getExpressions() {
+	public List<ASTNode> getExpressions() {
 		return expressions;
 	}
 
-	public void setExpressions(List expressions) {
+	public void setExpressions(List<ASTNode> expressions) {
 		this.expressions = expressions;
 	}
 
@@ -52,9 +52,9 @@ public class RubyWhenStatement extends ASTNode {
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
 			if (expressions != null) {
-				for (Iterator iterator = expressions.iterator(); iterator
+				for (Iterator<ASTNode> iterator = expressions.iterator(); iterator
 						.hasNext();) {
-					ASTNode node = (ASTNode) iterator.next();
+					ASTNode node = iterator.next();
 					node.traverse(visitor);					
 				}
 			}

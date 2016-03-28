@@ -17,7 +17,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 public class RubyCaseStatement extends ASTNode {
 
 	private ASTNode target;
-	private List whens;
+	private List<RubyWhenStatement> whens;
 	private ASTNode elseWhen;
 
 	public RubyCaseStatement(int start, int end) {
@@ -32,11 +32,11 @@ public class RubyCaseStatement extends ASTNode {
 		this.target = target;
 	}
 
-	public List getWhens() {
+	public List<RubyWhenStatement> getWhens() {
 		return whens;
 	}
 
-	public void setWhens(List whens) {
+	public void setWhens(List<RubyWhenStatement> whens) {
 		this.whens = whens;
 	}
 
@@ -58,9 +58,9 @@ public class RubyCaseStatement extends ASTNode {
 				this.elseWhen.traverse( visitor );
 			}			
 			if (this.whens != null) {
-				for (Iterator iterator = this.whens.iterator(); iterator
+				for (Iterator<RubyWhenStatement> iterator = this.whens.iterator(); iterator
 						.hasNext();) {
-					ASTNode node = (ASTNode) iterator.next();
+					ASTNode node = iterator.next();
 					if (node != null)
 						node.traverse(visitor);					
 				}

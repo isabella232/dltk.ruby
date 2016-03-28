@@ -13,14 +13,14 @@ import java.util.HashSet;
 
 import org.eclipse.dltk.core.IModelElement;
 
-class UniqueNamesList extends ArrayList {
+class UniqueNamesList<T> extends ArrayList<T> {
 
 	private static final long serialVersionUID = 4866432224140371654L;
 	
-	HashSet names = new HashSet ();
+	HashSet<String> names = new HashSet<String> ();
 	
 	@Override
-	public boolean add(Object elem) {
+	public boolean add(T elem) {
 		if (elem instanceof IModelElement) {
 			IModelElement modelElement = (IModelElement) elem;
 			if (names.contains(modelElement.getElementName()))

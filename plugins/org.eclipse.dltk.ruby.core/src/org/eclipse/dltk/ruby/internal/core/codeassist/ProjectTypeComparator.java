@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,7 +25,7 @@ import org.eclipse.dltk.core.IType;
  * <li>all other types should go last
  * </ol>
  */
-public class ProjectTypeComparator implements Comparator {
+public class ProjectTypeComparator implements Comparator<IType> {
 
 	private final ISourceModule module;
 
@@ -36,9 +36,7 @@ public class ProjectTypeComparator implements Comparator {
 		this.module = module;
 	}
 
-	public int compare(Object o1, Object o2) {
-		final IType type1 = (IType) o1;
-		final IType type2 = (IType) o2;
+	public int compare(IType type1, IType type2) {
 		if (type1.getParent() instanceof ISourceModule
 				&& type2.getParent() instanceof ISourceModule) {
 			final ISourceModule module1 = (ISourceModule) type1.getParent();

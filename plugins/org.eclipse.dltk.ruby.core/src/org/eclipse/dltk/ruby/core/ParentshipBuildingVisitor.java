@@ -18,16 +18,16 @@ import org.eclipse.dltk.ast.ASTVisitor;
 
 public class ParentshipBuildingVisitor extends ASTVisitor {
 
-	private final Map parents = new HashMap();
+	private final Map<ASTNode, ASTNode> parents = new HashMap<ASTNode, ASTNode>();
 	
-	private final ArrayList stack = new ArrayList();
+	private final ArrayList<ASTNode> stack = new ArrayList<ASTNode>();
 	
 	private void push(ASTNode node) {
 		stack.add(node);
 	}
 	
 	private ASTNode peek() {
-		return (ASTNode) stack.get(stack.size() - 1);
+		return stack.get(stack.size() - 1);
 	}
 	
 	private void pop() {
@@ -48,7 +48,7 @@ public class ParentshipBuildingVisitor extends ASTVisitor {
 		pop();
 	}
 
-	public Map getParents() {
+	public Map<ASTNode, ASTNode> getParents() {
 		return parents;
 	}
 	

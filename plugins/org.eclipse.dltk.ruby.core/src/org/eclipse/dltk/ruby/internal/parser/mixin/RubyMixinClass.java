@@ -141,7 +141,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 			}
 		}
 		String key;
-		Set includeSet = new HashSet();
+		Set<String> includeSet = new HashSet<String>();
 		RubyMixinClass[] includedClasses = model.createRubyClass(
 				new RubyClassType("Object%")).getIncluded(); //$NON-NLS-1$
 		for (int cnt = 0, max = includedClasses.length; cnt < max; cnt++) {
@@ -173,7 +173,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (mixinElement == null)
 			return new RubyMixinClass[0];
 		List<RubyMixinClass> result = new ArrayList<RubyMixinClass>();
-		HashSet names = new HashSet();
+		HashSet<String> names = new HashSet<String>();
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
@@ -208,7 +208,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (mixinElement == null)
 			return new RubyMixinClass[0];
 		List<RubyMixinClass> result = new ArrayList<RubyMixinClass>();
-		HashSet names = new HashSet();
+		HashSet<String> names = new HashSet<String>();
 		Object[] allObjects = mixinElement.getAllObjects();
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
@@ -232,11 +232,11 @@ public class RubyMixinClass implements IRubyMixinElement {
 
 	public void findMethods(IMixinSearchPattern pattern,
 			IMixinSearchRequestor requestor) {
-		findMethods(pattern, requestor, new HashSet());
+		findMethods(pattern, requestor, new HashSet<String>());
 	}
 
 	protected void findMethods(IMixinSearchPattern pattern,
-			IMixinSearchRequestor requestor, Set processedKeys) {
+			IMixinSearchRequestor requestor, Set<String> processedKeys) {
 		if (!processedKeys.add(key)) {
 			return;
 		}
@@ -295,7 +295,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 	public RubyMixinMethod[] findMethods(IMixinSearchPattern pattern) {
 		final List<RubyMixinMethod> result = new ArrayList<RubyMixinMethod>();
 		this.findMethods(pattern, new IMixinSearchRequestor() {
-			final Set names = new HashSet();
+			final Set<String> names = new HashSet<String>();
 
 			public void acceptResult(IRubyMixinElement element) {
 				if (element instanceof RubyMixinMethod) {
@@ -306,15 +306,15 @@ public class RubyMixinClass implements IRubyMixinElement {
 				}
 			}
 
-		}, new HashSet());
+		}, new HashSet<String>());
 		return result.toArray(new RubyMixinMethod[result.size()]);
 	}
 
 	public RubyMixinMethod getMethod(String name) {
-		return getMethod(name, new HashSet());
+		return getMethod(name, new HashSet<String>());
 	}
 
-	protected RubyMixinMethod getMethod(String name, Set processedKeys) {
+	protected RubyMixinMethod getMethod(String name, Set<String> processedKeys) {
 		if (!processedKeys.add(key)) {
 			return null;
 		}

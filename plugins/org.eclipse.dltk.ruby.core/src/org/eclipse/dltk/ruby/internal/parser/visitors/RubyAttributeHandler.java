@@ -37,11 +37,11 @@ public class RubyAttributeHandler {
 	private static final String CLASS_INHERITABLE_READER = "class_inheritable_reader"; //$NON-NLS-1$
 	private static final String CLASS_INHERITABLE_WRITER = "class_inheritable_writer"; //$NON-NLS-1$
 
-	private static final Set/*<String>*/ ATTRIBUTE_CREATION_NAMES = new HashSet();
-	private static final Set/*<String>*/ ATTRIBUTE_ACCESSOR_NAMES = new HashSet();
-	private static final Set/*<String>*/ ATTRIBUTE_READER_NAMES = new HashSet();
-	private static final Set/*<String>*/ ATTRIBUTE_WRITER_NAMES = new HashSet();
-	private static final Set/*<String>*/ META_ATTRIBUTE_CREATION_NAMES = new HashSet();
+	private static final Set<String> ATTRIBUTE_CREATION_NAMES = new HashSet<String>();
+	private static final Set<String> ATTRIBUTE_ACCESSOR_NAMES = new HashSet<String>();
+	private static final Set<String> ATTRIBUTE_READER_NAMES = new HashSet<String>();
+	private static final Set<String> ATTRIBUTE_WRITER_NAMES = new HashSet<String>();
+	private static final Set<String> META_ATTRIBUTE_CREATION_NAMES = new HashSet<String>();
 	static {
 		ATTRIBUTE_CREATION_NAMES.add(ATTR);
 		ATTRIBUTE_CREATION_NAMES.add(ATTR_ACCESSOR);
@@ -94,8 +94,8 @@ public class RubyAttributeHandler {
 	}
 
 	private final CallExpression call;
-	private List readers;
-	private List writers;
+	private List<ASTNode> readers;
+	private List<ASTNode> writers;
 
 	public RubyAttributeHandler(CallExpression call) {
 		super();
@@ -103,16 +103,16 @@ public class RubyAttributeHandler {
 			throw new IllegalArgumentException();
 		}
 		this.call = call;
-		readers = new ArrayList();
-		writers = new ArrayList();
+		readers = new ArrayList<ASTNode>();
+		writers = new ArrayList<ASTNode>();
 		init();
 	}
 
 	private void init() {
 		String name = call.getName();
 		CallArgumentsList list = call.getArgs();
-		List expr = list.getChilds();
-		Iterator it = expr.iterator();
+		List<ASTNode> expr = list.getChilds();
+		Iterator<ASTNode> it = expr.iterator();
 		boolean create_reader = false;
 		boolean create_writer = false;
 		if (ATTRIBUTE_READER_NAMES.contains(name)) {
@@ -125,7 +125,7 @@ public class RubyAttributeHandler {
 		} else if (name.equals(ATTR)) {
 			create_reader = true;
 			if (expr.size() > 0) {
-				ASTNode node = (ASTNode) expr.get(expr.size() - 1);
+				ASTNode node = expr.get(expr.size() - 1);
 				if (node instanceof RubyCallArgument) {
 					node = ((RubyCallArgument) node).getValue();
 				}
@@ -137,7 +137,7 @@ public class RubyAttributeHandler {
 
 		}
 		while (it.hasNext()) {
-			ASTNode sr = (ASTNode) it.next();
+			ASTNode sr = it.next();
 			if (!(sr instanceof RubyCallArgument)) {
 				continue;
 			}
@@ -155,11 +155,11 @@ public class RubyAttributeHandler {
 		}
 	}
 
-	public List getReaders() {
+	public List<ASTNode> getReaders() {
 		return readers;
 	}
 
-	public List getWriters() {
+	public List<ASTNode> getWriters() {
 		return writers;
 	}
 

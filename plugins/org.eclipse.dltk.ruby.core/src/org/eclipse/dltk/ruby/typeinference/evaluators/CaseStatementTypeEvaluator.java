@@ -41,9 +41,9 @@ public class CaseStatementTypeEvaluator extends GoalEvaluator {
 			return IGoal.NO_GOALS;
 		RubyCaseStatement caseSt = (RubyCaseStatement) expression;
 		List<IGoal> subgoals = new ArrayList<IGoal>();
-		List whens = caseSt.getWhens();
-		for (Iterator iterator = whens.iterator(); iterator.hasNext();) {
-			RubyWhenStatement when = (RubyWhenStatement) iterator.next();
+		List<RubyWhenStatement> whens = caseSt.getWhens();
+		for (Iterator<RubyWhenStatement> iterator = whens.iterator(); iterator.hasNext();) {
+			RubyWhenStatement when = iterator.next();
 			ASTNode body = when.getBody();
 			subgoals.add(new ExpressionTypeGoal(this.goal.getContext(), body));
 		}

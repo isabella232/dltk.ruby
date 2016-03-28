@@ -39,9 +39,9 @@ public class RubySingletonMethodDeclaration extends MethodDeclaration {
 				receiver.traverse(visitor);
 
 			// Arguments
-			Iterator it = arguments.iterator();
+			Iterator<Argument> it = arguments.iterator();
 			while (it.hasNext()) {
-				Argument arg = (Argument) it.next();
+				Argument arg = it.next();
 				arg.traverse(visitor);
 			}
 

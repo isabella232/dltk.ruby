@@ -254,7 +254,7 @@ public class RubyModelUtils {
 	 * @param selfKlass
 	 * @return
 	 */
-	private static List handleSpecialMethod(RubyMixinMethod method,
+	private static List<IMethod> handleSpecialMethod(RubyMixinMethod method,
 			RubyMixinClass selfKlass) {
 		if (method.getKey().equals("Class%{new")) { //$NON-NLS-1$
 			RubyMixinMethod init = selfKlass.getInstanceClass() != null ? selfKlass
@@ -262,7 +262,7 @@ public class RubyModelUtils {
 					: null;
 			if (init != null) {
 				IMethod[] initMethods = init.getSourceMethods();
-				List result = new ArrayList();
+				List<IMethod> result = new ArrayList<IMethod>();
 				for (int i = 0; i < initMethods.length; i++) {
 					try {
 						IParameter[] parameters = initMethods[i]
@@ -297,12 +297,12 @@ public class RubyModelUtils {
 		return null;
 	}
 
-	public static List getAllSourceMethods(RubyMixinMethod[] methods,
+	public static List<IMethod> getAllSourceMethods(RubyMixinMethod[] methods,
 			RubyMixinClass selfKlass) {
-		List result = new ArrayList();
+		List<IMethod> result = new ArrayList<IMethod>();
 		for (int i = 0; i < methods.length; i++) {
 			if (selfKlass != null) {
-				List m = handleSpecialMethod(methods[i], selfKlass);
+				List<IMethod> m = handleSpecialMethod(methods[i], selfKlass);
 				if (m != null) {
 					result.addAll(m);
 					continue;
@@ -382,7 +382,7 @@ public class RubyModelUtils {
 	}
 
 	private static void addVariablesFrom(RubyMixinVariable[] fields2,
-			String prefix, List resultList) {
+			String prefix, List<IField> resultList) {
 		for (int i = 0; i < fields2.length; i++) {
 			IField[] sourceFields = fields2[i].getSourceFields();
 			if (sourceFields != null) {
@@ -484,7 +484,7 @@ public class RubyModelUtils {
 	}
 
 	private static void addFakeMethods(ModelElement parent,
-			Metaclass metaclass, List fakeMethods) {
+			Metaclass metaclass, List<FakeMethod> fakeMethods) {
 		// process included modules first, to allow the class to override
 		// some of the methods
 		ModuleMetaclass[] includedModules = metaclass.getIncludedModules();

@@ -45,9 +45,9 @@ public class RubyArrayExpression extends ASTListNode {
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
 			if (this.getChilds() != null) {
-				for (Iterator iter = this.getChilds().iterator(); iter
+				for (Iterator<ASTNode> iter = this.getChilds().iterator(); iter
 						.hasNext();) {
-					ASTNode s = (ASTNode) iter.next();
+					ASTNode s = iter.next();
 					s.traverse(visitor);
 				}
 			}
