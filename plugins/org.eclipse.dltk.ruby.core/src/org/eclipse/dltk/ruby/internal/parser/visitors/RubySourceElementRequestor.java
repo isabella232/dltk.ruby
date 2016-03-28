@@ -237,6 +237,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor
 		}
 	}
 
+	@Override
 	public void visitTypeName(ASTNode node) {
 		// empty
 	}

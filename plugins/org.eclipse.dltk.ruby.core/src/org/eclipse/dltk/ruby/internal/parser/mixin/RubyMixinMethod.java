@@ -42,6 +42,7 @@ public class RubyMixinMethod implements IRubyMixinElement {
 		this.sourceMethods = sourceMethods;
 	}
 
+	@Override
 	public String getKey() {
 		return key;
 	}

@@ -46,6 +46,7 @@ public class RubyMixinAlias implements IRubyMixinElement {
 		return model.createRubyElement(getOldKey());
 	}
 
+	@Override
 	public String getKey() {
 		return element.getKey();
 	}

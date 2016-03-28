@@ -121,6 +121,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 	protected class RubyMatchVisitor extends MatchVisitor implements
 			IRubyASTVisitor {
 
+		@Override
 		public void visitTypeName(ASTNode node) {
 			// empty
 		}

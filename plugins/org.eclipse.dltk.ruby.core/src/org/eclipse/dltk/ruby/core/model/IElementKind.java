@@ -23,6 +23,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 0;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -33,6 +34,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 1;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -43,6 +45,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 2;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -61,6 +64,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 3;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -72,6 +76,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 4;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -82,6 +87,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 5;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -93,6 +99,7 @@ public interface IElementKind {
 		
 		public static final int ID = FIRST_NON_VARIABLE_ID + 6;
 
+		@Override
 		public int getId() {
 			return ID;
 		}
@@ -111,6 +118,7 @@ public interface IElementKind {
 			return kind;
 		}
 
+		@Override
 		public int getId() {
 			return kind.getId();
 		}

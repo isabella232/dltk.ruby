@@ -58,12 +58,14 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 		}
 		f = factories.toArray(new FactoryInfo[factories.size()]);
 		Arrays.sort(f, new Comparator<FactoryInfo>() {
+			@Override
 			public int compare(FactoryInfo f1, FactoryInfo f2) {
 				return f2.priority - f1.priority; 
 			}
 		});
 	}
 
+	@Override
 	public GoalEvaluator createEvaluator(IGoal goal) {
 		if (f == null)
 			return null;

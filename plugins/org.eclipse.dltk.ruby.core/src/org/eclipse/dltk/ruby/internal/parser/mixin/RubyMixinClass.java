@@ -36,6 +36,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		this.module = module;
 	}
 
+	@Override
 	public String getKey() {
 		return key;
 	}
@@ -297,6 +298,7 @@ public class RubyMixinClass implements IRubyMixinElement {
 		this.findMethods(pattern, new IMixinSearchRequestor() {
 			final Set<String> names = new HashSet<String>();
 
+			@Override
 			public void acceptResult(IRubyMixinElement element) {
 				if (element instanceof RubyMixinMethod) {
 					RubyMixinMethod method = (RubyMixinMethod) element;

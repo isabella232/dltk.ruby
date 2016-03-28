@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.model.internal;
 
@@ -38,15 +37,18 @@ public class RubyTypeCalculator {
 	private ICalculatedType createFixnum() {
 		final ICalculatedType type = new ICalculatedType() {
 
+			@Override
 			public IElement[] findChildren(IElementCriteria criteria, String name, IProgressMonitor pm) {
 				if (criteria == IElementCriteria.ByKind.METHOD) {
 					final IElement typeParent = this;
 					IElement ceil = new IMethod() {
 
+						@Override
 						public IElement[] findChildren(IElementCriteria criteria, String name, IProgressMonitor pm) {
 							return IElement.EMPTY_ARRAY;
 						}
 
+						@Override
 						public IElement getAncestor(IElementCriteria criteria) {
 							if (criteria == IElementCriteria.ByKind.MODEL)
 								return model;
@@ -56,10 +58,12 @@ public class RubyTypeCalculator {
 							return null;
 						}
 
+						@Override
 						public IElementKind getElementKind() {
 							return IElementKind.METHOD;
 						}
 
+						@Override
 						public String getName() {
 							return "ceil"; //$NON-NLS-1$
 						}
@@ -70,12 +74,14 @@ public class RubyTypeCalculator {
 				return IElement.EMPTY_ARRAY;
 			}
 
+			@Override
 			public IElement getAncestor(IElementCriteria criteria) {
 				if (criteria == IElementCriteria.ByKind.MODEL)
 					return model;
 				return null;
 			}
 
+			@Override
 			public IElementKind getElementKind() {
 				return IElementKind.CLASS;
 			}

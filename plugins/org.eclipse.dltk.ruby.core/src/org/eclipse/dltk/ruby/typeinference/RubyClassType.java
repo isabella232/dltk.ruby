@@ -20,6 +20,7 @@ public class RubyClassType extends ClassType implements IClassType {
 		this.modelKey = modelKey;
 	}
 
+	@Override
 	public boolean subtypeOf(IEvaluatedType type) {
 		return false; //TODO
 	}

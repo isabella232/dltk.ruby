@@ -21,6 +21,7 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 		return false;
 	}
 
+	@Override
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
@@ -29,10 +30,12 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 		return sToolkit;
 	}
 
+	@Override
 	public String getLanguageName() {
 		return "Ruby"; //$NON-NLS-1$
 	}
 
+	@Override
 	public String getLanguageContentType() {
 		return "org.eclipse.dltk.rubyContentType"; //$NON-NLS-1$
 	}

@@ -107,6 +107,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 
 	private RubyMixinModel mixinModel;
 
+	@Override
 	public IModelElement[] select(IModuleSource sourceUnit,
 			int selectionSourceStart, int selectionSourceEnd) {
 		sourceModule = (ISourceModule) sourceUnit.getModelElement();

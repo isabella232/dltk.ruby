@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser;
 
@@ -80,6 +79,7 @@ public class JRubySourceParser extends AbstractSourceParser {
 			this.original = original;
 		}
 
+		@Override
 		public void reportProblem(IProblem problem) {
 			if (original != null)
 				original.reportProblem(problem);
@@ -106,6 +106,7 @@ public class JRubySourceParser extends AbstractSourceParser {
 		return new RubyASTBuildVisitor(module, content);
 	}
 
+	@Override
 	public ModuleDeclaration parse(IModuleSource input,
 			IProblemReporter reporter) {
 		try {
@@ -159,6 +160,7 @@ public class JRubySourceParser extends AbstractSourceParser {
 						node2 = parser.parse(fileName, new StringReader(
 								content2), new AbstractProblemReporter() {
 
+							@Override
 							public void reportProblem(IProblem problem) {
 								if (DLTKCore.DEBUG) {
 									System.out

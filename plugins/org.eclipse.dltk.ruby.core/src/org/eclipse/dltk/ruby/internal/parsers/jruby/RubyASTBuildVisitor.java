@@ -235,6 +235,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			list = new ArrayList<ASTNode>();
 		}
 
+		@Override
 		public void add(ASTNode s) {
 			list.add(s);
 		}
@@ -261,6 +262,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.list = list;
 		}
 
+		@Override
 		public void add(ASTNode s) {
 			list.addArgument(s, 0);
 		}
@@ -278,6 +280,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.module = module;
 		}
 
+		@Override
 		public void add(ASTNode statement) {
 			module.getStatements().add(statement);
 		}
@@ -300,6 +303,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			visibility = Modifiers.AccPublic;
 		}
 
+		@Override
 		public void add(ASTNode statement) {
 			type.getStatements().add(statement);
 		}
@@ -334,6 +338,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.method = method;
 		}
 
+		@Override
 		public void add(ASTNode statement) {
 			method.getStatements().add(statement);
 		}
@@ -352,6 +357,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			this.block = block;
 		}
 
+		@Override
 		public void add(ASTNode statement) {
 			block.getStatements().add(statement);
 		}
@@ -500,6 +506,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		states.push(new TopLevelState(this.module));
 	}
 
+	@Override
 	public Instruction visitAliasNode(AliasNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		final int start = pos.getStartOffset();
@@ -513,6 +520,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitAndNode(AndNode iVisited) { // done
 		ASTNode left = collectSingleNodeSafe(iVisited.getFirstNode());
 		ASTNode right = collectSingleNodeSafe(iVisited.getSecondNode());
@@ -523,6 +531,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	// should never get here
+	@Override
 	public Instruction visitArgsNode(ArgsNode iVisited) {
 		if (iVisited.getOptArgs() != null) {
 			iVisited.getOptArgs().accept(this);
@@ -531,6 +540,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	// should never get here
+	@Override
 	public Instruction visitArgsCatNode(ArgsCatNode iVisited) {
 		if (iVisited.getFirstNode() != null) {
 			iVisited.getFirstNode().accept(this);
@@ -554,6 +564,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return coll.getList();
 	}
 
+	@Override
 	public Instruction visitArrayNode(ArrayNode iVisited) { // done
 		List<ASTNode> exprs = processListNode(iVisited);
 
@@ -567,6 +578,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitBackRefNode(BackRefNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		VariableReference ref = new VariableReference(pos.getStartOffset(), pos
@@ -575,6 +587,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitBeginNode(BeginNode iVisited) { // done
 		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
 		ISourcePosition pos = iVisited.getPosition();
@@ -585,10 +598,12 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	// should never get here
+	@Override
 	public Instruction visitBlockArgNode(BlockArgNode iVisited) {
 		return null;
 	}
 
+	@Override
 	public Instruction visitBlockNode(BlockNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		Block block = new Block(pos.getStartOffset(), pos.getEndOffset());
@@ -602,6 +617,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitBlockPassNode(BlockPassNode iVisited) {
 		// ASTNode args = collectSingleNodeSafe(iVisited.getArgsNode());
 		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
@@ -613,6 +629,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitBreakNode(BreakNode iVisited) { // done
 		ASTNode value = collectSingleNodeSafe(iVisited.getValueNode());
 		ISourcePosition pos = iVisited.getPosition();
@@ -622,6 +639,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitConstDeclNode(ConstDeclNode iVisited) {
 		Node pathNode = iVisited.getConstNode();
 		ASTNode pathResult = null;
@@ -646,18 +664,21 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitClassVarAsgnNode(ClassVarAsgnNode iVisited) {
 		processVariableAssignment(iVisited, iVisited.getName(),
 				RubyVariableKind.CLASS, iVisited.getValueNode());
 		return null;
 	}
 
+	@Override
 	public Instruction visitClassVarDeclNode(ClassVarDeclNode iVisited) {
 		processVariableAssignment(iVisited, iVisited.getName(),
 				RubyVariableKind.CLASS, iVisited.getValueNode());
 		return null;
 	}
 
+	@Override
 	public Instruction visitClassVarNode(ClassVarNode iVisited) {
 		processVariableReference(iVisited, iVisited.getName(),
 				RubyVariableKind.CLASS);
@@ -778,6 +799,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @fixme iteration not correctly defined
 	 */
+	@Override
 	public Instruction visitCallNode(CallNode iVisited) {
 		String methodName = iVisited.getName();
 		CollectingState collector = new CollectingState();
@@ -863,6 +885,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitCaseNode(CaseNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		RubyCaseStatement statement = new RubyCaseStatement(pos
@@ -941,6 +964,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				.getEndLine(), start, end);
 	}
 
+	@Override
 	public Instruction visitClassNode(ClassNode iVisited) {
 		Node cpathNode = iVisited.getCPath();
 		Node superClassNode = iVisited.getSuperNode();
@@ -992,6 +1016,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitColon2Node(Colon2Node iVisited) {
 
 		CollectingState collector = new CollectingState();
@@ -1025,6 +1050,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitColon3Node(Colon3Node iVisited) {
 		ISourcePosition position = iVisited.getPosition();
 		RubyColonExpression colon = new RubyColonExpression(iVisited.getName(),
@@ -1035,6 +1061,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitConstNode(ConstNode iVisited) {
 		String name = iVisited.getName();
 		ISourcePosition pos = iVisited.getPosition();
@@ -1045,6 +1072,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDAsgnNode(DAsgnNode iVisited) {
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode valueNode = this.collectSingleNodeSafe(iVisited.getValueNode(),
@@ -1057,6 +1085,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDRegxNode(DRegexpNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		List<ASTNode> list = processListNode(iVisited);
@@ -1067,6 +1096,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDStrNode(DStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		List<ASTNode> list = processListNode(iVisited);
@@ -1080,6 +1110,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitDSymbolNode(DSymbolNode)
 	 */
+	@Override
 	public Instruction visitDSymbolNode(DSymbolNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		List<ASTNode> list = processListNode(iVisited);
@@ -1090,6 +1121,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDVarNode(DVarNode iVisited) { // done (?)
 		String name = iVisited.getName();
 		ISourcePosition pos = iVisited.getPosition();
@@ -1099,6 +1131,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDXStrNode(DXStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		List<ASTNode> list = processListNode(iVisited);
@@ -1109,6 +1142,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDefinedNode(DefinedNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode value = collectSingleNodeSafe(iVisited.getExpressionNode());
@@ -1244,6 +1278,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	// method
+	@Override
 	public Instruction visitDefnNode(DefnNode iVisited) {
 		// Collection comments = iVisited.getComments();
 		// System.out.println(comments);
@@ -1311,6 +1346,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	// singleton method
+	@Override
 	public Instruction visitDefsNode(DefsNode iVisited) {
 		ASTNode receiverExpression = null;
 		Node receiverNode = iVisited.getReceiverNode();
@@ -1368,6 +1404,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitDotNode(DotNode iVisited) { // done
 		ASTNode begin = collectSingleNodeSafe(iVisited.getBeginNode());
 		ASTNode end = collectSingleNodeSafe(iVisited.getEndNode());
@@ -1378,6 +1415,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitEnsureNode(EnsureNode iVisited) { // done
 		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
 		ASTNode ensure = collectSingleNodeSafe(iVisited.getEnsureNode());
@@ -1388,6 +1426,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitEvStrNode(EvStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode body = collectSingleNodeSafe(iVisited.getBody());
@@ -1397,6 +1436,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitFCallNode(FCallNode iVisited) {
 
 		String methodName = iVisited.getName();
@@ -1483,6 +1523,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		}
 	}
 
+	@Override
 	public Instruction visitFalseNode(FalseNode iVisited) { // done
 		ISourcePosition position = iVisited.getPosition();
 		states.peek().add(
@@ -1491,11 +1532,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitFlipNode(FlipNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitForNode(ForNode iVisited) { // done
 		ASTNode varNode = collectSingleNodeSafe(iVisited.getVarNode());
 		ASTNode listSt = collectSingleNodeSafe(iVisited.getIterNode());
@@ -1515,18 +1558,21 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitGlobalAsgnNode(GlobalAsgnNode iVisited) {
 		processVariableAssignment(iVisited, iVisited.getName(),
 				RubyVariableKind.GLOBAL, iVisited.getValueNode());
 		return null;
 	}
 
+	@Override
 	public Instruction visitGlobalVarNode(GlobalVarNode iVisited) {
 		processVariableReference(iVisited, iVisited.getName(),
 				RubyVariableKind.GLOBAL);
 		return null;
 	}
 
+	@Override
 	public Instruction visitHashNode(HashNode iVisited) { // done
 		ListNode listNode = iVisited.getListNode();
 		List<ASTNode> exprs = processListNode(listNode);
@@ -1564,18 +1610,21 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitInstAsgnNode(InstAsgnNode iVisited) {
 		processVariableAssignment(iVisited, iVisited.getName(),
 				RubyVariableKind.INSTANCE, iVisited.getValueNode());
 		return null;
 	}
 
+	@Override
 	public Instruction visitInstVarNode(InstVarNode iVisited) {
 		processVariableReference(iVisited, iVisited.getName(),
 				RubyVariableKind.INSTANCE);
 		return null;
 	}
 
+	@Override
 	public Instruction visitIfNode(IfNode iVisited) { // done
 		ASTNode condition = collectSingleNodeSafe(iVisited.getCondition());
 		ASTNode thenPart = collectSingleNodeSafe(iVisited.getThenBody());
@@ -1587,6 +1636,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitIterNode(IterNode iVisited) { // done
 		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
 		ASTNode varNode = collectSingleNodeSafe(iVisited.getVarNode());
@@ -1598,6 +1648,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitLocalAsgnNode(LocalAsgnNode iVisited) {
 		processVariableAssignment(iVisited, iVisited.getName(),
 				RubyVariableKind.LOCAL, iVisited.getValueNode());
@@ -1616,6 +1667,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		states.peek().add(assgn);
 	}
 
+	@Override
 	public Instruction visitLocalVarNode(LocalVarNode iVisited) {
 		processVariableReference(iVisited, iVisited.getName(),
 				RubyVariableKind.LOCAL);
@@ -1641,6 +1693,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		target.setEnd(pos.getEndOffset());
 	}
 
+	@Override
 	public Instruction visitMultipleAsgnNode(MultipleAsgnNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		RubyMultipleAssignmentStatement s = new RubyMultipleAssignmentStatement(
@@ -1697,6 +1750,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitMatch2Node(Match2Node iVisited) {// done
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode receiverNode = collectSingleNodeSafe(iVisited.getReceiverNode());
@@ -1707,6 +1761,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitMatch3Node(Match3Node iVisited) {// done
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode receiverNode = collectSingleNodeSafe(iVisited.getReceiverNode());
@@ -1717,6 +1772,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitMatchNode(MatchNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode regexp = collectSingleNodeSafe(iVisited.getRegexpNode());
@@ -1726,6 +1782,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitModuleNode(ModuleNode iVisited) {
 		String name = ""; //$NON-NLS-1$
 		Node cpathNode = iVisited.getCPath();
@@ -1771,11 +1828,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitNewlineNode(NewlineNode iVisited) { // done
 		iVisited.getNextNode().accept(this);
 		return null;
 	}
 
+	@Override
 	public Instruction visitNextNode(NextNode iVisited) { // done
 		ISourcePosition position = iVisited.getPosition();
 		RubyCallArgumentsList args = new RubyCallArgumentsList();
@@ -1790,6 +1849,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitNilNode(NilNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		states.peek().add(
@@ -1797,6 +1857,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitNotNode(NotNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		ASTNode expr = collectSingleNodeSafe(iVisited.getConditionNode());
@@ -1806,6 +1867,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitNthRefNode(NthRefNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		states.peek().add(
@@ -1816,32 +1878,38 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitOpElementAsgnNode(OpElementAsgnNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitOpAsgnNode(OpAsgnNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitOpAsgnAndNode(OpAsgnAndNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitOpAsgnOrNode(OpAsgnOrNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitOptNNode(OptNNode iVisited) {
 		// System.out.println("DLTKASTBuildVisitor.visitOptNNode()");
 		iVisited.getBodyNode().accept(this);
 		return null;
 	}
 
+	@Override
 	public Instruction visitOrNode(OrNode iVisited) { // done
 		ASTNode leftSt = collectSingleNodeSafe(iVisited.getFirstNode());
 		ASTNode rightSt = collectSingleNodeSafe(iVisited.getSecondNode());
@@ -1852,11 +1920,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitPostExeNode(PostExeNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitRedoNode(RedoNode iVisited) {
 		ISourcePosition position = iVisited.getPosition();
 		states.peek().add(
@@ -1865,6 +1935,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitRescueBodyNode(RescueBodyNode iVisited) { // done
 		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
 		ASTNode exceptionNodes = collectSingleNodeSafe(iVisited
@@ -1887,6 +1958,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitRescueNode(RescueNode iVisited) { // done
 		ASTNode bodyNode = collectSingleNodeSafe(iVisited.getBodyNode());
 		ASTNode elseNode = collectSingleNodeSafe(iVisited.getElseNode());
@@ -1905,6 +1977,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitRetryNode(RetryNode iVisited) { // done
 		ISourcePosition position = iVisited.getPosition();
 		states.peek().add(
@@ -1913,6 +1986,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitReturnNode(ReturnNode iVisited) {
 		ISourcePosition position = iVisited.getPosition();
 		ASTNode value = null;
@@ -1928,6 +2002,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitSClassNode(SClassNode iVisited) {
 		String name = ""; //$NON-NLS-1$
 		Node receiver = iVisited.getReceiverNode();
@@ -1973,6 +2048,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitSelfNode(SelfNode iVisited) {
 		ISourcePosition position = fixNamePosition(iVisited.getPosition());
 		states.peek().add(
@@ -1981,6 +2057,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitSplatNode(SplatNode iVisited) {
 		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
@@ -1990,6 +2067,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitStrNode(StrNode iVisited) {
 		String value = iVisited.getValue().toString();
 		ISourcePosition position = iVisited.getPosition();
@@ -2037,6 +2115,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return false;
 	}
 
+	@Override
 	public Instruction visitSValueNode(SValueNode iVisited) {
 		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
@@ -2081,6 +2160,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return argList;
 	}
 
+	@Override
 	public Instruction visitSuperNode(SuperNode iVisited) { // done
 		Node argsNode = iVisited.getArgsNode();
 		CallArgumentsList callArguments = processCallArguments(argsNode);
@@ -2098,6 +2178,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitToAryNode(ToAryNode iVisited) {
 		Iterator<Node> iterator = iVisited.childNodes().iterator();
 		while (iterator.hasNext()) {
@@ -2106,6 +2187,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitTrueNode(TrueNode iVisited) { // done
 		ISourcePosition position = iVisited.getPosition();
 		states.peek().add(
@@ -2114,6 +2196,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitUndefNode(UndefNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		RubyUndefStatement s = new RubyUndefStatement(pos.getStartOffset(), pos
@@ -2122,6 +2205,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitUntilNode(UntilNode iVisited) { // done
 		ASTNode condition = collectSingleNodeSafe(iVisited.getConditionNode());
 		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
@@ -2133,11 +2217,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitVAliasNode(VAliasNode iVisited) {
 
 		return null;
 	}
 
+	@Override
 	public Instruction visitVCallNode(VCallNode iVisited) {
 		String methodName = iVisited.getName();
 
@@ -2165,6 +2251,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitWhenNode(WhenNode iVisited) { // done
 		ISourcePosition position = iVisited.getPosition();
 		RubyWhenStatement statement = new RubyWhenStatement(position
@@ -2187,6 +2274,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitWhileNode(WhileNode iVisited) { // done
 		ASTNode condition = collectSingleNodeSafe(iVisited.getConditionNode());
 		ASTNode body = collectSingleNodeSafe(iVisited.getBodyNode());
@@ -2198,6 +2286,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitXStrNode(XStrNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		String value = iVisited.getValue().toString();
@@ -2207,6 +2296,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitYieldNode(YieldNode iVisited) {
 		ISourcePosition position = iVisited.getPosition();
 		RubyCallArgumentsList args = new RubyCallArgumentsList();
@@ -2221,6 +2311,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitZArrayNode(ZArrayNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		RubyArrayExpression arr = new RubyArrayExpression();
@@ -2230,6 +2321,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitZSuperNode(ZSuperNode iVisited) { // done
 
 		CallArgumentsList callArguments = new CallArgumentsList(); // no
@@ -2251,6 +2343,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitBignumNode(BignumNode)
 	 */
+	@Override
 	public Instruction visitBignumNode(BignumNode iVisited) {// done
 		ISourcePosition pos = iVisited.getPosition();
 		BigInteger value = iVisited.getValue();
@@ -2263,6 +2356,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitFixnumNode(FixnumNode)
 	 */
+	@Override
 	public Instruction visitFixnumNode(FixnumNode iVisited) {
 		ISourcePosition pos = iVisited.getPosition();
 		NumericLiteral node = new NumericLiteral(pos.getStartOffset(), pos
@@ -2274,6 +2368,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitFloatNode(FloatNode)
 	 */
+	@Override
 	public Instruction visitFloatNode(FloatNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		double value = iVisited.getValue();
@@ -2286,6 +2381,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitRegexpNode(RegexpNode)
 	 */
+	@Override
 	public Instruction visitRegexpNode(RegexpNode iVisited) { // done
 		Pattern pattern = iVisited.getPattern();
 		ISourcePosition position = iVisited.getPosition();
@@ -2300,6 +2396,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	/**
 	 * @see NodeVisitor#visitSymbolNode(SymbolNode)
 	 */
+	@Override
 	public Instruction visitSymbolNode(SymbolNode iVisited) { // done
 		final String symName = iVisited.getName();
 		final ISourcePosition position = iVisited.getPosition();
@@ -2318,11 +2415,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitArgsPushNode(ArgsPushNode arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public Instruction visitAttrAssignNode(AttrAssignNode arg0) { // done
 		ASTNode receiver = collectSingleNodeSafe(arg0.getReceiverNode());
 		CallArgumentsList list = processCallArguments(arg0.getArgsNode());
@@ -2337,6 +2436,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		return null;
 	}
 
+	@Override
 	public Instruction visitRootNode(RootNode arg0) { // done
 		Node bodyNode = arg0.getBodyNode();
 		if (bodyNode instanceof BlockNode) {

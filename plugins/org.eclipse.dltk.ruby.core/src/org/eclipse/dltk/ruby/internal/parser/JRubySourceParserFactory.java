@@ -8,9 +8,7 @@ import org.eclipse.dltk.ast.parser.ISourceParserFactory;
  */
 public class JRubySourceParserFactory implements ISourceParserFactory {
 
-	/*
-	 * @see org.eclipse.dltk.ast.parser.ISourceParserFactory#createSourceParser()
-	 */
+	@Override
 	public ISourceParser createSourceParser() {
 		return new JRubySourceParser();
 	}

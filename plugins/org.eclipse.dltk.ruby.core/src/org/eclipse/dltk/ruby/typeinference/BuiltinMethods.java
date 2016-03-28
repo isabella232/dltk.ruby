@@ -34,18 +34,22 @@ public class BuiltinMethods {
 			new RubyClassType("FalseClass")}); //$NON-NLS-1$
 
 	private static final class NewMethod implements IntrinsicMethod {
+		@Override
 		public boolean dependsOnArguments() {
 			return false;
 		}
 
+		@Override
 		public boolean dependsOnReceiver() {
 			return true;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType() {
 			return null;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType(IEvaluatedType receiver, IEvaluatedType[] arguments) {
 			if (receiver instanceof RubyClassType) {
 				RubyClassType rubyClassType = (RubyClassType) receiver;
@@ -70,36 +74,44 @@ public class BuiltinMethods {
 
 	private static final class ClassMethod implements IntrinsicMethod {
 
+		@Override
 		public boolean dependsOnArguments() {
 			return false;
 		}
 
+		@Override
 		public boolean dependsOnReceiver() {
 			return true;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType() {
 			return classType;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType(IEvaluatedType receiver, IEvaluatedType[] arguments) {
 			return RubyTypeInferencingUtils.getAmbiguousMetaType(receiver);
 		}
 	}
 
 	private static final class ReceiverTypeReturningMethod implements IntrinsicMethod {
+		@Override
 		public boolean dependsOnArguments() {
 			return false;
 		}
 
+		@Override
 		public boolean dependsOnReceiver() {
 			return true;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType() {
 			return null;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType(IEvaluatedType receiver, IEvaluatedType[] arguments) {
 			return receiver;
 		}
@@ -125,18 +137,22 @@ public class BuiltinMethods {
 			this.returnType = returnType;
 		}
 
+		@Override
 		public boolean dependsOnArguments() {
 			return false;
 		}
 
+		@Override
 		public boolean dependsOnReceiver() {
 			return false;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType() {
 			return returnType;
 		}
 
+		@Override
 		public IEvaluatedType getReturnType(IEvaluatedType receiver, IEvaluatedType[] arguments) {
 			return getReturnType();
 		}

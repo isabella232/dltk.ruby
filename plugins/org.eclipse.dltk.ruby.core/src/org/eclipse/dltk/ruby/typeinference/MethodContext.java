@@ -38,6 +38,7 @@ public class MethodContext extends BasicContext implements IArgumentsContext,
 		}
 	}
 
+	@Override
 	public IEvaluatedType getArgumentType(String name) {
 		for (int i = 0; i < argNames.length; i++) {
 			String argName = argNames[i];
@@ -50,6 +51,7 @@ public class MethodContext extends BasicContext implements IArgumentsContext,
 		return null;
 	}
 
+	@Override
 	public IEvaluatedType getInstanceType() {
 		return instanceType;
 	}

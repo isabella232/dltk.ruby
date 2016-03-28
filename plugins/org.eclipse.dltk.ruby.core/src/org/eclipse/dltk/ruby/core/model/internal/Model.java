@@ -41,6 +41,7 @@ public class Model implements IModel {
 		this.project = project;
 	}
 
+	@Override
 	public ModuleDeclaration getASTNode(ISourceModule sourceModule,
 			ASTCaching caching) {
 		ModuleDeclaration result = null;
@@ -83,6 +84,7 @@ public class Model implements IModel {
 		}
 	}
 
+	@Override
 	public IElement[] findChildren(IElementCriteria criteria, String name,
 			IProgressMonitor pm) {
 		if (criteria == IElementCriteria.CLASS_OR_MIXIN) {
@@ -91,10 +93,12 @@ public class Model implements IModel {
 		return null;
 	}
 
+	@Override
 	public IElement getAncestor(IElementCriteria criteria) {
 		return null;
 	}
 
+	@Override
 	public IElementKind getElementKind() {
 		return IElementKind.MODEL;
 	}

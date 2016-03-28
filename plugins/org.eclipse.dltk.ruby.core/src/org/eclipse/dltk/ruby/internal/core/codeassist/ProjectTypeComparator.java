@@ -36,6 +36,7 @@ public class ProjectTypeComparator implements Comparator<IType> {
 		this.module = module;
 	}
 
+	@Override
 	public int compare(IType type1, IType type2) {
 		if (type1.getParent() instanceof ISourceModule
 				&& type2.getParent() instanceof ISourceModule) {

@@ -28,10 +28,12 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 			this.timeLimit = timeLimit;
 		}
 
+		@Override
 		public void init() {
 			this.timeStart = System.currentTimeMillis();
 		}
 
+		@Override
 		public boolean prune(IGoal goal, EvaluatorStatistics stat) {
 			long currentTime = System.currentTimeMillis();
 			if (timeLimit != -1 && currentTime - timeStart > timeLimit)

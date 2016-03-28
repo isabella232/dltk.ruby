@@ -57,10 +57,12 @@ public class FakeField extends SourceField implements ISourceRange {
 		return hasFlags ? flags : super.getFlags();
 	}
 
+	@Override
 	public int getLength() {
 		return length;
 	}
 
+	@Override
 	public int getOffset() {
 		return offset;
 	}

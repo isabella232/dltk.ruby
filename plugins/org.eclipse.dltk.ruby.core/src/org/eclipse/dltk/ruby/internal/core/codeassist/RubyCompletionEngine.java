@@ -187,6 +187,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		return content.substring(position, original);
 	}
 
+	@Override
 	public void complete(IModuleSource module, int position, int i) {
 		this.currentModule = (ISourceModule) module;
 		this.mixinModel = RubyMixinModel.getInstance(currentModule
@@ -463,6 +464,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			return false;
 		}
 
+		@Override
 		public void acceptResult(IRubyMixinElement element) {
 			if (element instanceof RubyMixinMethod) {
 				final RubyMixinMethod method = (RubyMixinMethod) element;

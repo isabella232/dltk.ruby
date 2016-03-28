@@ -30,6 +30,7 @@ public class RubyCallProcessor implements ICallProcessor {
 
 	private SearchEngine searchEngine = new SearchEngine();
 
+	@Override
 	public Map<SimpleReference, IModelElement> process(final IModelElement parent, IModelElement element,
 			IDLTKSearchScope scope, IProgressMonitor monitor) {
 		final Map<SimpleReference, IModelElement> elements = new HashMap<SimpleReference, IModelElement>();
