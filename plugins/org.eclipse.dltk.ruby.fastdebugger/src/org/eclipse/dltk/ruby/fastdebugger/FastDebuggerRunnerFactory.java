@@ -6,6 +6,7 @@ import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
 
 public class FastDebuggerRunnerFactory implements
 		IInterpreterRunnerFactory {
+	@Override
 	public IInterpreterRunner createRunner(IInterpreterInstall install) {
 		return new FastDebuggerRunner(install);
 	}
