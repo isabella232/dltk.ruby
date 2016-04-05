@@ -34,6 +34,8 @@ public class Messages extends NLS {
 	public static String validate_probablyTestUnit;
 	public static String validate_notRSpec;
 	public static String validate_probablyRSpec;
+	public static String validate_notMinitest;
+	public static String validate_probablyMinitest;
 	public static String validate_runtimeError;
 	public static String validate_sourceErrors;
 	static {
