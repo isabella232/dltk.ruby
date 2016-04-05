@@ -38,7 +38,7 @@
 					<useUIThread>true</useUIThread>
 					<argLine>-Xms40m -Xmx1G ${os-jvm-flags} ${tycho.testArgLine}</argLine>
 					<includes>
-						<include>**/AllTests.java</include>
+						<include>**/AllTests.*</include>
 					</includes>
 				</configuration>
 			</plugin>
