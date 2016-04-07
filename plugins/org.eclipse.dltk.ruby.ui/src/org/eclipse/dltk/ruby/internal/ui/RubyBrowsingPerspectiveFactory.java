@@ -84,7 +84,7 @@ public class RubyBrowsingPerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout placeHolderLeft = layout
 				.createFolder(
 						"left", IPageLayout.LEFT, (float) 0.25, IPageLayout.ID_EDITOR_AREA); //$NON-NLS-1$
-		placeHolderLeft.addPlaceholder(DLTKUIPlugin.ID_SCRIPTEXPLORER);
+		placeHolderLeft.addPlaceholder(DLTKUIPlugin.ID_SCRIPT_EXPLORER);
 		placeHolderLeft.addPlaceholder("org.eclipse.dltk.testing.ResultView"); //$NON-NLS-1$
 		placeHolderLeft.addPlaceholder(IPageLayout.ID_RES_NAV);
 
