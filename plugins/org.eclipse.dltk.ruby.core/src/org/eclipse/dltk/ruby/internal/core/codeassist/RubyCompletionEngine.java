@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -564,7 +565,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 				position);
 
 		IMixinElement[] elements = mixinModel.getRawModel().find(
-				(prefix != null ? prefix : Util.EMPTY_STRING) + "*"); //$NON-NLS-1$
+				(prefix != null ? prefix : Util.EMPTY_STRING) + "*", new NullProgressMonitor()); //$NON-NLS-1$
 
 		// String[] findKeys = RubyMixinModel.getRawInstance().findKeys(
 		// prefix + "*");
@@ -749,7 +750,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		if (prefix != null && prefix.length() > 0) {
 			String varkey = "Object" + MixinModel.SEPARATOR + prefix; //$NON-NLS-1$
-			String[] keys2 = mixinModel.getRawModel().findKeys(varkey + "*"); //$NON-NLS-1$
+			String[] keys2 = mixinModel.getRawModel().findKeys(varkey + "*", new NullProgressMonitor()); //$NON-NLS-1$
 			for (int i = 0; i < keys2.length; i++) {
 				IRubyMixinElement element = mixinModel
 						.createRubyElement(keys2[i]);

@@ -57,11 +57,11 @@ public class RubySearchPatternProcessor extends SearchPatternProcessor {
 	public ITypePattern parseType(String patternString) {
 		final int pos = patternString.lastIndexOf(TYPE_DELIMITER);
 		if (pos != -1) {
-			return new TypePatten(patternString.substring(0, pos).replace(
+			return new TypePattern(patternString.substring(0, pos).replace(
 					TYPE_DELIMITER, TYPE_SEPARATOR_STR),
 					patternString.substring(pos + TYPE_DELIMITER.length()));
 		} else {
-			return new TypePatten(null, patternString);
+			return new TypePattern(null, patternString);
 		}
 	}
 

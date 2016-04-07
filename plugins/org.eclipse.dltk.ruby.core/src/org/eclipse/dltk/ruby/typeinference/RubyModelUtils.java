@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -200,7 +201,7 @@ public class RubyModelUtils {
 			String inner = keys[keys.length - 1];
 			if (prefix.length() > 0 && !prefix.startsWith("@")) { //$NON-NLS-1$ // locals & constants
 				String varkey = inner + MixinModel.SEPARATOR + prefix;
-				String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*"); //$NON-NLS-1$
+				String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*", new NullProgressMonitor()); //$NON-NLS-1$
 				for (int i = 0; i < keys2.length; i++) {
 					IRubyMixinElement element = rubyModel
 							.createRubyElement(keys2[i]);
