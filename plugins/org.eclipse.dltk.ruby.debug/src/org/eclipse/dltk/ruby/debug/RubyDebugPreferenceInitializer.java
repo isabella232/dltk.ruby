@@ -10,33 +10,25 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.debug;
 
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.osgi.service.prefs.Preferences;
 
-public class RubyDebugPreferenceInitializer extends
-		AbstractPreferenceInitializer {
+public class RubyDebugPreferenceInitializer extends AbstractPreferenceInitializer {
 
 	@Override
 	public void initializeDefaultPreferences() {
-		Preferences store = RubyDebugPlugin.getDefault().getPluginPreferences();
+		Preferences store = DefaultScope.INSTANCE.getNode(RubyDebugPlugin.PLUGIN_ID);
 
-		if (store.getDefaultString(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY).isEmpty())
-			store.setDefault(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
-					"org.eclipse.dltk.ruby.basicdebugger"); //$NON-NLS-1$
+		store.put(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, "org.eclipse.dltk.ruby.basicdebugger"); //$NON-NLS-1$
 
-		store.setDefault(
-				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE,
-				false);
-		store.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING,
-				false);
+		store.putBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE, false);
+		store.putBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING, false);
 
-		store.setDefault(
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL, true);
-		store.setDefault(
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS, true);
-		store.setDefault(
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL, true);
+		store.putBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL, true);
+		store.putBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS, true);
+		store.putBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL, true);
 	}
 
 }

@@ -36,12 +36,8 @@ public class RubyDebugPlugin extends Plugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		try {			
-			savePluginPreferences();
-		} finally {
-			plugin = null;
-			super.stop(context);
-		}
+		plugin = null;
+		super.stop(context);
 	}
 
 	/**
