@@ -27,6 +27,8 @@ import org.eclipse.dltk.ruby.testing.internal.testunit.TestUnitTestingEngine;
 import org.eclipse.dltk.testing.ITestElementResolver;
 import org.eclipse.dltk.testing.TestElementResolution;
 import org.eclipse.dltk.testing.model.ITestElement;
+import org.junit.AfterClass;
+import org.junit.Test;
 
 public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 
@@ -38,11 +40,7 @@ public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 		super(AllTests.BUNDLE_ID, name);
 	}
 
-	public static Suite suite() {
-		return new Suite(RubyTestingTestUnitResolverTests.class);
-	}
-
-	final String projectName = "testing1"; //$NON-NLS-1$
+	final static String projectName = "testing1"; //$NON-NLS-1$
 
 	@Override
 	public void setUpSuite() throws Exception {
@@ -51,10 +49,9 @@ public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 		waitUntilIndexesReady();
 	}
 
-	@Override
-	public void tearDownSuite() throws Exception {
+	@AfterClass
+	public static void cleanUp() throws Exception {
 		deleteProject(projectName);
-		super.tearDownSuite();
 	}
 
 	private ITestElementResolver createResolver() {
@@ -62,6 +59,7 @@ public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 		return new TestUnitTestRunnerUI(engine, getScriptProject(projectName));
 	}
 
+	@Test
 	public void testResolveMath() throws ModelException {
 		final ITestElementResolver resolver = createResolver();
 		final String moduleName = "test_math.rb"; //$NON-NLS-1$
@@ -69,55 +67,38 @@ public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 		final String methodName = "test1"; //$NON-NLS-1$
 		//
 		final String testName = methodName + '(' + className + ')';
-		TestSuiteElement suiteElement = new TestSuiteElement(null, className,
-				className, 1);
-		ITestElement testElement = new TestCaseElement(suiteElement, testName,
-				testName);
-		{
-			final TestElementResolution resolution = resolver
-					.resolveElement(testElement);
-			assertNotNull(resolution);
-			assertNotNull(resolution.getElement());
-			assertEquals(IModelElement.METHOD, resolution.getElement()
-					.getElementType());
-			assertEquals(methodName, resolution.getElement().getElementName());
-			final ISourceRange range = resolution.getRange();
-			assertNotNull(range);
-			final IResource resource = resolution.getElement().getResource();
-			assertEquals(moduleName, resource.getProjectRelativePath()
-					.toString());
-			ISourceModule module = (ISourceModule) DLTKCore
-					.create((IFile) resource);
-			assertNotNull(module);
-			final String source = module.getSource();
-			final int offset = range.getOffset();
-			assertEquals("def " + methodName, source.substring(offset, offset //$NON-NLS-1$
-					+ range.getLength()));
-		}
-		{
-			final TestElementResolution resolution = resolver
-					.resolveElement(suiteElement);
-			assertNotNull(resolution);
-			assertNotNull(resolution.getElement());
-			assertEquals(IModelElement.TYPE, resolution.getElement()
-					.getElementType());
-			assertEquals(className, ((IType) resolution.getElement())
-					.getFullyQualifiedName("::")); //$NON-NLS-1$
-			final ISourceRange range = resolution.getRange();
-			assertNotNull(range);
-			final IResource resource = resolution.getElement().getResource();
-			assertEquals(moduleName, resource.getProjectRelativePath()
-					.toString());
-			ISourceModule module = (ISourceModule) DLTKCore
-					.create((IFile) resource);
-			assertNotNull(module);
-			final String source = module.getSource();
-			final int offset = range.getOffset();
-			final String rangeContent = source.substring(offset, offset
-					+ range.getLength());
-			assertTrue(rangeContent.indexOf("class") >= 0); //$NON-NLS-1$
-			assertTrue(rangeContent.indexOf(resolution.getElement()
-					.getElementName()) >= 0);
-		}
+		TestSuiteElement suiteElement = new TestSuiteElement(null, className, className, 1);
+		ITestElement testElement = new TestCaseElement(suiteElement, testName, testName);
+		final TestElementResolution resolution = resolver.resolveElement(testElement);
+		assertNotNull(resolution);
+		assertNotNull(resolution.getElement());
+		assertEquals(IModelElement.METHOD, resolution.getElement().getElementType());
+		assertEquals(methodName, resolution.getElement().getElementName());
+		final ISourceRange range = resolution.getRange();
+		assertNotNull(range);
+		final IResource resource = resolution.getElement().getResource();
+		assertEquals(moduleName, resource.getProjectRelativePath().toString());
+		ISourceModule module = (ISourceModule) DLTKCore.create((IFile) resource);
+		assertNotNull(module);
+		final String source = module.getSource();
+		final int offset = range.getOffset();
+		assertEquals("def " + methodName, source.substring(offset, offset //$NON-NLS-1$
+				+ range.getLength()));
+		final TestElementResolution resolution1 = resolver.resolveElement(suiteElement);
+		assertNotNull(resolution1);
+		assertNotNull(resolution1.getElement());
+		assertEquals(IModelElement.TYPE, resolution1.getElement().getElementType());
+		assertEquals(className, ((IType) resolution1.getElement()).getFullyQualifiedName("::")); //$NON-NLS-1$
+		final ISourceRange range1 = resolution1.getRange();
+		assertNotNull(range1);
+		final IResource resource1 = resolution1.getElement().getResource();
+		assertEquals(moduleName, resource1.getProjectRelativePath().toString());
+		ISourceModule module1 = (ISourceModule) DLTKCore.create((IFile) resource1);
+		assertNotNull(module1);
+		final String source1 = module1.getSource();
+		final int offset1 = range1.getOffset();
+		final String rangeContent = source1.substring(offset1, offset1 + range1.getLength());
+		assertTrue(rangeContent.indexOf("class") >= 0); //$NON-NLS-1$
+		assertTrue(rangeContent.indexOf(resolution1.getElement().getElementName()) >= 0);
 	}
 }
