@@ -141,6 +141,7 @@ module Minitest
       DLTKReporter.sendMessage MessageIds::TRACE_START
       DLTKReporter.sendMessage result.failure.to_s
       DLTKReporter.sendMessage result.failure.location
+      result.failure.backtrace.each { |line| DLTKReporter.sendMessage line }
       DLTKReporter.sendMessage MessageIds::TRACE_END
     end
 
@@ -150,6 +151,7 @@ module Minitest
       DLTKReporter.sendMessage MessageIds::TRACE_START
       DLTKReporter.sendMessage result.failure.to_s
       DLTKReporter.sendMessage result.failure.location
+      result.failure.backtrace.each { |line| DLTKReporter.sendMessage line }  
       DLTKReporter.sendMessage MessageIds::TRACE_END
     end
 
