@@ -19,7 +19,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.ruby.debug.ui,
  org.eclipse.dltk.ruby.launching,
  org.eclipse.ui.console
-Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.testing.internal
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %pluginProvider
