@@ -47,7 +47,6 @@ import org.eclipse.dltk.testing.ITestingEngine;
 import org.eclipse.dltk.testing.TestingEngineDetectResult;
 import org.eclipse.dltk.testing.TestingEngineManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.ModelElementLabelProvider;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.util.ExceptionHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -284,27 +283,6 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		DebugUITools.launch(config, mode);
 	}
 
-	private IType chooseType(IType[] types, String mode)
-			throws InterruptedException {
-		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
-				getShell(), new ModelElementLabelProvider(
-						ModelElementLabelProvider.SHOW_POST_QUALIFIED));
-		dialog.setElements(types);
-		dialog.setTitle(Messages.RubyTestingLaunchShortcut_testSelection);
-		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			dialog
-					.setMessage(Messages.RubyTestingLaunchShortcut_selectTestToDebug);
-		} else {
-			dialog
-					.setMessage(Messages.RubyTestingLaunchShortcut_selectTestToRun);
-		}
-		dialog.setMultipleSelection(false);
-		if (dialog.open() == Window.OK) {
-			return (IType) dialog.getFirstResult();
-		}
-		throw new InterruptedException(); // cancelled by user
-	}
-
 	private Shell getShell() {
 		return DLTKUIPlugin.getActiveWorkbenchShell();
 	}
@@ -374,8 +352,6 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 	protected ILaunchConfigurationWorkingCopy createLaunchConfiguration(
 			IModelElement element) throws CoreException {
 		String testFileName;
-		String containerHandleId;
-		String testElementName;
 
 		String name = ScriptElementLabels.getDefault().getTextLabel(element,
 				ScriptElementLabels.F_FULLY_QUALIFIED);
@@ -384,18 +360,13 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		switch (element.getElementType()) {
 		case IModelElement.SOURCE_MODULE:
 		case IModelElement.TYPE: {
-			containerHandleId = Util.EMPTY_STRING;
 			testFileName = element.getResource().getProjectRelativePath()
 					.toPortableString();
-			testElementName = Util.EMPTY_STRING;
 		}
 			break;
 		case IModelElement.METHOD: {
-			containerHandleId = Util.EMPTY_STRING;
 			testFileName = element.getResource().getProjectRelativePath()
 					.toPortableString();
-			testElementName = element.getElementName();
-			// testName+= "[" + testElementName + "]";
 		}
 			break;
 		default:
