@@ -52,8 +52,8 @@ public class RubyClassDeclaration extends RubyModuleDeclaration {
 	}
 
 	@Override
-	public List/* <String> */getSuperClassNames() {
-		List names = super.getSuperClassNames();
+	public List<String> getSuperClassNames() {
+		List<String> names = super.getSuperClassNames();
 		if (names == null || names.isEmpty()) {
 			if (!OBJECT.equals(getName()))
 				names = OBJECT_SUPER_CLASS;
