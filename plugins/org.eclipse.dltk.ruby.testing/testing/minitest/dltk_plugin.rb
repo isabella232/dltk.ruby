@@ -138,6 +138,7 @@ module Minitest
 
     def notifyTestFailure(result)
       DLTKReporter.sendMessage MessageIds::TEST_FAILED + result.class.name+result.name + "," + result.name
+      handleExpectation result.failure.message if result.failure.message.start_with? "Expected:"
       DLTKReporter.sendMessage MessageIds::TRACE_START
       DLTKReporter.sendMessage result.failure.to_s
       DLTKReporter.sendMessage result.failure.location
@@ -151,8 +152,17 @@ module Minitest
       DLTKReporter.sendMessage MessageIds::TRACE_START
       DLTKReporter.sendMessage result.failure.to_s
       DLTKReporter.sendMessage result.failure.location
-      result.failure.backtrace.each { |line| DLTKReporter.sendMessage line }  
+      result.failure.backtrace.each { |line| DLTKReporter.sendMessage line }
       DLTKReporter.sendMessage MessageIds::TRACE_END
+    end
+
+    def handleExpectation message
+        DLTKReporter.sendMessage MessageIds::EXPECTED_START
+        DLTKReporter.sendMessage message.lines[0].partition("Expected:")[2].strip!
+        DLTKReporter.sendMessage MessageIds::EXPECTED_END
+        DLTKReporter.sendMessage MessageIds::ACTUAL_START
+        DLTKReporter.sendMessage message.lines[1].partition("Actual:")[2].strip!
+        DLTKReporter.sendMessage MessageIds::ACTUAL_END
     end
 
     def self.sendMessage(message)
