@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 xored software, Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.dltk.ruby.debug.tests.launching;
 
 import java.util.ArrayList;
@@ -32,25 +42,31 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		return new Suite(RubyLaunchingTests.class);
 	}
 
+	@Override
 	protected String getProjectName() {
 		return "launching";
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 
+	@Override
 	protected String getDebugModelId() {
 		return RubyDebugConstants.DEBUG_MODEL_ID;
 	}
 
+	@Override
 	protected ILaunchConfiguration createLaunchConfiguration(String arguments) {
 		return createTestLaunchConfiguration(getNatureId(), getProjectName(),
 				"src/test.rb", arguments);
 	}
 
+	@Override
 	protected void startLaunch(ILaunch launch, final IInterpreterInstall install) throws CoreException {
 		final AbstractScriptLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate() {
+			@Override
 			public IInterpreterInstall getInterpreterInstall(
 					ILaunchConfiguration configuration) throws CoreException {
 				return install;
@@ -125,11 +141,12 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		this.internalTestRun(NAME);
 	}
 
+	@Override
 	protected IInterpreterInstall[] getPredefinedInterpreterInstalls() {
 		IInterpreterInstallType[] installTypes = ScriptRuntime
 				.getInterpreterInstallTypes(RubyNature.NATURE_ID);
 		int id = 0;
-		List installs = new ArrayList();
+		List <IInterpreterInstall>installs = new ArrayList<IInterpreterInstall>();
 		for (int i = 0; i < installTypes.length; i++) {
 			String installId = getNatureId() + "_";
 			createAddInstall(installs, "/usr/bin/ruby", installId
@@ -138,12 +155,13 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 					installId + Integer.toString(++id), installTypes[i]);
 		}
 		if (installs.size() > 0) {
-			return (IInterpreterInstall[]) installs
+			return installs
 					.toArray(new IInterpreterInstall[installs.size()]);
 		}
 		return searchInstalls(RubyNature.NATURE_ID);
 	}
 
+	@Override
 	protected boolean hasPredefinedInterpreters() {
 		return true;
 	}

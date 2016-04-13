@@ -17,7 +17,6 @@ import java.io.StringReader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -91,7 +90,7 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 					try {
 						final TextEdit edit = f.format(input, 0,
 								input.length(), 0);
-						Assert.assertNotNull(entry.getName(), edit);
+						assertNotNull(entry.getName(), edit);
 						final IDocument document = new Document(input);
 						edit.apply(document);
 						assertTrue(compareIgnoreBlanks(entry.getName(),
