@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,6 @@ import java.io.StringReader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.ruby.formatter.RubyFormatter;
 import org.eclipse.dltk.ruby.formatter.internal.RubyFormatterPlugin;
@@ -29,6 +26,9 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 
@@ -46,6 +46,7 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 					.getName());
 			suite.addTest(new TestCase("testRubyLib-NOT-FOUND") {
 
+				@Override
 				protected void runTest() throws Throwable {
 					System.out.println(FILENAME + " not found");
 				}
@@ -80,6 +81,7 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 				if (!entry.isDirectory() && isRubyFile(entry.getName())) {
 					final InputStream entryStream = new FilterInputStream(
 							zipInputStream) {
+						@Override
 						public void close() throws IOException {
 							// empty
 						}

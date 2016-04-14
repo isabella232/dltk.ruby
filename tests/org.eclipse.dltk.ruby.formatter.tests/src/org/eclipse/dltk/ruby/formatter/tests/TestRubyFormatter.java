@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,16 +25,18 @@ public class TestRubyFormatter extends RubyFormatter {
 		super(Util.LINE_SEPARATOR, createTestingPreferences());
 	}
 
-	public TestRubyFormatter(String lineDelimiter, Map preferences) {
+	public TestRubyFormatter(String lineDelimiter,
+			Map<String, Object> preferences) {
 		super(lineDelimiter, preferences);
 	}
 
+	@Override
 	protected boolean isValidation() {
 		return false;
 	}
 
-	public static Map createTestingPreferences() {
-		final Map result = new HashMap();
+	public static Map<String, Object> createTestingPreferences() {
+		final Map<String, Object> result = new HashMap<String, Object>();
 		for (int i = 0; i < INDENTING.length; ++i) {
 			result.put(INDENTING[i], Boolean.TRUE);
 		}

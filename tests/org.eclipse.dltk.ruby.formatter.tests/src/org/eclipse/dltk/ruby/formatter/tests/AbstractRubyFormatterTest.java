@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,7 +19,9 @@ import org.eclipse.dltk.ui.formatter.IScriptFormatter;
 
 public abstract class AbstractRubyFormatterTest extends AbstractFormatterTest {
 
-	protected IScriptFormatter createFormatter(Map preferences) {
+	@Override
+	protected IScriptFormatter createFormatter(
+			Map<String, Object> preferences) {
 		return preferences != null ? new TestRubyFormatter(Util.LINE_SEPARATOR,
 				preferences) : new TestRubyFormatter();
 	}

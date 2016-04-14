@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -35,8 +35,10 @@ public class CommentWrapTests extends AbstractRubyFormatterTest {
 		assertEquals(output, format(input));
 	}
 
-	protected Map getDefaultPreferences() {
-		Map preferences = TestRubyFormatter.createTestingPreferences();
+	@Override
+	protected Map<String, Object> getDefaultPreferences() {
+		Map<String, Object> preferences = TestRubyFormatter
+				.createTestingPreferences();
 		preferences.put(RubyFormatterConstants.WRAP_COMMENTS, Boolean.TRUE
 				.toString());
 		preferences.put(RubyFormatterConstants.WRAP_COMMENTS_LENGTH, "20");

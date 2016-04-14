@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -46,7 +46,7 @@ public class ParserTest extends AbstractRubyFormatterTest {
 		final IFormatterDocument document = new FormatterDocument(input);
 		final IFormatterContainerNode root = builder.build(result, document);
 		assertNotNull(root);
-		List children = root.getChildren();
+		List<IFormatterNode> children = root.getChildren();
 		assertEquals(2, children.size());
 		final FormatterBlockWithBeginEndNode classNode = (FormatterBlockWithBeginEndNode) children
 				.get(0);
@@ -70,15 +70,15 @@ public class ParserTest extends AbstractRubyFormatterTest {
 		String input = createInput(id1, hereDoc1, id2, hereDoc2);
 		RubyParserResult result = RubyParser.parse(input);
 		assertNotNull(result);
-		final List heredocNodes = selectHeredocNodes(result);
+		final List<HeredocNode> heredocNodes = selectHeredocNodes(result);
 		assertEquals(2, heredocNodes.size());
-		final HeredocNode doc1 = (HeredocNode) heredocNodes.get(0);
+		final HeredocNode doc1 = heredocNodes.get(0);
 		assertTrue(substring(input, doc1.getEndMarkerPosition()).indexOf(id1) >= 0);
 		final String content1 = substring(input, doc1.getContentPosition());
 		assertTrue(content1.indexOf(id1) < 0);
 		assertTrue(content1.indexOf(hereDoc1[0]) >= 0);
 		assertTrue(content1.indexOf(hereDoc1[1]) >= 0);
-		final HeredocNode doc2 = (HeredocNode) heredocNodes.get(1);
+		final HeredocNode doc2 = heredocNodes.get(1);
 		assertTrue(substring(input, doc2.getEndMarkerPosition()).indexOf(id2) >= 0);
 		final String content2 = substring(input, doc2.getContentPosition());
 		assertTrue(content2.indexOf(id2) < 0);
@@ -97,7 +97,7 @@ public class ParserTest extends AbstractRubyFormatterTest {
 
 	private String createInput(final String id1, final String[] hereDoc1,
 			final String id2, final String[] hereDoc2) {
-		List lines = new ArrayList();
+		List<String> lines = new ArrayList<String>();
 		lines.add("def myfunc");
 		lines.add("print <<\"" + id1 + "\", <<\"" + id2
 				+ "\",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19");
@@ -110,22 +110,23 @@ public class ParserTest extends AbstractRubyFormatterTest {
 		return input;
 	}
 
-	private List selectHeredocNodes(RubyParserResult result) {
-		final List heredocNodes = new ArrayList();
+	private List<HeredocNode> selectHeredocNodes(RubyParserResult result) {
+		final List<HeredocNode> heredocNodes = new ArrayList<HeredocNode>();
 		result.getAST().accept(new AbstractVisitor() {
 
+			@Override
 			protected Instruction visitNode(Node visited) {
 				if (visited instanceof HeredocNode) {
-					heredocNodes.add(visited);
+					heredocNodes.add((HeredocNode) visited);
 				}
 				visitChildren(visited);
 				return null;
 			}
 
 			private void visitChildren(Node visited) {
-				List children = visited.childNodes();
-				for (Iterator i = children.iterator(); i.hasNext();) {
-					final Node child = (Node) i.next();
+				List<Node> children = visited.childNodes();
+				for (Iterator<Node> i = children.iterator(); i.hasNext();) {
+					final Node child = i.next();
 					visitChild(child);
 				}
 			}
@@ -149,8 +150,9 @@ public class ParserTest extends AbstractRubyFormatterTest {
 		final String input = "hash = { one: 1, two: 2 }";
 		RubyParserResult result = RubyParser.parse(input);
 		assertNotNull(result);
-		final List arrays = new ArrayList();
+		final List<Node> arrays = new ArrayList<Node>();
 		result.getAST().accept(new AbstractVisitor() {
+			@Override
 			protected Instruction visitNode(Node visited) {
 				if (visited instanceof ArrayNode) {
 					arrays.add(visited);
@@ -160,9 +162,9 @@ public class ParserTest extends AbstractRubyFormatterTest {
 			}
 
 			private void visitChildren(Node visited) {
-				List children = visited.childNodes();
-				for (Iterator i = children.iterator(); i.hasNext();) {
-					final Node child = (Node) i.next();
+				List<Node> children = visited.childNodes();
+				for (Iterator<Node> i = children.iterator(); i.hasNext();) {
+					final Node child = i.next();
 					visitChild(child);
 				}
 			}

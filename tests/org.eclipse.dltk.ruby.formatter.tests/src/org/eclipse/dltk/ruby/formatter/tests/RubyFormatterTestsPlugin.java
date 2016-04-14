@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 xored software, Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.dltk.ruby.formatter.tests;
 
 import java.util.Map;
@@ -29,11 +39,13 @@ public class RubyFormatterTestsPlugin extends AbstractUIPlugin {
 	public RubyFormatterTestsPlugin() {
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
@@ -70,17 +82,22 @@ public class RubyFormatterTestsPlugin extends AbstractUIPlugin {
 
 	public static final IScriptedTestContext CONTEXT = new IScriptedTestContext() {
 
+		@Override
 		public Bundle getResourceBundle() {
 			return getDefault().getBundle();
 		}
 
+		@Override
 		public String getCharset() {
 			return AllTests.CHARSET;
 		}
 
-		public IScriptFormatter createFormatter(Map preferences) {
+		@Override
+		public IScriptFormatter createFormatter(
+				Map<String, Object> preferences) {
 			if (preferences != null) {
-				final Map prefs = TestRubyFormatter.createTestingPreferences();
+				final Map<String, Object> prefs = TestRubyFormatter
+						.createTestingPreferences();
 				prefs.putAll(preferences);
 				return new TestRubyFormatter(Util.LINE_SEPARATOR, prefs);
 			} else {
@@ -88,6 +105,7 @@ public class RubyFormatterTestsPlugin extends AbstractUIPlugin {
 			}
 		}
 
+		@Override
 		public String validateOptionName(String name) {
 			if (RubyFormatter.isBooleanOption(name)
 					|| RubyFormatter.isIntegerOption(name)) {
@@ -97,6 +115,7 @@ public class RubyFormatterTestsPlugin extends AbstractUIPlugin {
 			}
 		}
 
+		@Override
 		public String validateOptionValue(String name, String value) {
 			if (RubyFormatter.isBooleanOption(name)) {
 				return "false".equals(value) || "true".equals(value) ? value
