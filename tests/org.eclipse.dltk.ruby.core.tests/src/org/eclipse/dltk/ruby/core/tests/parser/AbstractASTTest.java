@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.parser;
 
@@ -40,6 +39,7 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 			return lastInfo;
 		}
 
+		@Override
 		public void reportProblem(IProblem problem) {
 			count++;
 			lastInfo = problem.getMessage();
@@ -69,6 +69,7 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 		final ASTNode[] result = new ASTNode[] { null };
 		ASTVisitor visitor = new ASTVisitor() {
 
+			@Override
 			public boolean visitGeneral(ASTNode node) throws Exception {
 				if ((node.sourceStart() == start || start == -1)
 						&& (node.sourceEnd() == end || end == -1)) {
@@ -88,7 +89,7 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 		return result[0];
 	}
 
-	protected abstract Class getExpectedClass();
+	protected abstract Class<?> getExpectedClass();
 
 	protected ASTNode checkNode(String content, int start, int end)
 			throws Exception {

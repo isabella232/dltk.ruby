@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.assist;
 
@@ -31,6 +30,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 			super();
 		}
 
+		@Override
 		public boolean checkSelection(String source, int start, int end) {
 			return super.checkSelection(source, start, end);
 		}
@@ -43,7 +43,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 			return this.actualSelectionEnd;
 		}
 
-	};
+	}
 
 	private static final String SELECTION_PROJECT = "RUBY_Selection";
 
@@ -53,6 +53,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		super("org.eclipse.dltk.ruby.core.tests", name);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		PROJECT = setUpScriptProjectTo(SELECTION_PROJECT, "Selection");
 
@@ -64,6 +65,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		waitForAutoBuild();
 	}
 	
+	@Override
 	public void tearDownSuite () throws Exception {
 		deleteProject(SELECTION_PROJECT);
 		super.tearDownSuite();

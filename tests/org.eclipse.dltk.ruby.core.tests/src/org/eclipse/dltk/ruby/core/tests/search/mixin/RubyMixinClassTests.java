@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 xored software, Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.search.mixin;
 
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
@@ -17,12 +27,14 @@ public class RubyMixinClassTests extends AbstractModelTests {
 
 	private static final String PROJECT_NAME = "mixin-includes";
 
+	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		setUpScriptProject(PROJECT_NAME);
 		waitUntilIndexesReady();
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(PROJECT_NAME);
 		super.tearDownSuite();

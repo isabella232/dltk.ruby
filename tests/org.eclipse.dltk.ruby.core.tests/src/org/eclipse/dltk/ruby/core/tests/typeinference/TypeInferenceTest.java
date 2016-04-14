@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.typeinference;
 
@@ -28,6 +27,7 @@ public class TypeInferenceTest extends AbstractTypeInferencingTests {
 		super("org.eclipse.dltk.ruby.core.tests", name);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		PROJECT = setUpScriptProject(SRC_PROJECT);
 		super.setUpSuite();
@@ -36,16 +36,18 @@ public class TypeInferenceTest extends AbstractTypeInferencingTests {
 		waitForAutoBuild();
 	}
 	
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(SRC_PROJECT);
 		super.tearDownSuite();
 	}
 
-	public void executeTest(String folder, String name, ITypeInferencer inferencer, Collection assertions) throws Exception {
+	public void executeTest(String folder, String name, ITypeInferencer inferencer, Collection<IAssertion> assertions)
+			throws Exception {
 		ISourceModule cu = getSourceModule(SRC_PROJECT, folder, name);
 		ModuleDeclaration rootNode = RubyTypeInferencingUtils.parseSource(cu);
-		for (Iterator iter = assertions.iterator(); iter.hasNext();) {
-			IAssertion assertion = (IAssertion) iter.next();
+		for (Iterator<IAssertion> iter = assertions.iterator(); iter.hasNext();) {
+			IAssertion assertion = iter.next();
 			assertion.check(rootNode, cu, inferencer);
 		}
 	}

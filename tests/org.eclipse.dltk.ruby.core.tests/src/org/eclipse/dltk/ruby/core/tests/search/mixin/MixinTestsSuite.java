@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.search.mixin;
 
@@ -17,12 +16,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
@@ -32,6 +25,12 @@ import org.eclipse.dltk.ruby.core.tests.Activator;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinElementInfo;
 import org.eclipse.dltk.utils.CharArraySequence;
 import org.eclipse.dltk.utils.TextUtils;
+
+import junit.framework.AssertionFailedError;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 
 public class MixinTestsSuite extends TestSuite {
 
@@ -47,11 +46,11 @@ public class MixinTestsSuite extends TestSuite {
 			this.path = path;
 		}
 
+		@Override
 		protected void runTest() throws Throwable {
-			final Collection assertions = new ArrayList();
+			final Collection<IAssertion> assertions = new ArrayList<IAssertion>();
 			CharSequence content = loadContent(path);
 			String[] lines = TextUtils.splitLines(content);
-			int lineOffset = 0;
 			for (int i = 0; i < lines.length; i++) {
 				String line = lines[i].trim();
 				int pos = line.indexOf("##");
@@ -70,12 +69,11 @@ public class MixinTestsSuite extends TestSuite {
 						// Assert.isLegal(false);
 					}
 				}
-				lineOffset += lines[i].length() + 1;
 			}
 
 			assertTrue(assertions.size() > 0);
-			for (Iterator iter = assertions.iterator(); iter.hasNext();) {
-				IAssertion assertion = (IAssertion) iter.next();
+			for (Iterator<IAssertion> iter = assertions.iterator(); iter.hasNext();) {
+				IAssertion assertion = iter.next();
 				assertion.check();
 			}
 		}
@@ -94,6 +92,7 @@ public class MixinTestsSuite extends TestSuite {
 			this.key = key;
 		}
 
+		@Override
 		public void check() throws Exception {
 			final MixinModel model = new MixinModel(RubyLanguageToolkit
 					.getDefault());
@@ -126,10 +125,10 @@ public class MixinTestsSuite extends TestSuite {
 	public MixinTestsSuite(String testsDirectory) {
 		super(testsDirectory);
 
-		Enumeration entryPaths = Activator.getDefault().getBundle()
+		Enumeration<String> entryPaths = Activator.getDefault().getBundle()
 				.getEntryPaths(testsDirectory);
 		while (entryPaths.hasMoreElements()) {
-			final String path = (String) entryPaths.nextElement();
+			final String path = entryPaths.nextElement();
 			URL entry = Activator.getDefault().getBundle().getEntry(path);
 			try {
 				entry.openStream().close();
@@ -151,12 +150,14 @@ public class MixinTestsSuite extends TestSuite {
 			super(Activator.PLUGIN_ID, Util.EMPTY_STRING);
 		}
 
+		@Override
 		public void setUpSuite() throws Exception {
 			super.setUpSuite();
 			setUpScriptProject(SRC_PROJECT);
 			waitUntilIndexesReady();
 		}
 
+		@Override
 		public void tearDownSuite() throws Exception {
 			deleteProject(SRC_PROJECT);
 			super.tearDownSuite();
@@ -164,9 +165,7 @@ public class MixinTestsSuite extends TestSuite {
 
 	}
 
-	/*
-	 * @see junit.framework.TestSuite#run(junit.framework.TestResult)
-	 */
+	@Override
 	public void run(TestResult result) {
 		final SuiteSetupTeardown setupTeardown = new SuiteSetupTeardown();
 		try {

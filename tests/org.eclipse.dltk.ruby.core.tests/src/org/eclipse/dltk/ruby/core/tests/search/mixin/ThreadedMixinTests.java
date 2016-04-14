@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.search.mixin;
 
@@ -29,6 +28,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 		return new Suite(ThreadedMixinTests.class);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		up();
@@ -43,6 +43,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 		// waitForAutoBuild();
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(PROJECT_NAME);
 		super.tearDownSuite();
@@ -84,6 +85,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 			this.keys = keys;
 		}
 
+		@Override
 		public void run() {
 			for (int i = 0; i < this.cycles; i++) {
 				for (int j = 0; j < this.stop - this.start; j++) {
@@ -94,12 +96,12 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 			this.finish = true;
 			System.out.println("Finished");
 		}
-	};
+	}
 
 	public void testMultiAccess() throws Exception {
 		int count = 10;
 		final RubyMixinModel mixinModel = RubyMixinModel.getWorkspaceInstance();
-		String[] findKeys = mixinModel.getRawModel().findKeys("*");
+		String[] findKeys = mixinModel.getRawModel().findKeys("*", new NullProgressMonitor());
 		Thread[] threads = new Thread[count];
 		Access[] access = new Access[count];
 		int d = findKeys.length / count;

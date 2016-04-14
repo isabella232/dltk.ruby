@@ -1,17 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.text.completion;
 
 import java.util.Vector;
-
-import junit.framework.Test;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -21,6 +18,8 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
 import org.eclipse.dltk.core.tests.model.CompletionTestsRequestor;
 import org.eclipse.dltk.ruby.core.tests.Activator;
+
+import junit.framework.Test;
 
 public class RubyCompletionTests extends AbstractModelCompletionTests {
 
@@ -32,6 +31,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		super(Activator.PLUGIN_ID, name);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		// We need to initialie at least one interpreter.
 
@@ -45,6 +45,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		super.setUpSuite();
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject("completion");
 		super.tearDownSuite();
@@ -769,7 +770,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		cu.codeComplete(cursorLocation, requestor);
 		String completionResults = requestor.getResults();
 
-		Vector methods = new Vector();
+		Vector<String> methods = new Vector<String>();
 		int lastElementsOccurance = 0;
 		while ((lastElementsOccurance = completionResults.indexOf("element:",
 				lastElementsOccurance)) > -1) {
@@ -780,7 +781,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 					lastElementsOccurance));
 		}
 
-		Vector relevances = new Vector();
+		Vector<String> relevances = new Vector<String>();
 		int lastRelevanceOccurance = 0;
 		while (lastRelevanceOccurance > -1) {
 			lastRelevanceOccurance = completionResults.indexOf("relevance:",

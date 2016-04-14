@@ -16,10 +16,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.IModuleDeclaration;
 import org.eclipse.dltk.compiler.env.ModuleSource;
 import org.eclipse.dltk.core.DLTKLanguageManager;
@@ -27,6 +23,9 @@ import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
 import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class ZippedParserSuite extends TestSuite {
 
@@ -37,19 +36,20 @@ public class ZippedParserSuite extends TestSuite {
 			zipFile = new ZipFile(AbstractModelTests.storeToMetadata(Activator
 					.getDefault().getBundle(), "parser.zip", testsZip));
 			try {
-				Enumeration entries = zipFile.entries();
+				Enumeration<? extends ZipEntry> entries = zipFile.entries();
 				while (entries.hasMoreElements()) {
-					ZipEntry entry = (ZipEntry) entries.nextElement();
-					final String fileName = entry.getName();
+					ZipEntry entry = entries.nextElement();
 					final String content = loadContent(zipFile
 							.getInputStream(entry));
 
 					addTest(new TestCase(entry.getName()) {
 
+						@Override
 						public void setUp() {
 
 						}
 
+						@Override
 						protected void runTest() throws Throwable {
 							JRubySourceParser.setSilentState(false);
 							IModuleDeclaration module = DLTKLanguageManager

@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.typeinference;
 
@@ -14,8 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
-
-import junit.framework.ComparisonFailure;
 
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptProject;
@@ -27,6 +24,8 @@ import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.core.tests.model.CompletionTestsRequestor2;
 import org.eclipse.dltk.ruby.core.tests.Activator;
 
+import junit.framework.ComparisonFailure;
+
 
 public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 	protected static IScriptProject PROJECT;
@@ -37,13 +36,15 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 		public int tokenStart;
 		public int tokenEnd;
 	}
-	Hashtable oldOptions;
+
+	Hashtable<String, String> oldOptions;
 	ISourceModule wc = null;
 
 	public AbstractTypeInferencingTests(String projectName, String name) {
 		super(projectName, name);
 	}
 
+	@Override
 	public ISourceModule getWorkingCopy(String path, String source) throws ModelException {
 		return super.getWorkingCopy(path, source, this.wcOwner, null);
 	}
@@ -118,24 +119,28 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 		return result;
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		this.oldOptions = DLTKCore.getOptions();
 		// waitUntilIndexesReady();
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.wcOwner = new WorkingCopyOwner() {
 		};
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		DLTKCore.setOptions(this.oldOptions);
 		this.oldOptions = null;
 		super.tearDownSuite();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		if (this.wc != null) {
 			this.wc.discardWorkingCopy();

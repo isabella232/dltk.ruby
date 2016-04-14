@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.parser.jruby;
 
@@ -30,10 +29,10 @@ public class ParserSuite extends TestSuite {
 
 	public ParserSuite(String testsDirectory) {
 		super(testsDirectory);
-		Enumeration entryPaths = Activator.getDefault().getBundle()
+		Enumeration<String> entryPaths = Activator.getDefault().getBundle()
 				.getEntryPaths(testsDirectory);
 		while (entryPaths.hasMoreElements()) {
-			final String path = (String) entryPaths.nextElement();
+			final String path = entryPaths.nextElement();
 			if (path.endsWith(".exp"))
 				continue;
 			URL entry = Activator.getDefault().getBundle().getEntry(path);
@@ -48,12 +47,14 @@ public class ParserSuite extends TestSuite {
 			final String cleanPath = (pos >= 0 ? path.substring(0, pos) : path);
 			addTest(new TestCase(name) {
 
+				@Override
 				public void setUp() {
 
 				}
 
+				@Override
 				protected void runTest() throws Throwable {
-					Map map = new HashMap();
+					Map<Character, Integer> map = new HashMap<Character, Integer>();
 					String input = loadInput(cleanPath + ".rb", map);
 					String output = loadOutput(cleanPath + ".exp", map);
 
@@ -84,7 +85,7 @@ public class ParserSuite extends TestSuite {
 		return new String(data, "utf-8");
 	}
 
-	private String loadInput(String path, Map map) throws IOException {
+	private String loadInput(String path, Map<Character, Integer> map) throws IOException {
 		String content = loadContent(path);
 		StringBuffer result = new StringBuffer();
 		char[] charArray = content.toCharArray();
@@ -100,14 +101,14 @@ public class ParserSuite extends TestSuite {
 		return result.toString();
 	}
 
-	private String loadOutput(String path, Map map) throws IOException {
+	private String loadOutput(String path, Map<Character, Integer> map) throws IOException {
 		String content = loadContent(path);
 
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < content.length(); i++) {
 			char c = content.charAt(i);
 			if (c > '~') {
-				Integer pos = (Integer) map.get(new Character(c));
+				Integer pos = map.get(new Character(c));
 				Assert.isNotNull(pos);
 				result.append(pos.intValue());
 			} else {

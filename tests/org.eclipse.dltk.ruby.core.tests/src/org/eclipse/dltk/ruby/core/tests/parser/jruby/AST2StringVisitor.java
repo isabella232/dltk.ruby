@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.parser.jruby;
 
@@ -28,6 +27,7 @@ public class AST2StringVisitor extends ASTVisitor {
 		indent = "";
 	}
 
+	@Override
 	public boolean visitGeneral(ASTNode node) throws Exception {
 		String str = node.debugString();
 		this.printer.println(indent + "+" + str);
@@ -40,6 +40,7 @@ public class AST2StringVisitor extends ASTVisitor {
 		return name.substring(pos + 1);
 	}	
 			
+	@Override
 	public void endvisitGeneral(ASTNode node) throws Exception {
 		indent = indent.substring(0, indent.length() - 2);
 		this.printer.println(indent + "-" + simplifyClassName(node.getClass().getName()));			

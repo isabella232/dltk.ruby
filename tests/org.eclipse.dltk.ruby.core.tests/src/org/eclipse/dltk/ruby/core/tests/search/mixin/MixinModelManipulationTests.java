@@ -1,15 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.search.mixin;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -45,12 +45,14 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests
 		return new Suite(MixinModelManipulationTests.class);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
 		waitUntilIndexesReady();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		if (SCRIPT_PROJECT != null) {
 			deleteProject(SCRIPT_PROJECT.getElementName());
@@ -60,14 +62,14 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests
 
 	public void REM_testTotalKeysCount() {
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
-		String[] keys = model.findKeys("*");
+		String[] keys = model.findKeys("*", new NullProgressMonitor());
 		assertEquals(26, keys.length);
 	}
 
 	// If fails, call ghostbusters, please
 	public void testForGhosts() {
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
-		String[] keys = model.findKeys("*ghost*");
+		String[] keys = model.findKeys("*ghost*", new NullProgressMonitor());
 		assertEquals(0, keys.length);
 	}
 
@@ -93,7 +95,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests
 	public void testProjectFragmentDeletion() throws Exception {
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
 
-		assertEquals(1, model.find("Foo").length);
+		assertEquals(1, model.find("Foo", new NullProgressMonitor()).length);
 		IMixinElement mixinElement = model.get("Foo");
 		assertNotNull(mixinElement);
 		Object[] objs = mixinElement.getAllObjects();
@@ -107,7 +109,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests
 				null);
 		waitUntilIndexesReady();
 
-		assertEquals(0, model.find("Foo").length);
+		assertEquals(0, model.find("Foo", new NullProgressMonitor()).length);
 		mixinElement = model.get("Foo");
 		assertNull(mixinElement);
 	}
@@ -115,7 +117,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests
 	public void testSourceFolderDeletion() throws Exception {
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
 
-		assertEquals(1, model.find("Folder").length);
+		assertEquals(1, model.find("Folder", new NullProgressMonitor()).length);
 		IMixinElement mixinElement = model.get("Folder");
 		assertNotNull(mixinElement);
 		Object[] objs = mixinElement.getAllObjects();
@@ -129,7 +131,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests
 				null);
 		waitUntilIndexesReady();
 
-		assertEquals(0, model.find("Folder").length);
+		assertEquals(0, model.find("Folder", new NullProgressMonitor()).length);
 		mixinElement = model.get("Folder");
 		assertNull(mixinElement);
 	}

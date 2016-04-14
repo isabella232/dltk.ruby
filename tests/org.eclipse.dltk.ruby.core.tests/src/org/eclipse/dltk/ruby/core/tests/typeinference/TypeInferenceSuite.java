@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.typeinference;
 
@@ -20,11 +19,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.ASTNode;
@@ -46,8 +40,14 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 import org.eclipse.dltk.ti.types.RecursionTypeCall;
 import org.osgi.framework.Bundle;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
 public class TypeInferenceSuite extends TestSuite {
 
+	@Override
 	public void run(TestResult result) {
 		TypeInferenceTest tests = new TypeInferenceTest("ruby selection tests");
 		try {
@@ -67,12 +67,12 @@ public class TypeInferenceSuite extends TestSuite {
 		}
 	}
 
-	public TypeInferenceSuite(Class clazz, String testsDirectory) {
+	public TypeInferenceSuite(Class<?> clazz, String testsDirectory) {
 		super(clazz.getName());
 		final Bundle bundle = Activator.getDefault().getBundle();
-		Enumeration entryPaths = bundle.getEntryPaths(testsDirectory);
+		Enumeration<String> entryPaths = bundle.getEntryPaths(testsDirectory);
 		while (entryPaths.hasMoreElements()) {
-			final String path = (String) entryPaths.nextElement();
+			final String path = entryPaths.nextElement();
 			URL entry = bundle.getEntry(path);
 			try {
 				entry.openStream().close();
@@ -86,11 +86,13 @@ public class TypeInferenceSuite extends TestSuite {
 			final String folder = (pos >= 0 ? x.substring(pos + 1) : x);
 			addTest(new TestCase(name) {
 
-				private Collection assertions = new ArrayList();
+				private Collection<IAssertion> assertions = new ArrayList<IAssertion>();
 
+				@Override
 				public void setUp() {
 				}
 
+				@Override
 				protected void runTest() throws Throwable {
 					String content = loadContent(path);
 					String[] lines = content.split("\n");
@@ -156,6 +158,7 @@ public class TypeInferenceSuite extends TestSuite {
 						this.correctClassRef = correctClassRef;
 					}
 
+					@Override
 					public void check(ModuleDeclaration rootNode,
 							ISourceModule cu, ITypeInferencer inferencer)
 							throws Exception {
@@ -163,6 +166,7 @@ public class TypeInferenceSuite extends TestSuite {
 						ASTVisitor visitor = new OffsetTargetedASTVisitor(
 								namePos) {
 
+							@Override
 							protected boolean visitGeneralInteresting(ASTNode s) {
 								if (s instanceof VariableReference)
 									if (s.sourceStart() == namePos
@@ -201,6 +205,7 @@ public class TypeInferenceSuite extends TestSuite {
 						this.correctClassRef = correctClassRef;
 					}
 
+					@Override
 					public void check(ModuleDeclaration rootNode,
 							ISourceModule cu, ITypeInferencer inferencer)
 							throws Exception {
@@ -208,8 +213,9 @@ public class TypeInferenceSuite extends TestSuite {
 						ASTVisitor visitor = new OffsetTargetedASTVisitor(
 								namePos) {
 
+							@Override
 							protected boolean visitGeneralInteresting(ASTNode s) {
-								if (s instanceof ASTNode && result[0] == null)
+								if (s != null && result[0] == null)
 									if (s.sourceStart() == namePos) {
 										result[0] = s;
 									}
@@ -240,7 +246,7 @@ public class TypeInferenceSuite extends TestSuite {
 										.getModelKey());
 							} else if (type instanceof AmbiguousType) {
 								AmbiguousType ambiType = (AmbiguousType) type;
-								Set modelKeySet = new HashSet();
+								Set<String> modelKeySet = new HashSet<String>();
 								IEvaluatedType[] possibleTypes = ambiType
 										.getPossibleTypes();
 								for (int cnt = 0, max = possibleTypes.length; cnt < max; cnt++) {

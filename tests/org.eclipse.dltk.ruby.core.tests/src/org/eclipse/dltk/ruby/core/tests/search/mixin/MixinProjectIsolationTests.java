@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -52,6 +52,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
 	private IScriptProject project1;
 	private IScriptProject project2;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		project1 = setUpScriptProject(PROJECT1_NAME);
@@ -59,6 +60,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
 		waitUntilIndexesReady();
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		deleteProject(PROJECT1_NAME);
 		deleteProject(PROJECT2_NAME);
@@ -129,10 +131,10 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
 
 	private void removeBuildpathEntry(final IScriptProject project,
 			final IBuildpathEntry entry) throws ModelException {
-		final List cp = new ArrayList();
+		final List<IBuildpathEntry> cp = new ArrayList<IBuildpathEntry>();
 		cp.addAll(Arrays.asList(project.getRawBuildpath()));
 		assertTrue(cp.remove(entry));
-		IBuildpathEntry[] newCP = (IBuildpathEntry[]) cp
+		IBuildpathEntry[] newCP = cp
 				.toArray(new IBuildpathEntry[cp.size()]);
 		IModelStatus status = BuildpathEntry.validateBuildpath(project, newCP);
 		assertEquals(IStatus.OK, status.getSeverity());
@@ -146,7 +148,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
 		IMixinElement[] children = element.getChildren();
 		assertNotNull(children);
 		assertEquals(childrenNames.length, children.length);
-		final Set names = new HashSet();
+		final Set<String> names = new HashSet<String>();
 		for (int i = 0; i < children.length; ++i) {
 			names.add(children[i].getLastKeySegment());
 		}

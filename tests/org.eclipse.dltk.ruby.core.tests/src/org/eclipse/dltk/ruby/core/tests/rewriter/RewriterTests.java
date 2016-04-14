@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.rewriter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -16,10 +20,6 @@ import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.ruby.core.tests.Activator;
 import org.eclipse.dltk.ruby.internal.parsers.jruby.ASTUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * @author mhowe
@@ -50,6 +50,7 @@ public class RewriterTests extends AbstractModelTests {
 		super(Activator.PLUGIN_ID, name);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		setUpScriptProject(SRC_PROJECT);
 		super.setUpSuite();
@@ -57,6 +58,7 @@ public class RewriterTests extends AbstractModelTests {
 		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(SRC_PROJECT);
 		super.tearDownSuite();
@@ -74,16 +76,6 @@ public class RewriterTests extends AbstractModelTests {
 		String content = loadContent(PATH_PREFIX + "empty_script.rb");
 		ModuleDeclaration ast = ASTUtils.getAST(content.toCharArray());
 
-		String[] header = new String[] {
-				"###############################################################################\n",
-				"# Copyright (c) 2005, 2007 IBM Corporation and others.\n",
-				"# All rights reserved. This program and the accompanying materials\n",
-				"# are made available under the terms of the Eclipse Public License v1.0\n",
-				"# which accompanies this distribution, and is available at\n",
-				"# http://www.eclipse.org/legal/epl-v10.html\n",
-				"#\n",
-				"###############################################################################\n"
-		};
 		//add header to to ast
 
 		checkResults(ast, loadContent(PATH_PREFIX + "empty_script_with_header.rb"));
@@ -447,11 +439,6 @@ public class RewriterTests extends AbstractModelTests {
 	 */
 	public void testRemoveHashParameterFromMethodCall() {
 		assertTrue(false);
-	}
-
-	private String getContent(ModuleDeclaration ast) {
-		//TODO - get string from AST.
-		return null;
 	}
 
 	//This assumes some way of resolving the formatted text from an AST
