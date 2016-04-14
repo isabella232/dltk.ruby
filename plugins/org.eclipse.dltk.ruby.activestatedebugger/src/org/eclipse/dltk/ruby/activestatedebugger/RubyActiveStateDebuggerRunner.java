@@ -35,6 +35,7 @@ public class RubyActiveStateDebuggerRunner extends
 		super(install);
 	}
 
+	@Override
 	protected InterpreterConfig alterConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate) {
 
@@ -61,53 +62,40 @@ public class RubyActiveStateDebuggerRunner extends
 		return config;
 	}
 
+	@Override
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
 	}
 
+	@Override
 	protected String getDebuggingEnginePreferenceKey() {
 		return RubyActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY;
 	}
 
+	@Override
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return RubyActiveStateDebuggerPlugin.PLUGIN_ID;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier
-	 * ()
-	 */
+	@Override
 	protected String getDebugPreferenceQualifier() {
 		return RubyDebugPlugin.PLUGIN_ID;
 	}
 
-	/*
-	 * @seeorg.eclipse.dltk.launching.DebuggingEngineRunner#
-	 * getLoggingEnabledPreferenceKey()
-	 */
 	protected String getLoggingEnabledPreferenceKey() {
 		return RubyActiveStateDebuggerConstants.ENABLE_LOGGING;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey
-	 * ()
-	 */
+	@Override
 	protected String getLogFileNamePreferenceKey() {
 		return RubyActiveStateDebuggerConstants.LOG_FILE_NAME;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey
-	 * ()
-	 */
 	protected String getLogFilePathPreferenceKey() {
 		return RubyActiveStateDebuggerConstants.LOG_FILE_PATH;
 	}
 
+	@Override
 	protected String getProcessType() {
 		return RubyLaunchConfigurationConstants.ID_RUBY_PROCESS_TYPE;
 	}

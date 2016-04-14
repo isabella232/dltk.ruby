@@ -1,13 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
-
 package org.eclipse.dltk.ruby.activestatedebugger.preferences;
 
 import org.eclipse.core.resources.IProject;
@@ -44,11 +42,7 @@ public class RubyActiveStateDebuggerPreferencePage extends
 	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.activestatedebugger"; //$NON-NLS-1$
 	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.activestatedebugger"; //$NON-NLS-1$
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
-	 *      org.eclipse.core.resources.IProject,
-	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
-	 */
+	@Override
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
@@ -57,6 +51,7 @@ public class RubyActiveStateDebuggerPreferencePage extends
 						ENGINE_PATH, ENABLE_LOGGING, LOG_FILE_PATH,
 						LOG_FILE_NAME }, container) {
 
+			@Override
 			protected void createLoggingBlock(Composite composite) {
 				/*
 				 * remove once the python active state debug runner supports
@@ -64,69 +59,62 @@ public class RubyActiveStateDebuggerPreferencePage extends
 				 */
 			}
 
+			@Override
 			protected PreferenceKey getDebuggingEnginePathKey() {
 				return ENGINE_PATH;
 			}
 
+			@Override
 			protected PreferenceKey getEnableLoggingPreferenceKey() {
 				return ENABLE_LOGGING;
 			}
 
+			@Override
 			protected PreferenceKey getLogFileNamePreferenceKey() {
 				return LOG_FILE_NAME;
 			}
 
+			@Override
 			protected PreferenceKey getLogFilePathPreferenceKey() {
 				return LOG_FILE_PATH;
 			}
 		};
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
-	 */
+	@Override
 	protected String getHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	protected String getNatureId() {
 		return RubyNature.NATURE_ID;
 	}
 	
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
-	 */
+	@Override
 	protected String getProjectHelpId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
-	 */
+	@Override
 	protected void setDescription() {
 		setDescription(PreferenceMessages.PreferencesDescription);
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
-	 */
+	@Override
 	protected void setPreferenceStore() {
 		setPreferenceStore(RubyActiveStateDebuggerPlugin.getDefault()
 				.getPreferenceStore());
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
-	 */
+	@Override
 	protected String getPreferencePageId() {
 		return PREFERENCE_PAGE_ID;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
-	 */
+	@Override
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
