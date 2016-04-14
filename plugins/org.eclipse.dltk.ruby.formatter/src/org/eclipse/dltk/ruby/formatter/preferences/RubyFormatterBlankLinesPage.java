@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,6 +31,7 @@ public class RubyFormatterBlankLinesPage extends FormatterModifyTabPage {
 		super(dialog);
 	}
 
+	@Override
 	protected void createOptions(IFormatterControlManager manager,
 			Composite parent) {
 		Group emptyLinesGroup = SWTFactory.createGroup(parent,
@@ -71,6 +72,7 @@ public class RubyFormatterBlankLinesPage extends FormatterModifyTabPage {
 				Messages.RubyFormatterBlankLinesPage_numberOfEmptyLinesToPreserve);
 	}
 
+	@Override
 	protected URL getPreviewContent() {
 		return getClass().getResource("blank-lines-preview.rb"); //$NON-NLS-1$
 	}

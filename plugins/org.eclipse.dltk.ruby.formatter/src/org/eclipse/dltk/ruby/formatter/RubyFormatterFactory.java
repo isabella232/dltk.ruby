@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,11 +25,13 @@ import org.eclipse.dltk.ui.preferences.PreferenceKey;
 
 public class RubyFormatterFactory extends AbstractScriptFormatterFactory {
 
+	@Override
 	public PreferenceKey getProfilesKey() {
 		return new PreferenceKey(RubyFormatterPlugin.PLUGIN_ID,
 				RubyFormatterConstants.FORMATTER_PROFILES);
 	}
 
+	@Override
 	public PreferenceKey getActiveProfileKey() {
 		return new PreferenceKey(RubyFormatterPlugin.PLUGIN_ID,
 				RubyFormatterConstants.FORMATTER_ACTIVE_PROFILE);
@@ -58,6 +60,7 @@ public class RubyFormatterFactory extends AbstractScriptFormatterFactory {
 			RubyFormatterConstants.WRAP_COMMENTS,
 			RubyFormatterConstants.WRAP_COMMENTS_LENGTH };
 
+	@Override
 	public PreferenceKey[] getPreferenceKeys() {
 		final PreferenceKey[] result = new PreferenceKey[KEYS.length];
 		for (int i = 0; i < KEYS.length; ++i) {
@@ -76,15 +79,18 @@ public class RubyFormatterFactory extends AbstractScriptFormatterFactory {
 		return result;
 	}
 
+	@Override
 	public IScriptFormatter createFormatter(String lineDelimiter,
-			Map preferences) {
+			Map<String, String> preferences) {
 		return new RubyFormatter(lineDelimiter, preferences);
 	}
 
+	@Override
 	public URL getPreviewContent() {
 		return getClass().getResource("formatterPreview.rb"); //$NON-NLS-1$
 	}
 
+	@Override
 	public IFormatterModifyDialog createDialog(
 			IFormatterModifyDialogOwner dialogOwner) {
 		return new RubyFormatterModifyDialog(dialogOwner, this);

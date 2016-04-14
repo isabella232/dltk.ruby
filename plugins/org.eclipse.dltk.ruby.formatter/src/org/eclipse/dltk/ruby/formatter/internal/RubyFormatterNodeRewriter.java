@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 xored software, Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     xored software, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.dltk.ruby.formatter.internal;
 
 import java.util.ArrayList;
@@ -5,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.formatter.FormatterNodeRewriter;
+import org.eclipse.dltk.formatter.FormatterTextNode;
 import org.eclipse.dltk.formatter.FormatterUtils;
 import org.eclipse.dltk.formatter.IFormatterCommentableNode;
 import org.eclipse.dltk.formatter.IFormatterContainerNode;
@@ -17,8 +28,8 @@ import org.jruby.parser.RubyParserResult;
 public class RubyFormatterNodeRewriter extends FormatterNodeRewriter {
 
 	public RubyFormatterNodeRewriter(RubyParserResult result) {
-		for (Iterator i = result.getCommentNodes().iterator(); i.hasNext();) {
-			CommentNode commentNode = (CommentNode) i.next();
+		for (Iterator<CommentNode> i = result.getCommentNodes().iterator(); i.hasNext();) {
+			CommentNode commentNode = i.next();
 			if (!commentNode.isBlock()) {
 				addComment(commentNode.getStartOffset(), commentNode
 						.getEndOffset(), commentNode);
@@ -33,17 +44,17 @@ public class RubyFormatterNodeRewriter extends FormatterNodeRewriter {
 	}
 
 	private void attachComments(IFormatterContainerNode root) {
-		final List commentNodes = new ArrayList();
-		final List comments = new ArrayList();
-		final List body = root.getBody();
-		for (Iterator i = body.iterator(); i.hasNext();) {
-			IFormatterNode node = (IFormatterNode) i.next();
+		final List<FormatterTextNode> commentNodes = new ArrayList<FormatterTextNode>();
+		final List<FormatterTextNode> comments = new ArrayList<FormatterTextNode>();
+		final List<IFormatterNode> body = root.getBody();
+		for (Iterator<IFormatterNode> i = body.iterator(); i.hasNext();) {
+			IFormatterNode node = i.next();
 			if (node instanceof FormatterCommentNode) {
-				comments.add(node);
+				comments.add((FormatterCommentNode) node);
 			} else if (FormatterUtils.isNewLine(node)
 					&& !comments.isEmpty()
 					&& comments.get(comments.size() - 1) instanceof FormatterCommentNode) {
-				comments.add(node);
+				comments.add((FormatterTextNode) node);
 			} else if (!comments.isEmpty()) {
 				if (node instanceof IFormatterCommentableNode) {
 					((IFormatterCommentableNode) node).insertBefore(comments);
@@ -53,14 +64,15 @@ public class RubyFormatterNodeRewriter extends FormatterNodeRewriter {
 			}
 		}
 		body.removeAll(commentNodes);
-		for (Iterator i = body.iterator(); i.hasNext();) {
-			final IFormatterNode node = (IFormatterNode) i.next();
+		for (Iterator<IFormatterNode> i = body.iterator(); i.hasNext();) {
+			final IFormatterNode node = i.next();
 			if (node instanceof IFormatterContainerNode) {
 				attachComments((IFormatterContainerNode) node);
 			}
 		}
 	}
 
+	@Override
 	protected IFormatterNode createCommentNode(IFormatterDocument document,
 			int startOffset, int endOffset, Object object) {
 		return new FormatterCommentNode(document, startOffset, endOffset);

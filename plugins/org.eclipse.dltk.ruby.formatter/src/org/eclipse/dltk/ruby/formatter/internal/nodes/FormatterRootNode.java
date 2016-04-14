@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,11 +32,12 @@ public class FormatterRootNode extends FormatterBlockNode {
 		super(document);
 	}
 
-	protected void acceptNodes(final List nodes, IFormatterContext context,
+	@Override
+	protected void acceptNodes(final List<IFormatterNode> nodes, IFormatterContext context,
 			IFormatterWriter visitor) throws Exception {
 		boolean wasRequire = false;
-		for (Iterator i = nodes.iterator(); i.hasNext();) {
-			IFormatterNode node = (IFormatterNode) i.next();
+		for (Iterator<IFormatterNode> i = nodes.iterator(); i.hasNext();) {
+			IFormatterNode node = i.next();
 			context.enter(node);
 			if (node instanceof FormatterRequireNode) {
 				if (wasRequire) {

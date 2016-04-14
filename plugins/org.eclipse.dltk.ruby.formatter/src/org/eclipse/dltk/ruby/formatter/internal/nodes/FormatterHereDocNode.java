@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,8 +16,8 @@ import org.eclipse.dltk.formatter.FormatterUtils;
 import org.eclipse.dltk.formatter.IFormatterCallback;
 import org.eclipse.dltk.formatter.IFormatterContext;
 import org.eclipse.dltk.formatter.IFormatterDocument;
-import org.eclipse.dltk.formatter.IFormatterWriter;
 import org.eclipse.dltk.formatter.IFormatterRawWriter;
+import org.eclipse.dltk.formatter.IFormatterWriter;
 import org.eclipse.jface.text.IRegion;
 
 public class FormatterHereDocNode extends FormatterTextNode implements
@@ -68,6 +68,7 @@ public class FormatterHereDocNode extends FormatterTextNode implements
 		this.endMarkerRegion = endMarkerRegion;
 	}
 
+	@Override
 	public void accept(IFormatterContext context, IFormatterWriter visitor)
 			throws Exception {
 		IFormatterContext heredocContext = context.copy();
@@ -82,6 +83,7 @@ public class FormatterHereDocNode extends FormatterTextNode implements
 		visitor.addNewLineCallback(this);
 	}
 
+	@Override
 	public void call(IFormatterContext context, IFormatterRawWriter writer) {
 		final IFormatterDocument doc = getDocument();
 		if (contentRegion != null && contentRegion.getLength() > 0) {

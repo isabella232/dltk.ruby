@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -25,6 +25,7 @@ public class FormatterRescueNode extends FormatterBlockWithBeginNode {
 		super(document);
 	}
 
+	@Override
 	public void accept(IFormatterContext context, IFormatterWriter visitor)
 			throws Exception {
 		if (getBegin() != null) {
@@ -41,6 +42,7 @@ public class FormatterRescueNode extends FormatterBlockWithBeginNode {
 		acceptBody(context, visitor);
 	}
 
+	@Override
 	protected boolean isIndenting() {
 		return getDocument().getBoolean(RubyFormatterConstants.INDENT_BLOCKS);
 	}

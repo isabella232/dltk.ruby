@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.dltk.formatter.FormatterBlockNode;
 import org.eclipse.dltk.formatter.IFormatterContext;
 import org.eclipse.dltk.formatter.IFormatterDocument;
+import org.eclipse.dltk.formatter.IFormatterNode;
 import org.eclipse.dltk.formatter.IFormatterTextNode;
 import org.eclipse.dltk.formatter.IFormatterWriter;
 
@@ -31,6 +32,7 @@ public abstract class FormatterBlockWithBeginNode extends FormatterBlockNode {
 
 	private IFormatterTextNode begin;
 
+	@Override
 	public void accept(IFormatterContext context, IFormatterWriter visitor)
 			throws Exception {
 		if (begin != null) {
@@ -63,10 +65,7 @@ public abstract class FormatterBlockWithBeginNode extends FormatterBlockNode {
 		this.begin = begin;
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.ruby.formatter.node.FormatterBlockNode#getStartOffset()
-	 */
+	@Override
 	public int getStartOffset() {
 		if (begin != null) {
 			return begin.getStartOffset();
@@ -74,10 +73,7 @@ public abstract class FormatterBlockWithBeginNode extends FormatterBlockNode {
 		return super.getStartOffset();
 	}
 
-	/*
-	 * @see
-	 * org.eclipse.dltk.ruby.formatter.node.FormatterBlockNode#getEndOffset()
-	 */
+	@Override
 	public int getEndOffset() {
 		if (!super.isEmpty()) {
 			return super.getEndOffset();
@@ -88,21 +84,17 @@ public abstract class FormatterBlockWithBeginNode extends FormatterBlockNode {
 		return DEFAULT_OFFSET;
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ruby.formatter.node.FormatterBlockNode#isEmpty()
-	 */
+	@Override
 	public boolean isEmpty() {
 		return begin == null && super.isEmpty();
 	}
 
-	/*
-	 * @see org.eclipse.dltk.formatter.nodes.FormatterBlockNode#getChildren()
-	 */
-	public List getChildren() {
+	@Override
+	public List<IFormatterNode> getChildren() {
 		if (begin == null) {
 			return super.getChildren();
 		} else {
-			List result = new ArrayList();
+			List<IFormatterNode> result = new ArrayList<IFormatterNode>();
 			if (begin != null) {
 				result.add(begin);
 			}
@@ -111,9 +103,7 @@ public abstract class FormatterBlockWithBeginNode extends FormatterBlockNode {
 		}
 	}
 
-	/*
-	 * @see org.eclipse.dltk.ruby.formatter.node.FormatterBlockNode#toString()
-	 */
+	@Override
 	public String toString() {
 		return begin + "\n" + super.toString(); //$NON-NLS-1$
 	}

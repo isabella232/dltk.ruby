@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -100,11 +100,13 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 		start(root);
 		result.getAST().accept(new AbstractVisitor() {
 
+			@Override
 			protected Instruction visitNode(Node visited) {
 				visitChildren(visited);
 				return null;
 			}
 
+			@Override
 			public Instruction visitClassNode(ClassNode visited) {
 				FormatterClassNode classNode = new FormatterClassNode(document);
 				classNode.setBegin(createTextNode(document, visited
@@ -117,6 +119,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitSClassNode(SClassNode visited) {
 				FormatterClassNode classNode = new FormatterClassNode(document);
 				classNode.setBegin(createTextNode(document, visited
@@ -129,6 +132,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitModuleNode(ModuleNode visited) {
 				FormatterModuleNode moduleNode = new FormatterModuleNode(
 						document);
@@ -142,10 +146,12 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitDefnNode(DefnNode visited) {
 				return visitMethodDefNode(visited);
 			}
 
+			@Override
 			public Instruction visitDefsNode(DefsNode visited) {
 				return visitMethodDefNode(visited);
 			}
@@ -165,6 +171,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitWhileNode(WhileNode visited) {
 				if (!visited.isBlock()) {
 					visitChildren(visited);
@@ -181,6 +188,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitIterNode(IterNode visited) {
 				FormatterDoNode forNode = new FormatterDoNode(document);
 				forNode.setBegin(createTextNode(document, visited.getBegin()));
@@ -192,6 +200,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitForNode(ForNode visited) {
 				FormatterForNode forNode = new FormatterForNode(document);
 				forNode.setBegin(createTextNode(document, visited.getBegin()));
@@ -203,6 +212,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitUntilNode(UntilNode visited) {
 				if (!visited.isBlock()) {
 					visitChild(visited.getBodyNode());
@@ -226,6 +236,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitCaseNode(CaseNode visited) {
 				FormatterCaseNode caseNode = new FormatterCaseNode(document);
 				final int caseEnd = visited.getCaseKeyword().getPosition()
@@ -275,6 +286,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitCommentNode(CommentNode visited) {
 				FormatterRDocNode commentNode = new FormatterRDocNode(document,
 						visited.getStartOffset(), visited.getEndOffset());
@@ -282,9 +294,10 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitIfNode(IfNode visited) {
 				if (visited.isInline()) {
-					List children = new ArrayList(3);
+					List<Node> children = new ArrayList<Node>(3);
 					if (visited.getThenBody() != null) {
 						children.add(visited.getThenBody());
 					}
@@ -353,6 +366,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 			 * org.jruby.ast.visitor.AbstractVisitor#visitBeginNode(org.jruby
 			 * .ast.BeginNode)
 			 */
+			@Override
 			public Instruction visitBeginNode(BeginNode visited) {
 				FormatterBeginNode beginNode = new FormatterBeginNode(document);
 				beginNode.setBegin(createTextNode(document, visited
@@ -366,6 +380,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitRescueNode(RescueNode visited) {
 				if (visited.isInline()) {
 					return null;
@@ -408,6 +423,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitEnsureNode(EnsureNode visited) {
 				visitChild(visited.getBodyNode());
 				FormatterEnsureNode ensureNode = new FormatterEnsureNode(
@@ -420,6 +436,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitPreExeNode(PreExeNode visited) {
 				FormatterAtBeginNode endNode = new FormatterAtBeginNode(
 						document);
@@ -436,6 +453,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitPostExeNode(PostExeNode visited) {
 				FormatterAtEndNode endNode = new FormatterAtEndNode(document);
 				endNode.setBegin(createTextNode(document, visited
@@ -451,6 +469,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitStrNode(StrNode visited) {
 				FormatterStringNode strNode = new FormatterStringNode(document,
 						visited.getStartOffset(), visited.getEndOffset());
@@ -458,6 +477,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitDStrNode(DStrNode visited) {
 				FormatterStringNode strNode = new FormatterStringNode(document,
 						visited.getStartOffset(), visited.getEndOffset());
@@ -465,6 +485,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitRegexpNode(RegexpNode visited) {
 				FormatterStringNode strNode = new FormatterStringNode(document,
 						visited.getStartOffset(), visited.getEndOffset());
@@ -472,6 +493,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitDRegxNode(DRegexpNode visited) {
 				FormatterStringNode strNode = new FormatterStringNode(document,
 						visited.getStartOffset(), visited.getEndOffset());
@@ -479,6 +501,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitXStrNode(XStrNode visited) {
 				FormatterStringNode strNode = new FormatterStringNode(document,
 						visited.getStartOffset(), visited.getEndOffset());
@@ -486,6 +509,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitHeredocNode(HeredocNode visited) {
 				FormatterHereDocNode heredocNode = new FormatterHereDocNode(
 						document, visited.getStartOffset(), visited
@@ -498,6 +522,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
+			@Override
 			public Instruction visitFCallNode(FCallNode visited) {
 				if (isRequireMethod(visited)) {
 					FormatterRequireNode requireNode = new FormatterRequireNode(
@@ -510,6 +535,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				}
 			}
 
+			@Override
 			public Instruction visitArrayNode(ArrayNode visited) {
 				if (visited.getLeftBracketPosition() != null
 						&& visited.getRightBracketPosition() != null) {
@@ -528,6 +554,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				}
 			}
 
+			@Override
 			public Instruction visitHashNode(HashNode visited) {
 				if (visited.getLeftBrace() != null
 						&& visited.getRightBrace() != null) {
@@ -556,15 +583,15 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 			}
 
 			private void visitChildren(Node visited) {
-				final List children = visited.childNodes();
+				final List<Node> children = visited.childNodes();
 				if (!children.isEmpty()) {
 					visitChildren(children);
 				}
 			}
 
-			private void visitChildren(List children) {
-				for (Iterator i = children.iterator(); i.hasNext();) {
-					final Node child = (Node) i.next();
+			private void visitChildren(List<Node> children) {
+				for (Iterator<Node> i = children.iterator(); i.hasNext();) {
+					final Node child = i.next();
 					visitChild(child);
 				}
 			}
@@ -609,11 +636,10 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				- position.getStartOffset());
 	}
 
-	protected static final Comparator POSITION_COMPARATOR = new Comparator() {
+	protected static final Comparator<Node> POSITION_COMPARATOR = new Comparator<Node>() {
 
-		public int compare(Object o1, Object o2) {
-			final Node node1 = (Node) o1;
-			final Node node2 = (Node) o2;
+		@Override
+		public int compare(Node node1, Node node2) {
 			return node1.getStartOffset() - node2.getStartOffset();
 		}
 

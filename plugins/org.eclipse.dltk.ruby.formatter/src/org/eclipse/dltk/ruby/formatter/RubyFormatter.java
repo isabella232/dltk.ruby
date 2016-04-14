@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -63,11 +63,12 @@ public class RubyFormatter extends AbstractScriptFormatter {
 
 	private final String lineDelimiter;
 
-	public RubyFormatter(String lineDelimiter, Map preferences) {
+	public RubyFormatter(String lineDelimiter, Map<String, ? extends Object> preferences) {
 		super(preferences);
 		this.lineDelimiter = lineDelimiter;
 	}
 
+	@Override
 	public int detectIndentationLevel(IDocument document, int offset) {
 		final String input = document.get();
 		final RubyParserResult result;
@@ -93,6 +94,7 @@ public class RubyFormatter extends AbstractScriptFormatter {
 		return 0;
 	}
 
+	@Override
 	public TextEdit format(String source, int offset, int length, int indent)
 			throws FormatterException {
 		final String input = source.substring(offset, offset + length);

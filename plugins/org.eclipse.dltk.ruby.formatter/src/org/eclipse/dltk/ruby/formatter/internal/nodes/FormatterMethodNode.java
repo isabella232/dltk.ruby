@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 xored software, Inc.
+ * Copyright (c) 2008, 2016 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,10 +26,12 @@ public class FormatterMethodNode extends FormatterBlockWithBeginEndNode
 		super(document);
 	}
 
+	@Override
 	protected boolean isIndenting() {
 		return getDocument().getBoolean(RubyFormatterConstants.INDENT_METHOD);
 	}
 
+	@Override
 	protected int getBlankLinesBefore(IFormatterContext context) {
 		if (context.getParent() == null) {
 			return getInt(RubyFormatterConstants.LINES_FILE_BETWEEN_METHOD);
@@ -40,6 +42,7 @@ public class FormatterMethodNode extends FormatterBlockWithBeginEndNode
 		}
 	}
 
+	@Override
 	protected int getBlankLinesAfter(IFormatterContext context) {
 		if (context.getParent() == null) {
 			return getInt(RubyFormatterConstants.LINES_FILE_BETWEEN_METHOD);
