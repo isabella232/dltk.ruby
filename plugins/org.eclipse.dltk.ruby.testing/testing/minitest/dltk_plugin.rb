@@ -89,7 +89,7 @@ module Minitest
 
   class DLTKReporter < Minitest::StatisticsReporter
     def start
-      connectSocket ENV[EnvVars::PORT].to_i
+      DLTKReporter.connectSocket ENV[EnvVars::PORT].to_i
       @testsByName = {}
       DLTKReporter.sendMessage MessageIds::TEST_RUN_START + 0.to_s + " v2"
       super
@@ -106,7 +106,7 @@ module Minitest
       DLTKReporter.sendMessage MessageIds::TEST_RUN_END + (@total_time.to_i * 1000).to_s
     end
 
-    def connectSocket(port)
+    def self.connectSocket(port)
       return false unless port > 0
       #debug "Opening socket on #{port}"
       for i in 1..10
