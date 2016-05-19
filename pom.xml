@@ -12,6 +12,9 @@
 	<groupId>org.eclipse.dltk.ruby</groupId>
 	<artifactId>ruby</artifactId>
 	<packaging>pom</packaging>
+	<properties>
+		<tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/dltk/org.eclipse.dltk.ruby.git</tycho.scmUrl>
+	</properties>
 
 	<modules>
 		<module>features/org.eclipse.dltk.ruby-feature</module>
