@@ -42,8 +42,8 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 		if (path.isFile()) {
 			return new TestSuite(FormatRubyLibTest.class);
 		} else {
-			final TestSuite suite = new TestSuite(FormatRubyLibTest.class
-					.getName());
+			final TestSuite suite = new TestSuite(
+					FormatRubyLibTest.class.getName());
 			suite.addTest(new TestCase("testRubyLib-NOT-FOUND") {
 
 				@Override
@@ -55,8 +55,6 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 			return suite;
 		}
 	}
-
-	static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
 
 	/**
 	 * @param name
@@ -87,17 +85,18 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 						}
 					};
 					final char[] content = Util.getInputStreamAsCharArray(
-							entryStream, (int) entry.getSize(), CHARSET);
+							entryStream, (int) entry.getSize(),
+							RubyFormatterTestsPlugin.CHARSET);
 					final String input = new String(content);
 					try {
-						final TextEdit edit = f.format(input, 0,
-								input.length(), 0);
+						final TextEdit edit = f.format(input, 0, input.length(),
+								0);
 						assertNotNull(entry.getName(), edit);
 						final IDocument document = new Document(input);
 						edit.apply(document);
 						assertTrue(compareIgnoreBlanks(entry.getName(),
-								new StringReader(input), new StringReader(
-										document.get())));
+								new StringReader(input),
+								new StringReader(document.get())));
 					} catch (BadLocationException e) {
 						throw new RuntimeException(e);
 					} catch (FormatterSyntaxProblemException e) {

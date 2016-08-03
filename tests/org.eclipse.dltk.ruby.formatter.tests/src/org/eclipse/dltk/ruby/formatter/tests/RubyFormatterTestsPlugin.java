@@ -30,6 +30,8 @@ public class RubyFormatterTestsPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.formatter.tests"; //$NON-NLS-1$
 
+	static final String CHARSET = "ISO-8859-1";
+
 	// The shared instance
 	private static RubyFormatterTestsPlugin plugin;
 
@@ -89,7 +91,7 @@ public class RubyFormatterTestsPlugin extends AbstractUIPlugin {
 
 		@Override
 		public String getCharset() {
-			return AllTests.CHARSET;
+			return CHARSET;
 		}
 
 		@Override

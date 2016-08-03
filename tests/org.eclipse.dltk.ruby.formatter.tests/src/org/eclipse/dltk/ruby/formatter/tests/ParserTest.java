@@ -73,13 +73,15 @@ public class ParserTest extends AbstractRubyFormatterTest {
 		final List<HeredocNode> heredocNodes = selectHeredocNodes(result);
 		assertEquals(2, heredocNodes.size());
 		final HeredocNode doc1 = heredocNodes.get(0);
-		assertTrue(substring(input, doc1.getEndMarkerPosition()).indexOf(id1) >= 0);
+		assertTrue(substring(input, doc1.getEndMarkerPosition())
+				.indexOf(id1) >= 0);
 		final String content1 = substring(input, doc1.getContentPosition());
 		assertTrue(content1.indexOf(id1) < 0);
 		assertTrue(content1.indexOf(hereDoc1[0]) >= 0);
 		assertTrue(content1.indexOf(hereDoc1[1]) >= 0);
 		final HeredocNode doc2 = heredocNodes.get(1);
-		assertTrue(substring(input, doc2.getEndMarkerPosition()).indexOf(id2) >= 0);
+		assertTrue(substring(input, doc2.getEndMarkerPosition())
+				.indexOf(id2) >= 0);
 		final String content2 = substring(input, doc2.getContentPosition());
 		assertTrue(content2.indexOf(id2) < 0);
 		assertTrue(content2.indexOf(hereDoc2[0]) >= 0);

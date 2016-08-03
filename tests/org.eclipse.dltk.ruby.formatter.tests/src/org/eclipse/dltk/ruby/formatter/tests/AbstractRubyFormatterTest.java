@@ -22,7 +22,8 @@ public abstract class AbstractRubyFormatterTest extends AbstractFormatterTest {
 	@Override
 	protected IScriptFormatter createFormatter(
 			Map<String, Object> preferences) {
-		return preferences != null ? new TestRubyFormatter(Util.LINE_SEPARATOR,
-				preferences) : new TestRubyFormatter();
+		return preferences != null
+				? new TestRubyFormatter(Util.LINE_SEPARATOR, preferences)
+				: new TestRubyFormatter();
 	}
 }
