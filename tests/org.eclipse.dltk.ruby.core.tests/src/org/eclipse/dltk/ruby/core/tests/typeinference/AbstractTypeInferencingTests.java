@@ -40,6 +40,8 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 	Hashtable<String, String> oldOptions;
 	ISourceModule wc = null;
 
+	private static final int COMPLETE_TIMEOUT = 5000;
+
 	public AbstractTypeInferencingTests(String projectName, String name) {
 		super(projectName, name);
 	}
@@ -69,7 +71,7 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 			tokenStart = str.lastIndexOf(tokenStartBehind) + tokenStartBehind.length();
 			tokenEnd = tokenStart + token.length() - 1;
 		}
-		this.wc.codeComplete(cursorLocation, requestor, this.wcOwner);
+		this.wc.codeComplete(cursorLocation, requestor, this.wcOwner, COMPLETE_TIMEOUT);
 		CompletionResult result = new CompletionResult();
 		result.proposals = requestor.getResults();
 		result.context = requestor.getContext();
@@ -100,7 +102,7 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 	
 	protected CompletionResult contextComplete(ISourceModule cu, int cursorLocation) throws ModelException {
 		CompletionTestsRequestor2 requestor = new CompletionTestsRequestor2(true, false, false, false);
-		cu.codeComplete(cursorLocation, requestor, this.wcOwner);
+		cu.codeComplete(cursorLocation, requestor, this.wcOwner, COMPLETE_TIMEOUT);
 		CompletionResult result = new CompletionResult();
 		result.proposals = requestor.getResults();
 		result.context = requestor.getContext();
