@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.dltk.formatter,
  org.eclipse.dltk.formatter.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.dltk.ruby.formatter.tests
 Bundle-Activator: org.eclipse.dltk.ruby.formatter.tests.RubyFormatterTestsPlugin
 Bundle-ActivationPolicy: lazy

@@ -36,7 +36,7 @@ public class TestRubyFormatter extends RubyFormatter {
 	}
 
 	public static Map<String, Object> createTestingPreferences() {
-		final Map<String, Object> result = new HashMap<String, Object>();
+		final Map<String, Object> result = new HashMap<>();
 		for (int i = 0; i < INDENTING.length; ++i) {
 			result.put(INDENTING[i], Boolean.TRUE);
 		}

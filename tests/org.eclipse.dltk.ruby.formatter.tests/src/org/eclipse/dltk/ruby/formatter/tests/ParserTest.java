@@ -99,7 +99,7 @@ public class ParserTest extends AbstractRubyFormatterTest {
 
 	private String createInput(final String id1, final String[] hereDoc1,
 			final String id2, final String[] hereDoc2) {
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		lines.add("def myfunc");
 		lines.add("print <<\"" + id1 + "\", <<\"" + id2
 				+ "\",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19");
@@ -113,7 +113,7 @@ public class ParserTest extends AbstractRubyFormatterTest {
 	}
 
 	private List<HeredocNode> selectHeredocNodes(RubyParserResult result) {
-		final List<HeredocNode> heredocNodes = new ArrayList<HeredocNode>();
+		final List<HeredocNode> heredocNodes = new ArrayList<>();
 		result.getAST().accept(new AbstractVisitor() {
 
 			@Override
@@ -152,7 +152,7 @@ public class ParserTest extends AbstractRubyFormatterTest {
 		final String input = "hash = { one: 1, two: 2 }";
 		RubyParserResult result = RubyParser.parse(input);
 		assertNotNull(result);
-		final List<Node> arrays = new ArrayList<Node>();
+		final List<Node> arrays = new ArrayList<>();
 		result.getAST().accept(new AbstractVisitor() {
 			@Override
 			protected Instruction visitNode(Node visited) {

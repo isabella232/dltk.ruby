@@ -70,9 +70,9 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 		if (!path.isFile()) {
 			fail(path + " is not found"); //$NON-NLS-1$
 		}
-		final ZipInputStream zipInputStream = new ZipInputStream(
-				new FileInputStream(path));
-		try {
+
+		try (final ZipInputStream zipInputStream = new ZipInputStream(
+				new FileInputStream(path))) {
 			final RubyFormatter f = new TestRubyFormatter();
 			ZipEntry entry;
 			while ((entry = zipInputStream.getNextEntry()) != null) {
@@ -109,12 +109,6 @@ public class FormatRubyLibTest extends AbstractRubyFormatterTest {
 					}
 					zipInputStream.closeEntry();
 				}
-			}
-		} finally {
-			try {
-				zipInputStream.close();
-			} catch (IOException e) {
-				//
 			}
 		}
 		if (errorCount > 0) {
