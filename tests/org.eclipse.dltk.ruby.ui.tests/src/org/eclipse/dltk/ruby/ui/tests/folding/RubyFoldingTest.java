@@ -1,17 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.folding;
 
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
@@ -22,7 +19,11 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
+
+import junit.framework.TestCase;
 
 public class RubyFoldingTest extends TestCase {
 
@@ -31,12 +32,14 @@ public class RubyFoldingTest extends TestCase {
 		public boolean codeFolding = true;
 		public boolean commentFolding = true;
 
+		@Override
 		protected FoldingStructureComputationContext createInitialContext() {
 			initializePreferences(fStore);
 			fCommentsFolding = commentFolding;
 			return createContext(true);
 		}
 
+		@Override
 		protected FoldingStructureComputationContext createContext(
 				boolean allowCollapse) {
 			ProjectionAnnotationModel model = new ProjectionAnnotationModel();
@@ -59,12 +62,13 @@ public class RubyFoldingTest extends TestCase {
 			return fDocument;
 		}
 
-		public Map testComputeFoldingStructure(String contents,
+		public Map<Annotation, Position> testComputeFoldingStructure(String contents,
 				FoldingStructureComputationContext ctx) {
 			super.computeFoldingStructure(contents, ctx);
 			return ctx.getMap();
 		}
 
+		@Override
 		protected boolean mayCollapse(ASTNode s,
 				FoldingStructureComputationContext ctx) {
 			return codeFolding && super.mayCollapse(s, ctx);
@@ -75,6 +79,7 @@ public class RubyFoldingTest extends TestCase {
 	IPreferenceStore fStore;
 	MyRubyASTFoldingStructureProvider provider;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		fStore = RubyUITestsPlugin.getDefault().getPreferenceStore();
@@ -88,7 +93,8 @@ public class RubyFoldingTest extends TestCase {
 		Document document = new Document(content);
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
-		Map result = provider.testComputeFoldingStructure(content, provider
+		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
+				provider
 				.createInitialContext());
 		assertEquals(1, result.size());
 	}
@@ -99,7 +105,8 @@ public class RubyFoldingTest extends TestCase {
 		Document document = new Document(content);
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
-		Map result = provider.testComputeFoldingStructure(content, provider
+		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
+				provider
 				.createInitialContext());
 		assertEquals(3 + 3, result.size());
 	}
@@ -110,7 +117,8 @@ public class RubyFoldingTest extends TestCase {
 		Document document = new Document(content);
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
-		Map result = provider.testComputeFoldingStructure(content, provider
+		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
+				provider
 				.createInitialContext());
 		assertEquals(2 + 3, result.size());
 	}
@@ -122,7 +130,8 @@ public class RubyFoldingTest extends TestCase {
 		TestUtils.installStuff(document);
 		provider.codeFolding = false;
 		provider.setDocument(document);
-		Map result = provider.testComputeFoldingStructure(content, provider
+		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
+				provider
 				.createInitialContext());
 		assertEquals(27, result.size());
 	}
@@ -134,7 +143,8 @@ public class RubyFoldingTest extends TestCase {
 		TestUtils.installStuff(document);
 		provider.commentFolding = false;
 		provider.setDocument(document);
-		Map result = provider.testComputeFoldingStructure(content, provider
+		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
+				provider
 				.createInitialContext());
 		assertEquals(73 + 13 + 1, result.size());
 	}
@@ -145,7 +155,8 @@ public class RubyFoldingTest extends TestCase {
 		Document document = new Document(content);
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
-		Map result = provider.testComputeFoldingStructure(content, provider
+		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
+				provider
 				.createInitialContext());
 		assertEquals(100 + 13 + 1, result.size());
 	}

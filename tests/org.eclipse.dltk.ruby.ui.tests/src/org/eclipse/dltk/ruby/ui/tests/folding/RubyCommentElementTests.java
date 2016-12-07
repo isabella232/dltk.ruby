@@ -20,11 +20,13 @@ public class RubyCommentElementTests extends AbstractModelTests {
 		super(RubyUITestsPlugin.PLUGIN_ID, name);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		setUpScriptProject(PROJECT_NAME);
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(PROJECT_NAME);
 		super.tearDownSuite();
@@ -50,10 +52,10 @@ public class RubyCommentElementTests extends AbstractModelTests {
 	}
 
 	/**
-	 * 
+	 *
 	 * Gets a string pattern, searches for the comment that contains this
 	 * pattern and returns IModelElement to which the comment corresponds
-	 * 
+	 *
 	 */
 	protected String getElementByComment(ISourceModule module,
 			String commentPattern) throws ModelException {

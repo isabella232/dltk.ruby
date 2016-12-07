@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.internal;
 
@@ -13,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
@@ -32,7 +32,7 @@ public class TestUtils {
 		byte[] data = new byte[length];
 		stream.read(data);
 		stream.close();
-		return new String(data, "utf-8");
+		return new String(data, StandardCharsets.UTF_8);
 	}
 	
 	/**
@@ -53,6 +53,7 @@ public class TestUtils {
 
 	public static final IRangeFilter ALL_RANGES_ALLOWED = new IRangeFilter() {
 		
+		@Override
 		public boolean allowRange(IDocument document, int start, int length) throws BadLocationException {
 			return true;
 		}

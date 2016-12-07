@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2016 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.search;
 
@@ -29,6 +28,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 		return new Suite(ThreadedUIMixinTests.class);
 	}
 
+	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
 		up();
@@ -43,6 +43,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 		// waitForAutoBuild();
 	}
 
+	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(PROJECT_NAME);
 		super.tearDownSuite();
@@ -84,6 +85,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 			this.keys = keys;
 		}
 
+		@Override
 		public void run() {
 			for (int i = 0; i < this.cycles; i++) {
 				for (int j = 0; j < this.stop - this.start; j++) {
@@ -94,7 +96,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 			this.finish = true;
 			System.out.println("Finished");
 		}
-	};
+	}
 
 	class AccessUI extends Access {
 
@@ -104,6 +106,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 			// TODO Auto-generated constructor stub
 		}
 
+		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			// this.notifyAll();
