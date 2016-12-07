@@ -48,7 +48,7 @@ public class MixinTestsSuite extends TestSuite {
 
 		@Override
 		protected void runTest() throws Throwable {
-			final Collection<IAssertion> assertions = new ArrayList<IAssertion>();
+			final Collection<IAssertion> assertions = new ArrayList<>();
 			CharSequence content = loadContent(path);
 			String[] lines = TextUtils.splitLines(content);
 			for (int i = 0; i < lines.length; i++) {

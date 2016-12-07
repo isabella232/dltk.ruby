@@ -5,7 +5,6 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
-
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.rewriter;
 
@@ -347,7 +346,7 @@ public class RewriterTests extends AbstractModelTests {
 	}
 
 	//TODO
-	public void testChangeNumericLiteral() throws IOException {
+	public void testChangeNumericLiteral() {
 		String content = "var = 123";
 		ModuleDeclaration ast = ASTUtils.getAST(content.toCharArray());
 		//modify ast
@@ -448,20 +447,13 @@ public class RewriterTests extends AbstractModelTests {
 
 	private String loadContent(String path) throws IOException {
 		StringBuffer buffer = new StringBuffer();
-		InputStream input = null;
-		try {
-			input = Activator.openResource(path);
+		try (InputStream input = Activator.openResource(path);) {
 			InputStreamReader reader = new InputStreamReader(input);
 
 			char[] cbuf = new char[1024 * 16];
 			while (reader.ready() == true) {
 				int read = reader.read(cbuf);
 				buffer.append(cbuf, 0, read);
-			}
-		}
-		finally {
-			if (input != null) {
-				input.close();
 			}
 		}
 		String content = buffer.toString();

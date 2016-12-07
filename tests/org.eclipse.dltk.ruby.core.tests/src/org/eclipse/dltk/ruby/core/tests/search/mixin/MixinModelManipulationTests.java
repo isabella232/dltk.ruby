@@ -18,7 +18,6 @@ import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinElement;
 import org.eclipse.dltk.core.mixin.MixinModel;
-import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.core.tests.Activator;
@@ -33,8 +32,7 @@ import org.eclipse.dltk.ruby.core.tests.Activator;
  * @author fourdman
  * 
  */
-public class MixinModelManipulationTests extends AbstractDLTKSearchTests
-		implements IDLTKSearchConstants {
+public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 	private static final String PROJECT_NAME = "mixins";
 
 	public MixinModelManipulationTests(String name) {

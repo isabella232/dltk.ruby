@@ -86,7 +86,7 @@ public class TypeInferenceSuite extends TestSuite {
 			final String folder = (pos >= 0 ? x.substring(pos + 1) : x);
 			addTest(new TestCase(name) {
 
-				private Collection<IAssertion> assertions = new ArrayList<IAssertion>();
+				private Collection<IAssertion> assertions = new ArrayList<>();
 
 				@Override
 				public void setUp() {
@@ -246,7 +246,7 @@ public class TypeInferenceSuite extends TestSuite {
 										.getModelKey());
 							} else if (type instanceof AmbiguousType) {
 								AmbiguousType ambiType = (AmbiguousType) type;
-								Set<String> modelKeySet = new HashSet<String>();
+								Set<String> modelKeySet = new HashSet<>();
 								IEvaluatedType[] possibleTypes = ambiType
 										.getPossibleTypes();
 								for (int cnt = 0, max = possibleTypes.length; cnt < max; cnt++) {
@@ -273,19 +273,13 @@ public class TypeInferenceSuite extends TestSuite {
 
 	private String loadContent(String path) throws IOException {
 		StringBuffer buffer = new StringBuffer();
-		InputStream input = null;
-		try {
-			input = Activator.openResource(path);
+		try (InputStream input = Activator.openResource(path);) {
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
 			char[] data = new char[100 * 1024]; // tests shouldnt be more that
 			// 100 kb
 			int size = br.read(data);
 			buffer.append(data, 0, size);
-		} finally {
-			if (input != null) {
-				input.close();
-			}
 		}
 		String content = buffer.toString();
 		return content;

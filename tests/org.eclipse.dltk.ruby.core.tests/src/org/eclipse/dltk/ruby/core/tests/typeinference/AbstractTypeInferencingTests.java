@@ -83,23 +83,17 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 
 	protected String loadContent(String path) throws IOException {
 		StringBuffer buffer = new StringBuffer();
-		InputStream input = null;
-		try {
-			input = Activator.openResource(path);
+		try (InputStream input = Activator.openResource(path);) {
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
 			char[] data = new char[100*1024]; // tests shouldnt be more that 100 kb
 			int size = br.read(data);
 			buffer.append(data, 0, size);
-		} finally {
-			if (input != null) {
-				input.close();
-			}
 		}
 		String content = buffer.toString();
 		return content;
 	}
-	
+
 	protected CompletionResult contextComplete(ISourceModule cu, int cursorLocation) throws ModelException {
 		CompletionTestsRequestor2 requestor = new CompletionTestsRequestor2(true, false, false, false);
 		cu.codeComplete(cursorLocation, requestor, this.wcOwner, COMPLETE_TIMEOUT);

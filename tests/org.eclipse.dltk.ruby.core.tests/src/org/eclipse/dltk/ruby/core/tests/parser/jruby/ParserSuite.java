@@ -11,12 +11,10 @@ package org.eclipse.dltk.ruby.core.tests.parser.jruby;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -24,6 +22,9 @@ import org.eclipse.dltk.compiler.env.ModuleSource;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class ParserSuite extends TestSuite {
 
@@ -54,7 +55,7 @@ public class ParserSuite extends TestSuite {
 
 				@Override
 				protected void runTest() throws Throwable {
-					Map<Character, Integer> map = new HashMap<Character, Integer>();
+					Map<Character, Integer> map = new HashMap<>();
 					String input = loadInput(cleanPath + ".rb", map);
 					String output = loadOutput(cleanPath + ".exp", map);
 
@@ -77,12 +78,12 @@ public class ParserSuite extends TestSuite {
 	}
 
 	public static String loadContent(String path) throws IOException {
-		InputStream stream = Activator.openResource(path);
-		int length = stream.available();
-		byte[] data = new byte[length];
-		stream.read(data);
-		stream.close();
-		return new String(data, "utf-8");
+		try (InputStream stream = Activator.openResource(path)) {
+			int length = stream.available();
+			byte[] data = new byte[length];
+			stream.read(data);
+			return new String(data, StandardCharsets.UTF_8);
+		}
 	}
 
 	private String loadInput(String path, Map<Character, Integer> map) throws IOException {

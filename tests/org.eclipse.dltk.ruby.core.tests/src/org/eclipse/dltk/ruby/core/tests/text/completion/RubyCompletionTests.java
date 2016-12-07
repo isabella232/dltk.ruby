@@ -770,7 +770,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		cu.codeComplete(cursorLocation, requestor);
 		String completionResults = requestor.getResults();
 
-		Vector<String> methods = new Vector<String>();
+		Vector<String> methods = new Vector<>();
 		int lastElementsOccurance = 0;
 		while ((lastElementsOccurance = completionResults.indexOf("element:",
 				lastElementsOccurance)) > -1) {
@@ -781,7 +781,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 					lastElementsOccurance));
 		}
 
-		Vector<String> relevances = new Vector<String>();
+		Vector<String> relevances = new Vector<>();
 		int lastRelevanceOccurance = 0;
 		while (lastRelevanceOccurance > -1) {
 			lastRelevanceOccurance = completionResults.indexOf("relevance:",

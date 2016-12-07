@@ -16,4 +16,4 @@ Require-Bundle: org.junit,
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.dltk.ruby.core.tests,
  org.eclipse.dltk.ruby.core.tests.parser
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

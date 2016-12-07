@@ -25,15 +25,13 @@ import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinElement;
-import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.ruby.core.tests.Activator;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixin;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinModel;
 
-public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
-		implements IDLTKSearchConstants {
+public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 
 	private static final String PROJECT1_NAME = "mixins1";
 	private static final String PROJECT2_NAME = "mixins2";
@@ -131,7 +129,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
 
 	private void removeBuildpathEntry(final IScriptProject project,
 			final IBuildpathEntry entry) throws ModelException {
-		final List<IBuildpathEntry> cp = new ArrayList<IBuildpathEntry>();
+		final List<IBuildpathEntry> cp = new ArrayList<>();
 		cp.addAll(Arrays.asList(project.getRawBuildpath()));
 		assertTrue(cp.remove(entry));
 		IBuildpathEntry[] newCP = cp
@@ -148,7 +146,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests
 		IMixinElement[] children = element.getChildren();
 		assertNotNull(children);
 		assertEquals(childrenNames.length, children.length);
-		final Set<String> names = new HashSet<String>();
+		final Set<String> names = new HashSet<>();
 		for (int i = 0; i < children.length; ++i) {
 			names.add(children[i].getLastKeySegment());
 		}
