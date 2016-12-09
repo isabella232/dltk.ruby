@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Localization: plugin
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.dltk.ruby.testing.tests
-Bundle-Version: 5.7.0.qualifier
+Bundle-Version: 5.7.1.qualifier
 Bundle-Vendor: %pluginProvider
 Fragment-Host: org.eclipse.dltk.ruby.testing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
