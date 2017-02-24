@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,8 @@
  *
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.folding;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 
@@ -22,10 +24,10 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class RubyFoldingTest extends TestCase {
+public class RubyFoldingTest {
 
 	private class MyRubyASTFoldingStructureProvider extends
 			RubyFoldingStructureProvider {
@@ -79,14 +81,14 @@ public class RubyFoldingTest extends TestCase {
 	IPreferenceStore fStore;
 	MyRubyASTFoldingStructureProvider provider;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		fStore = RubyUITestsPlugin.getDefault().getPreferenceStore();
 		RubyPreferenceConstants.initializeDefaultValues(fStore);
 		provider = new MyRubyASTFoldingStructureProvider();
 	}
 
+	@Test
 	public void test0() throws Exception {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
 		String content = "#ab\n#dc\n";
@@ -99,6 +101,7 @@ public class RubyFoldingTest extends TestCase {
 		assertEquals(1, result.size());
 	}
 
+	@Test
 	public void test177924a() throws Exception {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
 		String content = TestUtils.getData("resources/folding/b177924.rb");
@@ -111,6 +114,7 @@ public class RubyFoldingTest extends TestCase {
 		assertEquals(3 + 3, result.size());
 	}
 
+	@Test
 	public void test177924b() throws Exception {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 4);
 		String content = TestUtils.getData("resources/folding/b177924.rb");
@@ -123,6 +127,7 @@ public class RubyFoldingTest extends TestCase {
 		assertEquals(2 + 3, result.size());
 	}
 
+	@Test
 	public void test193174a() throws Exception {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
 		String content = TestUtils.getData("resources/folding/b193174.rb");
@@ -136,6 +141,7 @@ public class RubyFoldingTest extends TestCase {
 		assertEquals(27, result.size());
 	}
 
+	@Test
 	public void test193174b() throws Exception {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
 		String content = TestUtils.getData("resources/folding/b193174.rb");
@@ -149,6 +155,7 @@ public class RubyFoldingTest extends TestCase {
 		assertEquals(73 + 13 + 1, result.size());
 	}
 
+	@Test
 	public void test193174c() throws Exception {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
 		String content = TestUtils.getData("resources/folding/b193174.rb");

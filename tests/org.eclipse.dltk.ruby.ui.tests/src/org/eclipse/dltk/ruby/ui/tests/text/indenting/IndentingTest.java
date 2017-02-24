@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.text.indenting;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
@@ -23,13 +23,19 @@ import org.eclipse.jface.text.DocCmd;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.ui.PlatformUI;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestName;
 
-public class IndentingTest extends TestCase {
+public class IndentingTest {
 
 	private static final String PATH = "resources/indenting/";
 	private static final String DELIMITER = TextUtilities
 			.getDefaultLineDelimiter(new Document());
 	private RubyAutoEditStrategy tabStrategy, spaceStrategy;
+	@Rule
+	public TestName testName = new TestName();
 
 	private void waitWorkbenchCreated() throws InterruptedException {
 		for (int i = 0; i < 40; i++) {
@@ -42,9 +48,8 @@ public class IndentingTest extends TestCase {
 				"Workbench did not intitialized during a minute.");
 	}
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		waitWorkbenchCreated();
 		tabStrategy = createStrategy(true);
 		spaceStrategy = createStrategy(false);
@@ -70,7 +75,7 @@ public class IndentingTest extends TestCase {
 		final String NEW_LINE_TAG = "#n#";
 		final String REPLACE_TAG = "#r#";
 		String EXPECTED_TAG = "###";
-		
+
 		String delim = TextUtilities.determineLineDelimiter(data, DELIMITER);
 		data = data.replaceAll(NEW_LINE_TAG, START_TAG + delim + END_TAG);
 
@@ -127,7 +132,7 @@ public class IndentingTest extends TestCase {
 	}
 
 	private void magic() throws Exception {
-		String name = getName();
+		String name = testName.getMethodName();
 		String fileName = name.substring(4, 5).toLowerCase()
 				+ name.substring(5) + ".rb";
 		String data = TestUtils.getData(PATH + fileName);
@@ -137,75 +142,93 @@ public class IndentingTest extends TestCase {
 		doTest(data, tabStrategy);
 	}
 
+	@Test
 	public void testNewLineInDef() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testEnterBeforeClass() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testEnterOpensClass() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testIfStatement() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testIfModifier() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testMovingEndToNewLine() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testMovingEndWithWhitespaceToNewLine() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testDeindentingEnd() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testClassNotKeyword() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testNewLineAfterEmptyIndentedLine() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testNewLineInRegularFunction() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testIndentAfterNewLineBeforeParen() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testIndentOnUnclosedParen() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testIndentOnFirstExplicitContinuation() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testIndentOnFirstImplicitContinuation() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testNoIndentOnSubsequentExplicitContinuation() throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testNoIndentOnSubsequentImplicitContinuationAfterExplicitOne()
 			throws Exception {
 		magic();
 	}
 
+	@Test
 	public void testNoIndentOnSubsequentImplicitContinuationAfterImplicitOne()
 			throws Exception {
 		magic();

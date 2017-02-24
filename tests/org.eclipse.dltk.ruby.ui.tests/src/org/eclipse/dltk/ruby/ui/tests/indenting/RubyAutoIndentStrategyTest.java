@@ -1,15 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.indenting;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
@@ -21,34 +20,35 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.DocCmd;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class RubyAutoIndentStrategyTest extends TestCase {
+public class RubyAutoIndentStrategyTest {
 	/*
 	 * Tests with _ in the beginning relies on features, not
 	 * presented now, and may be will be implemented in future
 	 */
-	
+
 	private static final String TAB = "\t";
-	
+
 	private static final String AUTOINDENT = TAB;
-	
+
 	private static final String DUMMY_POSTFIX = "#comment";
 
 	private static String DELIMITER = TextUtilities.getDefaultLineDelimiter(new Document());
 	private static String BLOCK_END = DELIMITER + "end";
-	
+
 
     private RubyAutoEditStrategy strategy;
 	private String doc;
 	private DocCmd docCmd;
 	private String expected;
 	IPreferenceStore fStore;
-	
 
-    @Override
-	protected void setUp() throws Exception {
-        super.setUp();
+
+	@Before
+	public void setUp() throws Exception {
     	fStore = new PreferenceStore();
     	RubyPreferenceConstants.initializeDefaultValues(fStore);
     	fStore.setValue(CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.TAB);
@@ -59,52 +59,46 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	strategy = new RubyAutoEditStrategy(fPartitioning, fStore);
     }
 
-    @Override
-	protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    
     public void __testTab() { System.out.println("Tab\n");
 
-        String str = 
-            "        args = [ '-1', '-2',\n"+ 
+        String str =
+            "        args = [ '-1', '-2',\n"+
             "                ";
         DocCmd docCmd = new DocCmd(str.length(), 0, "\t");
         strategy.customizeDocumentCommand(new Document(str), docCmd);
         assertEquals("    ", docCmd.text);
     }
-    
+
     public void _testSpaces() { System.out.println("Spaces\n");
 
         DocCmd docCmd = new DocCmd(0, 0, "\t");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("    ", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "\t\t");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("        ", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "\tabc");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("    abc", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "\tabc\t");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("    abc    ", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, " ");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals(" ", docCmd.text);
     }
-    
+
     public void doTestInsertion(String prefix, String postfix, String inserted, String expected) {
 	    Document doc = new Document(prefix + postfix);
 	    DocCmd docCmd = new DocCmd(prefix.length(), 0, inserted);
 	    strategy.customizeDocumentCommand(doc, docCmd);
 	    assertEquals(expected, docCmd.text);
     }
-    
+
     public void doTestLineReindent(String prefix, String line, String appended, String postfix, String expected) throws Exception {
     	Document doc = new Document(prefix + line + postfix);
     	DocCmd cmd = new DocCmd(prefix.length() + line.length(), 0, appended);
@@ -112,68 +106,77 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	doc.replace(cmd.offset, cmd.length, cmd.text);
     	assertEquals(expected, doc.get());
     }
-    
+
     public void doTestNewLineIndent(String prefix, String postfix, String indent) {
 		doTestInsertion(prefix, postfix, "\n", "\n" + indent);
     }
-    
+
+	@Test
     public void testSimpleNewLine() {
     	String stat1 = "def foo";
     	String stat2 = "puts 'Ruby is cool'";
     	doTestNewLineIndent(stat1 + "\n" + TAB + stat2, DUMMY_POSTFIX, TAB);
     }
-    
+
+	@Test
     public void testIndentedNewLineAfterDef() {
     	String stat1 = "def foo";
     	doTestNewLineIndent(stat1, DUMMY_POSTFIX, AUTOINDENT + DUMMY_POSTFIX + BLOCK_END);
     }
-        
+
+	@Test
     public void testIndentedNewLineAfterIf() {
     	String stat1 = "if a==0";
     	doTestNewLineIndent(stat1, DUMMY_POSTFIX, AUTOINDENT + DUMMY_POSTFIX + BLOCK_END);
     	String stat2 = "def foo" + DELIMITER + "end" + DELIMITER + "if a==0";
     	doTestNewLineIndent(stat2, DUMMY_POSTFIX, AUTOINDENT + DUMMY_POSTFIX + BLOCK_END);
     }
-    
+
     private void doTestBraceDeindent(String opening, String closing) throws Exception {
     	String s1 = "\tputs " + opening + "\n";
     	String s2 = "\t        2+2\n";
-    	doTestLineReindent(s1 + s2, "\t        ", closing, "", 
+    	doTestLineReindent(s1 + s2, "\t        ", closing, "",
     			s1 + s2 + "\t        " + closing);
     }
-    
+
+	@Test
     public void testIndentingOfClosingParenToOpeningOne() throws Exception {
     	doTestBraceDeindent("(", ")");
     }
-    
+
+	@Test
     public void testIndentingOfClosingSquareBraceToOpeningOne() throws Exception {
     	doTestBraceDeindent("[", "]");
     }
-    
+
+	@Test
     public void testIndentingOfClosingCurlyBrace() throws Exception {
     	String s1 = "\t puts {\n";
     	String s2 = "\t\t\t     2+2\n";
-    	doTestLineReindent(s1 + s2, "\t        ", "}", "", 
+    	doTestLineReindent(s1 + s2, "\t        ", "}", "",
     			s1 + s2 + "\t }");
     }
-    
+
+	@Test
     public void testDeindentingOfRdocBegin() throws Exception {
     	String s1 = "\t puts {\n";
     	doTestLineReindent(s1, "\t\t\t=begi", "n", "", s1 + "=begin");
     }
-    
+
+	@Test
     public void testDeindentingOfRdocEnd() throws Exception {
     	String s1 = "\t puts {\n";
     	doTestLineReindent(s1, "\t\t\t=en", "d", "", s1 + "=end");
     }
-    
+
+	@Test
     public void testDeindentOnEnd() throws Exception {
     	String s1 = "\tdef foo\n";
 		String s2 = "\t\tputs\n";
-		doTestLineReindent(s1 + s2, "\t\ten", "d", "", 
+		doTestLineReindent(s1 + s2, "\t\ten", "d", "",
 				s1 + s2 + "\tend");
     }
-    
+
     public void __testNewLineAfterReturn() { System.out.println("NewLineAfterReturn\n");
 
     	String str = "dfdsfd" +
@@ -183,10 +186,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"#ffo".length(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals("\n", docCmd.text);
+
     }
-    
+
     public void __testIgnoreComment() { System.out.println("IgnoreComment\n");
 
     	String str = "" +
@@ -195,10 +198,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals("\n", docCmd.text);
+
     }
-    
+
     public void __testIgnoreComment2() { System.out.println("IgnoreComment2\n");
 
     	String str = "" +
@@ -208,10 +211,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals("\n", docCmd.text);
+
     }
-    
+
     public void _testNewLineAfterOpeningParWithOtherContents() { System.out.println("NewLineAfterOpeningParWithOtherContents\n");
 
     	String str = "" +
@@ -220,24 +223,24 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n         ", docCmd.text); 
+    	assertEquals("\n         ", docCmd.text);
     }
-    
+
     public void _testNewLineAfterReturn2() { System.out.println("NewLineAfterReturn2\n");
 
         String str = "" +
         "def m1(self):\n" +
         "    return ('foo',";
-                     
-                         
+
+
         final Document doc = new Document(str);
         DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
         strategy.customizeDocumentCommand(doc, docCmd);
-        assertEquals("\n            ", docCmd.text); 
-        
+        assertEquals("\n            ", docCmd.text);
+
     }
-    
-    
+
+
     public void __testMaintainIndent() { System.out.println("MaintainIndent\n");
 
         String str = "" +
@@ -246,15 +249,15 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         "        print 'foo'\n" +
         "    print 'bla'"+
         "";
-        
-        
+
+
         final Document doc = new Document(str);
         DocCmd docCmd = new DocCmd(doc.getLength()-"print 'bla'".length(), 0, "\n");
         strategy.customizeDocumentCommand(doc, docCmd);
-        assertEquals("\n    ", docCmd.text); 
-        
+        assertEquals("\n    ", docCmd.text);
+
     }
-    
+
     public void _testMaintainIndent2() { System.out.println("MaintainIndent2\n");
 
     	String str = "" +
@@ -263,18 +266,18 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"        print 'foo'\n" +
     	"    print 'bla'"+
     	"";
-    	
-    	
+
+
     	final Document doc = new Document(str);
     	int offset = doc.getLength()-"  print 'bla'".length();
 		DocCmd docCmd = new DocCmd(offset, 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n  ", docCmd.text); 
-    	assertEquals(offset+2, docCmd.caretOffset); 
-    	
+    	assertEquals("\n  ", docCmd.text);
+    	assertEquals(offset+2, docCmd.caretOffset);
+
     }
-    
-    
+
+
     public void __testDontChangeCursorOffset() { System.out.println("DontChangeCursorOffset\n");
 
     	String str = "" +
@@ -282,18 +285,18 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"    if not 1:\n" +
     	"        print    'foo'" +
     	"";
-    	
-    			
+
+
     	final Document doc = new Document(str);
     	int offset = doc.getLength()-"    'foo'".length();
     	DocCmd docCmd = new DocCmd(offset, 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n        ", docCmd.text); 
-    	assertEquals(-1, docCmd.caretOffset); //don't change it 
-    	
+    	assertEquals("\n        ", docCmd.text);
+    	assertEquals(-1, docCmd.caretOffset); //don't change it
+
     }
-    
-    
+
+
     public void __testTabIndentToLevel() { System.out.println("TabIndentToLevel\n");
 
     	String str = "" +
@@ -304,18 +307,18 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"                  b,\n" +
     	")" +
     	"";
-    	
-    	
+
+
     	final Document doc = new Document(str);
     	int offset = doc.getLength()-"\n                  b,\n)".length();
     	DocCmd docCmd = new DocCmd(offset, 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("                  ", docCmd.text); 
-    	
+    	assertEquals("                  ", docCmd.text);
+
     }
-    
-    
-    
+
+
+
     public void _testTabIndentToLevel2() { System.out.println("TabIndentToLevel2\n");
 
     	String str = "" +
@@ -330,18 +333,18 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"                          \n" +
     	"" + //we're here (indent to the first level)
     	"";
-    	
-    	
+
+
     	final Document doc = new Document(str);
     	int offset = doc.getLength();
     	DocCmd docCmd = new DocCmd(offset, 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("    ", docCmd.text); 
-    	
+    	assertEquals("    ", docCmd.text);
+
     }
-    
-    
-    
+
+
+
     public void __testTabIndentToLevel3() { System.out.println("TabIndentToLevel3\n");
 
     	String str = "" +
@@ -356,18 +359,18 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"                          \n" +
     	"    " + //now that we're already in the first level, indent to the current level
     	"";
-    	
-    	
+
+
     	final Document doc = new Document(str);
     	int offset = doc.getLength();
     	DocCmd docCmd = new DocCmd(offset, 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("                          ", docCmd.text);
     	assertEquals(offset - 4, docCmd.offset);
-    	assertEquals(4, docCmd.length);    	
+    	assertEquals(4, docCmd.length);
     }
-    
-    
+
+
     public void __testNoAutoIndentClosingPar() { System.out.println("NoAutoIndentClosingPar\n");
 
     	String str = "" +
@@ -375,38 +378,38 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"              what(),\n" + //the next line should be indented to this one, and not to the start of the indent
     	"            )\n" +
     	"";
-    	
-    	
+
+
     	final Document doc = new Document(str);
-    	String s = 
+    	String s =
     		"\n"+
     		"            )\n";
     	DocCmd docCmd = new DocCmd(doc.getLength()-s.length(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n              ", docCmd.text); 
-    	
+    	assertEquals("\n              ", docCmd.text);
+
     }
-    
+
     public void __testNoAutoIndentClosingPar2() { System.out.println("NoAutoIndentClosingPar2\n");
 
     	String str = "" +
     	"newTuple = (\n" +
-    	"              what(),\n" + 
+    	"              what(),\n" +
     	"\n" + //pressing tab in the start of this line will bring us to the 'what()' level.
     	"            )\n" +
     	"";
-    	
-    	
+
+
     	final Document doc = new Document(str);
-    	String s = 
+    	String s =
     		"\n"+
     		"            )\n";
     	DocCmd docCmd = new DocCmd(doc.getLength()-s.length(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("              ", docCmd.text); 
-    	
+    	assertEquals("              ", docCmd.text);
+
     }
-    
+
     public void __testNewLineAfterLineWithComment() { System.out.println("NewLineAfterLineWithComment\n");
 
     	String str = "" +
@@ -415,10 +418,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals("\n", docCmd.text);
+
     }
-    
+
     public void __testNewLine10() { System.out.println("NewLine10\n");
 
     	String str = "" +
@@ -429,10 +432,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
-    	
+    	assertEquals("\n    ", docCmd.text);
+
     }
-    
+
     public void __testNewLine11() { System.out.println("NewLine11\n");
 
     	String str = "" +
@@ -443,11 +446,11 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"if False: 'foo'".length(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
-    	
+    	assertEquals("\n    ", docCmd.text);
+
     }
-    
-    
+
+
     public void __testNewLine12() { System.out.println("NewLine12\n");
 
     	String str = "" +
@@ -456,9 +459,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"print 'done'".length(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
+    	assertEquals("\n    ", docCmd.text);
     }
-    
+
 
     public void __testNewLine3() { System.out.println("NewLine3\n");
 
@@ -467,12 +470,12 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-4, 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
-    	
+    	assertEquals("\n    ", docCmd.text);
+
     	String expected = "for a in b:    ";
     	assertEquals(expected, doc.get());
     }
-    
+
     public void __testNewLine6() { System.out.println("NewLine6\n");
 
     	String str = "" +
@@ -482,9 +485,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
+    	assertEquals("\n", docCmd.text);
     }
-    
+
     public void __testNewLine6a() { System.out.println("NewLine6a\n");
 
     	String str = "" +
@@ -494,9 +497,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
+    	assertEquals("\n", docCmd.text);
     }
-    
+
     public void __testNewLine7() { System.out.println("NewLine7\n");
 
         String str = "" +
@@ -508,9 +511,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         final Document doc = new Document(str);
         DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
         strategy.customizeDocumentCommand(doc, docCmd);
-        assertEquals("\n", docCmd.text); 
+        assertEquals("\n", docCmd.text);
     }
-    
+
     public void __testNewLine8() { System.out.println("NewLine8\n");
 
         String str = "" +
@@ -522,9 +525,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         final Document doc = new Document(str);
         DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
         strategy.customizeDocumentCommand(doc, docCmd);
-        assertEquals("\n    ", docCmd.text); 
+        assertEquals("\n    ", docCmd.text);
     }
-    
+
     public void __testIndent() { System.out.println("Indent\n");
 
     	String str = "" +
@@ -534,9 +537,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"if foo:".length(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
+    	assertEquals("\n    ", docCmd.text);
     }
-    
+
     public void __testIndentAfterRet() { System.out.println("IndentAfterRet\n");
 
     	String str = "" +
@@ -551,9 +554,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
+    	assertEquals("\n    ", docCmd.text);
     }
-    
+
     public void __testIndentAfterRet2() { System.out.println("IndentAfterRet2\n");
 
     	String str = "" +
@@ -568,9 +571,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("    ", docCmd.text); 
+    	assertEquals("    ", docCmd.text);
     }
-    
+
     public void __testNewLine9() { System.out.println("NewLine9\n");
 
         String str = "" +
@@ -580,9 +583,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         final Document doc = new Document(str);
         DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
         strategy.customizeDocumentCommand(doc, docCmd);
-        assertEquals("\n        ", docCmd.text); 
+        assertEquals("\n        ", docCmd.text);
     }
-    
+
     public void __testNewLine4() { System.out.println("NewLine4\n");
 
     	String str = "" +
@@ -596,11 +599,11 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"def a():\n" +
     	"    print a" +
     	"";
-    	assertEquals(expected, doc.get()); 
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals(expected, doc.get());
+    	assertEquals("\n", docCmd.text);
+
     }
-    
+
     public void _testNewLine5() { System.out.println("NewLine5\n");
 
     	String str = "" +
@@ -614,10 +617,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"def a():\n" +
     	"    " +
     	"";
-    	assertEquals(expected, doc.get()); 
-    	assertEquals("\n", docCmd.text); 
+    	assertEquals(expected, doc.get());
+    	assertEquals("\n", docCmd.text);
     }
-    
+
     public void __testNewLine() { System.out.println("NewLine\n");
 
     	String str = "createintervention() #create " +
@@ -625,10 +628,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals("\n", docCmd.text);
+
     }
-    
+
     public void __testNewLine2() { System.out.println("NewLine2\n");
 
     	String str = "err)" +
@@ -636,11 +639,11 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n", docCmd.text); 
-    	
+    	assertEquals("\n", docCmd.text);
+
     }
-    
-    
+
+
     public void __testTabInComment() { System.out.println("TabInComment\n");
 
     	String str = "#comment" +
@@ -649,9 +652,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("    ", docCmd.text); // a single tab should go to the correct indent
-    	
+
     }
-    
+
     public void __testIndentingWithTab() { System.out.println("IndentingWithTab\n");
 
     	String str = "class C:\n" +
@@ -662,7 +665,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
     }
-    
+
     public void __testIndentingWithTab2() { System.out.println("IndentingWithTab2\n");
 
     	String str = "" +
@@ -674,7 +677,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("    ", docCmd.text); // a single tab should go to the correct indent
     }
-    
+
     public void __testIndentingWithTab3() { System.out.println("IndentingWithTab3\n");
 
     	String str = "" +
@@ -687,7 +690,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
     }
-    
+
 //    public void __testWithoutSmartIndent() { System.out.println("WithoutSmartIndent\n");
 //    	final TestIndentPrefs prefs = new TestIndentPrefs(true, 4);
 //    	prefs.smartIndentAfterPar = false;
@@ -701,7 +704,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 //    	strategy.customizeDocumentCommand(doc, docCmd);
 //    	assertEquals("\n        ", docCmd.text); // a single tab should go to the correct indent
 //    }
-    
+
     public void __testIndentingWithTab4() { System.out.println("IndentingWithTab4\n");
 
     	String str = "" +
@@ -715,7 +718,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("    ", docCmd.text); // a single tab should go to the correct indent
     }
-    
+
     public void __testIndentingWithTab5() { System.out.println("IndentingWithTab5\n");
 
     	String str = "" +
@@ -729,10 +732,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	strategy.customizeDocumentCommand(doc, docCmd);
     	//assertEquals(" ", docCmd.text); // a single tab should go to the correct indent
     	assertEquals ("        ", docCmd.text);
-    	assertEquals ("       ".length(), docCmd.length);    	
+    	assertEquals ("       ".length(), docCmd.length);
     	assertEquals (doc.getLength() - "       ".length(), docCmd.offset);
     }
-    
+
     public void __testIndentingWithTab6() { System.out.println("IndentingWithTab6\n");
 
     	String str = "" +
@@ -745,7 +748,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	strategy.customizeDocumentCommand(doc, docCmd);
     	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
     }
-    
+
     public void __testIndentingWithTab7() { System.out.println("IndentingWithTab7\n");
 
     	String str = "" +
@@ -759,25 +762,25 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
     	assertEquals(2, docCmd.length); // the spaces after the indent should be removed
     }
-    
+
     public void _testTabs() { System.out.println("Tabs\n");
 
         DocCmd docCmd = new DocCmd(0, 0, "\t");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("\t", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "\t\t");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("\t\t", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "\tabc");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("\tabc", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "\tabc\t");
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("\tabc\t", docCmd.text);
-        
+
         docCmd = new DocCmd(0, 0, "    abc"); //paste
         strategy.customizeDocumentCommand(new Document(""), docCmd);
         assertEquals("\tabc", docCmd.text);
@@ -793,7 +796,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
                    "    ";
         assertEquals(expected, docCmd.text);
     }
-    
+
     public void _testCommentsIndent2() { System.out.println("CommentsIndent2\n");
 
         //__test not indent more
@@ -803,7 +806,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         expected = "\n" +
         "    ";
         assertEquals(expected, docCmd.text);
-        
+
         //test indent more
         doc = "    if False:";
         docCmd = new DocCmd(doc.length(), 0, "\n");
@@ -812,10 +815,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         "        ";
         assertEquals(expected, docCmd.text);
     }
-    
+
     public void __testIndentLevel3() { System.out.println("IndentLevel3\n");
 
-    	
+
     	String doc = "" +
 		"a = (1, \n" +
 		"  2,"; //should keep this indent, and not go to the opening bracket indent.
@@ -824,10 +827,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	String expected = "\n  ";
     	assertEquals(expected, docCmd.text);
     }
-    
+
     public void __testIndentLevel() { System.out.println("IndentLevel\n");
 
-        
+
         String doc = "" +
                 "def m1(): #some comment\n" +
                 "    print foo(a,\n" +
@@ -837,10 +840,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         String expected = "\n    ";
         assertEquals(expected, docCmd.text);
     }
-    
+
     public void __testIndentLevel2() { System.out.println("IndentLevel2\n");
 
-        
+
         String doc = "" +
         "def m1(): #some comment\n" +
         "    def metfoo(a,\n" +
@@ -850,7 +853,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         String expected = "\n        ";
         assertEquals(expected, docCmd.text);
     }
-    
+
     public void __testDedent() { System.out.println("Dedent\n");
 
 
@@ -860,7 +863,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         String expected = "\n";
         assertEquals(expected, docCmd.text);
-        
+
         //test ending with
         doc = "def m1(): #some comment\n" +
               "    return";
@@ -868,7 +871,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "\n";
         assertEquals(expected, docCmd.text);
-        
+
         //test not dedenting
         doc = "def m1(): #some comment\n" +
         "    returnIs10 = 10";
@@ -877,9 +880,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         expected = "\n"+
         "    ";
         assertEquals(expected, docCmd.text);
-        
+
     }
-    
+
     public void __testIndentSpaces() { System.out.println("IndentSpaces\n");
         //test after class xxx:\n
 
@@ -889,7 +892,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         String expected = "\n" +
         		          "    ";
         assertEquals(expected, docCmd.text);
-        
+
         //test regular
         doc = "    a = 2";
         docCmd = new DocCmd(doc.length(), 0, "\n");
@@ -907,8 +910,8 @@ public class RubyAutoIndentStrategyTest extends TestCase {
                    "     ";
         assertEquals(expected, docCmd.text);
         */
-    }        
-    
+    }
+
     public void _testAfterClosePar1() { System.out.println("AfterClosePar1\n");
 
         String doc = "m = [a,";
@@ -917,9 +920,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         String expected = "\n" +
         "     ";
         assertEquals(expected, docCmd.text);
-        
+
     }
-    
+
 //    public void __testAfterCloseParOnlyIndent() { System.out.println("AfterCloseParOnlyIndent\n");
 //    	final TestIndentPrefs prefs = new TestIndentPrefs(true, 4);
 //
@@ -930,9 +933,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 //    	String expected = "\n" +
 //    	"    ";
 //    	assertEquals(expected, docCmd.text);
-//    	
+//
 //    }
-    
+
 //    public void __testAfterCloseParOnlyIndent2() { System.out.println("AfterCloseParOnlyIndent2\n");
 //    	final TestIndentPrefs prefs = new TestIndentPrefs(true, 4);
 //
@@ -945,9 +948,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 //    	String expected = "\n" +
 //    	"        ";
 //    	assertEquals(expected, docCmd.text);
-//    	
+//
 //    }
-    
+
     public void __testAfterClosePar2() { System.out.println("AfterClosePar2\n");
 
         String doc = "m = [a,\n" +
@@ -957,7 +960,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         String expected = "\n" +
         "     ";
         assertEquals(expected, docCmd.text);
-        
+
     }
     public void _testAfterClosePar() { System.out.println("AfterClosePar\n");
 
@@ -967,7 +970,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         String expected = "\n" +
         "         ";
         assertEquals(expected, docCmd.text);
-        
+
 //        doc = "m = [a, otherCall(), ]";
 //        docCmd = new DocCmd(doc.length()-1, 0, "\n"); //right before the last ']'
 //        strategy.customizeDocumentCommand(new Document(doc), docCmd);
@@ -975,7 +978,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 //        "      ";
 //        assertEquals(expected, docCmd.text);
     }
-    
+
     public void _testIndent2() { System.out.println("Indent2\n");
 
         String doc = "m = [a, otherCall(), ";
@@ -991,7 +994,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 //        expected = "\n" +
 //        "      ";
 //        assertEquals(expected, docCmd.text);
-        
+
         doc = "def m2(self):\n"+
               "    m1(a, b(), )";
         docCmd = new DocCmd(doc.length()-1, 0, "\n"); //right before the last ')'
@@ -999,20 +1002,20 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         expected = "\n" +
               "       ";
         assertEquals(expected, docCmd.text);
-        
+
     }
-    
+
     public void _testIndent3() { System.out.println("Indent3\n");
-        
+
 
         String doc = ""+
-        "properties.create(a = newClass(),"; 
+        "properties.create(a = newClass(),";
         DocCmd docCmd = new DocCmd(doc.length(), 0, "\n");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         String expected = "\n"+
         "                  ";
         assertEquals(expected, docCmd.text);
-        
+
     }
     public void __testIndent3a() { System.out.println("Indent3a\n");
 
@@ -1025,7 +1028,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"                  ";
     	assertEquals(expected, docCmd.text);
     }
-    
+
     public void _testIndent4() { System.out.println("Indent4\n"); //even if it does not end with ',' we should indent in parenthesis
 
     	String doc = ""+
@@ -1037,8 +1040,8 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"                               ";
     	assertEquals(expected, docCmd.text);
     }
-    
-    public void __testDedent5() { System.out.println("Dedent5\n"); 
+
+    public void __testDedent5() { System.out.println("Dedent5\n");
 
     	String doc = ""+
     	"properties.create(a = newClass(),\n" +
@@ -1050,9 +1053,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	"                  ";
     	assertEquals(expected, docCmd.text);
     }
-    
+
 //    public void __testNoSmartIndent() { System.out.println("NoSmartIndent\n");
-//    	
+//
 //    	TestIndentPrefs prefs = new TestIndentPrefs(false, 4, true);
 //    	prefs.smartIndentAfterPar = false;
 //
@@ -1104,16 +1107,16 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 //    	String doc = null;
 //    	DocCmd docCmd = null;
 //    	String expected = null;
-//    	
+//
 //    	doc = "class c:\n" +
 //    	"    def met";
 //    	docCmd = new DocCmd(doc.length(), 0, "(");
 //    	strategy.customizeDocumentCommand(new Document(doc), docCmd);
 //    	expected = "():";
 //    	assertEquals(expected, docCmd.text);
-//    	
+//
 //    }
-    
+
     /**
      * Tests automatically adding/replacing brackets, colons, and parentheses.
      * @see PyAutoIndentStrategy
@@ -1125,14 +1128,14 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         String expected = "():";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "class c:\n" +
     		  "    def met";
         docCmd = new DocCmd(doc.length(), 0, "(");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "(self):";
         assertEquals(expected, docCmd.text);
-        
+
         //same as above, but with tabs
         doc = "class c:\n" +
         "\tdef met";
@@ -1140,31 +1143,31 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "(self):";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "class c(object): #";
         docCmd = new DocCmd(doc.length(), 0, "(");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "("; //in comment
         assertEquals(expected, docCmd.text);
-        
+
         doc = "def a";
         docCmd = new DocCmd(doc.length(), 0, "(");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "():";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "a";
         docCmd = new DocCmd(doc.length(), 0, "(");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "()";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "a()";
         docCmd = new DocCmd(doc.length()-1, 0, "(");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "(";
         assertEquals(expected, docCmd.text);
-		
+
 		// test very simple ':' detection
 		doc = "def something():";
 		docCmd = new DocCmd(doc.length() - 1, 0, ":");
@@ -1181,7 +1184,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(32, docCmd.caretOffset);
-		
+
 		// test inputting ':' at the end of a document
 		doc = "class c:\n" +
 				"    def __init__(self)";
@@ -1190,7 +1193,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = ":";
 		assertEquals(expected, docCmd.text);
 		assertEquals(31, docCmd.offset);
-		
+
 		// test same as above, but with a comment
 		doc = "class c:\n" +
 				"    def __init__(self): # comment";
@@ -1199,7 +1202,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(32, docCmd.caretOffset);
-		
+
 		// test inputting ')' at the end of a document
 		doc = "class c:\n" +
 				"    def __init__(self)";
@@ -1208,7 +1211,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = ")";
 		assertEquals(expected, docCmd.text);
 		assertEquals(0, docCmd.caretOffset);
-		
+
 		// test inputting ')' at the end of a document when it should replace a ')'
 		doc = "class c:\n" +
 				"    def __init__(self)";
@@ -1217,16 +1220,16 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(31, docCmd.caretOffset);
-		
+
 		// test inputting ')' in the middle of the document
-		doc = "def __init__(self):\n" + 
+		doc = "def __init__(self):\n" +
 			  "   pass";
 		docCmd = new DocCmd(17, 0, ")");
 		strategy.customizeDocumentCommand(new Document(doc), docCmd);
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(18, docCmd.caretOffset);
-		
+
 		// check very simple braces insertion
 		doc = "()";
 		docCmd = new DocCmd(1, 0, ")");
@@ -1234,7 +1237,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(2, docCmd.caretOffset);
-		
+
 		// check simple braces insertion not at end of document
 		doc = "() ";
 		docCmd = new DocCmd(1, 0, ")");
@@ -1242,7 +1245,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(2, docCmd.caretOffset);
-		
+
 		// check insertion that should happen even being just before a ')'
 		doc = "(() ";
 		docCmd = new DocCmd(2, 0, ")");
@@ -1250,7 +1253,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = ")";
 		assertEquals(expected, docCmd.text);
 		assertEquals(0, docCmd.caretOffset);
-		
+
 		// check same stuff for brackets
 		// check simple braces insertion not at end of document
 		doc = "[] ";
@@ -1259,7 +1262,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		expected = "";
 		assertEquals(expected, docCmd.text);
 		assertEquals(2, docCmd.caretOffset);
-		
+
 		// two different kinds of braces next to each other
 		doc = "([)";
 		docCmd = new DocCmd(2, 0, "]");
@@ -1268,7 +1271,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
 		assertEquals(expected, docCmd.text);
 		assertEquals(0, docCmd.caretOffset);
     }
-    
+
     public void __testParens() { System.out.println("Parens\n");
 
     	String str = "isShown() #suite()" +
@@ -1276,11 +1279,11 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-") #suite()".length(), 0, ")");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("", docCmd.text); 
+    	assertEquals("", docCmd.text);
     	assertEquals(9, docCmd.caretOffset);
-    	
+
     }
-    
+
     public void __testParens2() { System.out.println("Parens2\n");
 
     	String str = "isShown() #suite()'" +
@@ -1288,12 +1291,12 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-") #suite()'".length(), 0, ")");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("", docCmd.text); 
+    	assertEquals("", docCmd.text);
     	assertEquals(9, docCmd.caretOffset);
-    	
+
     }
 
-    
+
     public void __testElse() { System.out.println("Else\n");
         //first part of test - simple case
 
@@ -1312,10 +1315,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
                 "    print a\n" +
                 "else",
                 doc.get());
-        
+
         //second part of test - should not dedent
 
-        strDoc = 
+        strDoc =
         "if foo:\n" +
         "    if somethingElse:" +
         "        print a\n" +
@@ -1333,9 +1336,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
                 "        print a\n" +
                 "    else",
                 doc.get());
-        
+
     }
-    
+
     public void _testElif() { System.out.println("Elif\n");
     	//first part of test - simple case
 
@@ -1354,10 +1357,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     			"    print a\n" +
     			"elif",
     			doc.get());
-    	
+
     	//second part of test - should not dedent
 
-    	strDoc = 
+    	strDoc =
     		"if foo:\n" +
     		"    if somethingElse:" +
     		"        print a\n" +
@@ -1375,14 +1378,14 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     			"        print a\n" +
     			"    elif",
     			doc.get());
-    	
+
     }
-    
-    
+
+
     public void __testElseInFor() { System.out.println("ElseInFor\n");
         //first part of test - simple case
 
-        String strDoc = 
+        String strDoc =
         "for i in []:\n" +
         "    msg=\"success at %s\" % i\n" +
         "    else" +
@@ -1401,11 +1404,11 @@ public class RubyAutoIndentStrategyTest extends TestCase {
                 "",
                 doc.get());
     }
-    
+
     public void __testElseInTry() { System.out.println("ElseInTry\n");
         //first part of test - simple case
 
-        String strDoc = 
+        String strDoc =
             "try:\n" +
             "    print a\n" +
             "except:\n" +
@@ -1426,7 +1429,7 @@ public class RubyAutoIndentStrategyTest extends TestCase {
                 "else",
                 doc.get());
     }
-    
+
     public void _testElifWithPar() { System.out.println("ElifWithPar\n");
     	//first part of test - simple case
 
@@ -1445,10 +1448,10 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     			"    print a\n" +
     			"elif",
     			doc.get());
-    	
+
     	//second part of test - should not dedent
 
-    	strDoc = 
+    	strDoc =
     		"if foo:\n" +
     		"    if somethingElse:" +
     		"        print a\n" +
@@ -1466,9 +1469,9 @@ public class RubyAutoIndentStrategyTest extends TestCase {
     			"        print a\n" +
     			"    elif",
     			doc.get());
-    	
+
     }
-    
+
     public void _testAutoImportStr() { System.out.println("AutoImportStr\n");
 
         String doc = "from xxx";
@@ -1476,31 +1479,31 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         String expected = " import ";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "from xxx import";
         docCmd = new DocCmd(doc.length(), 0, " ");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = " ";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "no from xxx";
         docCmd = new DocCmd(doc.length(), 0, " ");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = " ";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "From xxx";
         docCmd = new DocCmd(doc.length(), 0, " ");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = " ";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "from this space";
         docCmd = new DocCmd(doc.length(), 0, " ");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = " ";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "from";
         docCmd = new DocCmd(doc.length(), 0, " ");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
@@ -1512,22 +1515,23 @@ public class RubyAutoIndentStrategyTest extends TestCase {
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = " ";
         assertEquals(expected, docCmd.text);
-        
+
         doc = "from xxx #import yyy";
         docCmd = new DocCmd(8, 0, " ");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = " import ";
         assertEquals(expected, docCmd.text);
-        
+
     }
 
+	@Test
     public void testBug186514() throws Exception {
     	String prefix = "class A\n\tdef b\n\tend\n\t";
 		String postfix = "\nend";
 		String inserted = "def test1\nend\n|";
 		String expected = "\tdef test1\n\tend\n\t|";
 		doTestInsertion(prefix, postfix, inserted, expected);
-    }    
-    
+    }
+
 
 }

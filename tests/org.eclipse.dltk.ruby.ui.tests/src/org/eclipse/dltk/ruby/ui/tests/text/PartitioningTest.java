@@ -1,15 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.text;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
@@ -18,12 +18,9 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.TextUtilities;
+import org.junit.Test;
 
-public class PartitioningTest extends TestCase {
-
-	public PartitioningTest(String name) {
-		super(name);
-	}
+public class PartitioningTest {
 
 	public void doTest(String data, String partition) throws Exception {
 		final String DELIMITER = "#$#";
@@ -57,24 +54,29 @@ public class PartitioningTest extends TestCase {
 				expected.toString(), actual.toString());
 	}
 
+	@Test
 	public void testCode() throws Exception {
 		doTest("#$#class Foo; end#$#", IDocument.DEFAULT_CONTENT_TYPE);
 	}
 
+	@Test
 	public void testString() throws Exception {
 		doTest("puts #$#\"Hello, world\"#$#, a", IRubyPartitions.RUBY_STRING);
 	}
 
+	@Test
 	public void testPercentStringAfterPuts() throws Exception {
 		doTest("puts #$#%s/foo bar boz/#$# / 2", IRubyPartitions.RUBY_PERCENT_STRING);
 	}
 
+	@Test
 	public void testPercentStringAfterMethodCall() throws Exception {
 		doTest(
 				"def foo(*args); puts(*args); end\nfoo #$#%s/foo bar boz/#$# / 2",
 				IRubyPartitions.RUBY_PERCENT_STRING);
 	}
 
+	@Test
 	public void testPercentOperatorAfterVariable() throws Exception {
 		// XXX: this does not start a string in Ruby, but will be treated as a
 		// string in IDE
@@ -82,11 +84,13 @@ public class PartitioningTest extends TestCase {
 				IRubyPartitions.RUBY_PERCENT_STRING);
 	}
 
+	@Test
 	public void testPercentDoesStartString() throws Exception {
 		doTest("if a == #$#%s/2/#$# then puts 1 else puts 2 end",
 				IRubyPartitions.RUBY_PERCENT_STRING);
 	}
 
+	@Test
 	public void testPercentDoesNotStartString() throws Exception {
 		// XXX: this does not start a string in Ruby, but will be treated as a
 		// string in IDE
@@ -135,6 +139,7 @@ public class PartitioningTest extends TestCase {
 				IDocument.DEFAULT_CONTENT_TYPE);
 	}
 
+	@Test
 	public void testBug179488() throws Exception {
 		doTest("class Test\ndef test(x)\nobj = f($'#$#, x)\n"
 				+ "if (obj.class.name == #$#\"Array\") then\n#...\n"
@@ -164,6 +169,7 @@ public class PartitioningTest extends TestCase {
 				IDocument.DEFAULT_CONTENT_TYPE);
 	}
 
+	@Test
 	public void testBug180370() throws Exception {
 		doTest(
 				"#$## Some metaprogramming to make it rock\n#$#"

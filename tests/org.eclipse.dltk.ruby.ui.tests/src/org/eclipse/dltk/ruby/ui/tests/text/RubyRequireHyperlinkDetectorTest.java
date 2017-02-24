@@ -11,18 +11,17 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.text;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.eclipse.dltk.ruby.internal.ui.text.hyperlink.RubyRequireHyperlinkDetector;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class RubyRequireHyperlinkDetectorTest extends TestCase {
-
-	public RubyRequireHyperlinkDetectorTest(String name) {
-		super(name);
-	}
+public class RubyRequireHyperlinkDetectorTest {
 
 	/**
 	 * @author Alexey
@@ -86,30 +85,37 @@ public class RubyRequireHyperlinkDetectorTest extends TestCase {
 				.getHyperlinkText());
 	}
 
+	@Test
 	public void testSingleQuotes() {
 		detect("require 'abc'", 9, 3);
 	}
 
+	@Test
 	public void testDoubleQuotes() {
 		detect("require \"abc\"", 9, 3);
 	}
 
+	@Test
 	public void testManySpaces() {
 		detect(" require  \"abc\"", 11, 3);
 	}
 
+	@Test
 	public void testBracketsSingleQuotes() {
 		detect("require('abc')", 9, 3);
 	}
 
+	@Test
 	public void testBracketsDoubleQuotes() {
 		detect("require(\"abc\")", 9, 3);
 	}
 
+	@Test
 	public void testBracketsAndSpaces() {
 		detect("require( 'abc' )", 10, 3);
 	}
 
+	@Test
 	public void testNoHyperlink() {
 		assertNull(detector.checkLine("require abc"));
 		assertNull(detector.checkLine("require 'abc\""));
