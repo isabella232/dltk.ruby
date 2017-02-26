@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,9 +37,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 	}
 
 	private void buildAll() throws CoreException {
-		ResourcesPlugin.getWorkspace()
-				.build(IncrementalProjectBuilder.FULL_BUILD,
-						new NullProgressMonitor());
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		// waitForAutoBuild();
 	}
 
@@ -55,8 +53,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 		String id = null;
 		do {
 			id = String.valueOf(System.currentTimeMillis());
-		} while (InterpreterType.findInterpreterInstall(id) != null
-				|| id.equals(fgLastUsedID));
+		} while (InterpreterType.findInterpreterInstall(id) != null || id.equals(fgLastUsedID));
 		fgLastUsedID = id;
 		return id;
 	}
@@ -76,8 +73,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 		public boolean finish = false;
 		private final RubyMixinModel mixinModel;
 
-		public Access(RubyMixinModel mixinModel, String keys[], int start,
-				int stop, int cycles) {
+		public Access(RubyMixinModel mixinModel, String keys[], int start, int stop, int cycles) {
 			this.mixinModel = mixinModel;
 			this.start = start;
 			this.stop = stop;
@@ -98,39 +94,20 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 		}
 	}
 
-	class AccessUI extends Access {
-
-		public AccessUI(RubyMixinModel mixinModel, String[] keys, int start,
-				int stop, int cycles) {
-			super(mixinModel, keys, start, stop, cycles);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			// this.notifyAll();
-			super.run();
-		}
-
-	}
-
 	public void testMultiAccess() throws Exception {
 		int count = 10;
 		final RubyMixinModel mixinModel = RubyMixinModel.getWorkspaceInstance();
-		String[] findKeys = mixinModel.getRawModel().findKeys("*");
+		String[] findKeys = mixinModel.getRawModel().findKeys("*", new NullProgressMonitor());
 		Thread[] threads = new Thread[count - 1];
 		Access[] access = new Access[count];
 		int d = findKeys.length / count;
 		for (int i = 0; i < count; i++) {
 			if (i != count - 1) {
-				Access a = new Access(mixinModel, findKeys, d * (i), d
-						* (i + 1), 1);
+				Access a = new Access(mixinModel, findKeys, d * (i), d * (i + 1), 1);
 				access[i] = a;
 				threads[i] = new Thread(a);
 			} else {
-				Access a = new AccessUI(mixinModel, findKeys, d * (i),
-						findKeys.length, 10);
+				Access a = new Access(mixinModel, findKeys, d * (i), findKeys.length, 10);
 				access[i] = a;
 				// threads[i] = new Thread(a);
 			}

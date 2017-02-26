@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
-
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.search;
 
@@ -37,9 +36,7 @@ public class MixinCompleteTests extends AbstractDLTKSearchTests {
 	}
 
 	private void buildAll() throws CoreException {
-		ResourcesPlugin.getWorkspace()
-				.build(IncrementalProjectBuilder.FULL_BUILD,
-						new NullProgressMonitor());
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		// waitForAutoBuild();
 	}
 
@@ -55,8 +52,7 @@ public class MixinCompleteTests extends AbstractDLTKSearchTests {
 		String id = null;
 		do {
 			id = String.valueOf(System.currentTimeMillis());
-		} while (InterpreterType.findInterpreterInstall(id) != null
-				|| id.equals(fgLastUsedID));
+		} while (InterpreterType.findInterpreterInstall(id) != null || id.equals(fgLastUsedID));
 		fgLastUsedID = id;
 		return id;
 	}
@@ -68,8 +64,7 @@ public class MixinCompleteTests extends AbstractDLTKSearchTests {
 		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
 	}
 
-
-	public void testMultiAccess() throws Exception {
+	public void testMultiAccess() {
 
 	}
 }

@@ -29,8 +29,7 @@ import org.junit.Test;
 
 public class RubyFoldingTest {
 
-	private class MyRubyASTFoldingStructureProvider extends
-			RubyFoldingStructureProvider {
+	private class MyRubyASTFoldingStructureProvider extends RubyFoldingStructureProvider {
 		public boolean codeFolding = true;
 		public boolean commentFolding = true;
 
@@ -42,16 +41,14 @@ public class RubyFoldingTest {
 		}
 
 		@Override
-		protected FoldingStructureComputationContext createContext(
-				boolean allowCollapse) {
+		protected FoldingStructureComputationContext createContext(boolean allowCollapse) {
 			ProjectionAnnotationModel model = new ProjectionAnnotationModel();
 
 			IDocument doc = getDocument();
 			if (doc == null)
 				return null;
 
-			return new FoldingStructureComputationContext(doc, model,
-					allowCollapse);
+			return new FoldingStructureComputationContext(doc, model, allowCollapse);
 		}
 
 		Document fDocument;
@@ -71,33 +68,31 @@ public class RubyFoldingTest {
 		}
 
 		@Override
-		protected boolean mayCollapse(ASTNode s,
-				FoldingStructureComputationContext ctx) {
+		protected boolean mayCollapse(ASTNode s, FoldingStructureComputationContext ctx) {
 			return codeFolding && super.mayCollapse(s, ctx);
 		}
 
-	};
+	}
 
 	IPreferenceStore fStore;
 	MyRubyASTFoldingStructureProvider provider;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		fStore = RubyUITestsPlugin.getDefault().getPreferenceStore();
 		RubyPreferenceConstants.initializeDefaultValues(fStore);
 		provider = new MyRubyASTFoldingStructureProvider();
 	}
 
 	@Test
-	public void test0() throws Exception {
+	public void test0() {
 		fStore.setValue(PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 2);
 		String content = "#ab\n#dc\n";
 		Document document = new Document(content);
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
 		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
-				provider
-				.createInitialContext());
+				provider.createInitialContext());
 		assertEquals(1, result.size());
 	}
 
@@ -109,8 +104,7 @@ public class RubyFoldingTest {
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
 		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
-				provider
-				.createInitialContext());
+				provider.createInitialContext());
 		assertEquals(3 + 3, result.size());
 	}
 
@@ -122,8 +116,7 @@ public class RubyFoldingTest {
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
 		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
-				provider
-				.createInitialContext());
+				provider.createInitialContext());
 		assertEquals(2 + 3, result.size());
 	}
 
@@ -136,8 +129,7 @@ public class RubyFoldingTest {
 		provider.codeFolding = false;
 		provider.setDocument(document);
 		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
-				provider
-				.createInitialContext());
+				provider.createInitialContext());
 		assertEquals(27, result.size());
 	}
 
@@ -150,8 +142,7 @@ public class RubyFoldingTest {
 		provider.commentFolding = false;
 		provider.setDocument(document);
 		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
-				provider
-				.createInitialContext());
+				provider.createInitialContext());
 		assertEquals(73 + 13 + 1, result.size());
 	}
 
@@ -163,8 +154,7 @@ public class RubyFoldingTest {
 		TestUtils.installStuff(document);
 		provider.setDocument(document);
 		Map<Annotation, Position> result = provider.testComputeFoldingStructure(content,
-				provider
-				.createInitialContext());
+				provider.createInitialContext());
 		assertEquals(100 + 13 + 1, result.size());
 	}
 }
