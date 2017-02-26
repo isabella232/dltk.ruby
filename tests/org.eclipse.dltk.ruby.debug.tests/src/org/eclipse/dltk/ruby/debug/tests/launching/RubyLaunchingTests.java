@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 xored software, Inc. and others.
+ * Copyright (c) 2016, 2017 xored software, Inc. and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,9 @@ package org.eclipse.dltk.ruby.debug.tests.launching;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Test;
-
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.tests.launching.ScriptLaunchingTests;
@@ -27,6 +27,8 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
 import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ruby.launching.RubyLaunchConfigurationDelegate;
+
+import junit.framework.Test;
 
 public class RubyLaunchingTests extends ScriptLaunchingTests {
 
@@ -59,62 +61,59 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 
 	@Override
 	protected ILaunchConfiguration createLaunchConfiguration(String arguments) {
-		return createTestLaunchConfiguration(getNatureId(), getProjectName(),
-				"src/test.rb", arguments);
+		return createTestLaunchConfiguration(getNatureId(), getProjectName(), "src/test.rb", arguments);
 	}
 
 	@Override
 	protected void startLaunch(ILaunch launch, final IInterpreterInstall install) throws CoreException {
 		final AbstractScriptLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate() {
 			@Override
-			public IInterpreterInstall getInterpreterInstall(
-					ILaunchConfiguration configuration) throws CoreException {
+			public IInterpreterInstall getInterpreterInstall(ILaunchConfiguration configuration) {
 				return install;
 			}
 		};
-		delegate.launch(launch.getLaunchConfiguration(),
-				launch.getLaunchMode(), launch, null);
+		delegate.launch(launch.getLaunchConfiguration(), launch.getLaunchMode(), launch, null);
 	}
 
 	public void testDebugRuby() throws Exception {
-		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
-				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
-				"org.eclipse.dltk.ruby.basicdebugger");
+		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(RubyDebugPlugin.PLUGIN_ID);
+		prefs.put(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, "org.eclipse.dltk.ruby.basicdebugger");
+		prefs.flush();
 
 		DebugEventStats stats = this.internalTestDebug("ruby");
 		int suspendCount = stats.getSuspendCount();
 		assertEquals(1, suspendCount);
 
-//		assertEquals(2, stats.getResumeCount());
+		// assertEquals(2, stats.getResumeCount());
 
 		// Checking extended events count
 		assertEquals(1, stats.getBeforeVmStarted());
 		assertEquals(1, stats.getBeforeCodeLoaded());
-//		assertEquals(2, stats.getBeforeResumeCount());
+		// assertEquals(2, stats.getBeforeResumeCount());
 		assertEquals(1, stats.getBeforeSuspendCount());
 	}
+
 	public void testFastDebugRuby() throws Exception {
-		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
-				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
-				"org.eclipse.dltk.ruby.fastdebugger");
+		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(RubyDebugPlugin.PLUGIN_ID);
+		prefs.put(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, "org.eclipse.dltk.ruby.fastdebugger");
+		prefs.flush();
 		DebugEventStats stats = this.internalTestDebug("ruby");
 		int suspendCount = stats.getSuspendCount();
 		assertEquals(1, suspendCount);
 
-//		assertEquals(2, stats.getResumeCount());
+		// assertEquals(2, stats.getResumeCount());
 
 		// Checking extended events count
 		assertEquals(1, stats.getBeforeVmStarted());
 		assertEquals(1, stats.getBeforeCodeLoaded());
-//		assertEquals(2, stats.getBeforeResumeCount());
+		// assertEquals(2, stats.getBeforeResumeCount());
 		assertEquals(1, stats.getBeforeSuspendCount());
 	}
-
 
 	public void testDebugJRuby() throws Exception {
-		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
-				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
-				"org.eclipse.dltk.ruby.basicdebugger");
+		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(RubyDebugPlugin.PLUGIN_ID);
+		prefs.put(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, "org.eclipse.dltk.ruby.basicdebugger");
+		prefs.flush();
 
 		DebugEventStats stats = this.internalTestDebug("jruby");
 		int suspendCount = stats.getSuspendCount();
@@ -143,20 +142,17 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 
 	@Override
 	protected IInterpreterInstall[] getPredefinedInterpreterInstalls() {
-		IInterpreterInstallType[] installTypes = ScriptRuntime
-				.getInterpreterInstallTypes(RubyNature.NATURE_ID);
+		IInterpreterInstallType[] installTypes = ScriptRuntime.getInterpreterInstallTypes(RubyNature.NATURE_ID);
 		int id = 0;
-		List <IInterpreterInstall>installs = new ArrayList<IInterpreterInstall>();
+		List<IInterpreterInstall> installs = new ArrayList<>();
 		for (int i = 0; i < installTypes.length; i++) {
 			String installId = getNatureId() + "_";
-			createAddInstall(installs, "/usr/bin/ruby", installId
-					+ Integer.toString(++id), installTypes[i]);
-			createAddInstall(installs, "/home/dltk/apps/jruby/bin/jruby",
-					installId + Integer.toString(++id), installTypes[i]);
+			createAddInstall(installs, "/usr/bin/ruby", installId + Integer.toString(++id), installTypes[i]);
+			createAddInstall(installs, "/home/dltk/apps/jruby/bin/jruby", installId + Integer.toString(++id),
+					installTypes[i]);
 		}
 		if (installs.size() > 0) {
-			return installs
-					.toArray(new IInterpreterInstall[installs.size()]);
+			return installs.toArray(new IInterpreterInstall[installs.size()]);
 		}
 		return searchInstalls(RubyNature.NATURE_ID);
 	}

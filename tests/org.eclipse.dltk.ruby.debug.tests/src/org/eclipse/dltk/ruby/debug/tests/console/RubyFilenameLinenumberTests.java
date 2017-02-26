@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -31,27 +31,27 @@ public class RubyFilenameLinenumberTests {
 	}
 
 	@Test
-	public void testSimple() throws Exception {
+	public void testSimple() {
 		assertTrue(pattern.matcher("script.rb:2").matches());
 	}
 
 	@Test
-	public void testRoot() throws Exception {
+	public void testRoot() {
 		assertTrue(pattern.matcher("/script.rb:2").matches());
 	}
 
 	@Test
-	public void testFullWindows() throws Exception {
+	public void testFullWindows() {
 		assertTrue(pattern.matcher("C:/runtime/A/script.rb:2").matches());
 	}
 
 	@Test
-	public void testFullUnix() throws Exception {
+	public void testFullUnix() {
 		assertTrue(pattern.matcher("/home/user/runtime/A/script.rb:2").matches());
 	}
 
 	@Test
-	public void testFrom() throws Exception {
+	public void testFrom() {
 		Matcher m = pattern.matcher("from c:/ruby/lib/ruby/site_ruby/1.8/rubygems.rb:61:in `require_gem'");
 		assertTrue(m.find());
 		assertEquals(2, m.groupCount());
