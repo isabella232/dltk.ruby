@@ -17,6 +17,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.ruby.core
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Localization: plugin
 
