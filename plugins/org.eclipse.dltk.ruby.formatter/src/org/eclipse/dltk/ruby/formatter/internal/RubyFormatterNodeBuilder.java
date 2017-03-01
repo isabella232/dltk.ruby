@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -361,11 +361,6 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				return null;
 			}
 
-			/*
-			 * @see
-			 * org.jruby.ast.visitor.AbstractVisitor#visitBeginNode(org.jruby
-			 * .ast.BeginNode)
-			 */
 			@Override
 			public Instruction visitBeginNode(BeginNode visited) {
 				FormatterBeginNode beginNode = new FormatterBeginNode(document);
@@ -636,13 +631,7 @@ public class RubyFormatterNodeBuilder extends AbstractFormatterNodeBuilder {
 				- position.getStartOffset());
 	}
 
-	protected static final Comparator<Node> POSITION_COMPARATOR = new Comparator<Node>() {
-
-		@Override
-		public int compare(Node node1, Node node2) {
-			return node1.getStartOffset() - node2.getStartOffset();
-		}
-
-	};
+	protected static final Comparator<Node> POSITION_COMPARATOR = (node1, node2) -> node1.getStartOffset()
+			- node2.getStartOffset();
 
 }

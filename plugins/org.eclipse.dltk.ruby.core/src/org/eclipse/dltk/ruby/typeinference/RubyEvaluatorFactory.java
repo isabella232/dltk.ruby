@@ -2,7 +2,6 @@ package org.eclipse.dltk.ruby.typeinference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -57,12 +56,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			}
 		}
 		f = factories.toArray(new FactoryInfo[factories.size()]);
-		Arrays.sort(f, new Comparator<FactoryInfo>() {
-			@Override
-			public int compare(FactoryInfo f1, FactoryInfo f2) {
-				return f2.priority - f1.priority; 
-			}
-		});
+		Arrays.sort(f, (f1, f2) -> f2.priority - f1.priority);
 	}
 
 	@Override

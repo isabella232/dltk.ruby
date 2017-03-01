@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2016 IBM Corporation and others.
+ * Copyright (c) 2000, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@ package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.ui.text.completion.ScriptTypeCompletionProposal;
 import org.eclipse.jface.text.BadLocationException;
@@ -23,22 +22,15 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 
 public class RubyOverrideCompletionProposal extends ScriptTypeCompletionProposal implements ICompletionProposalExtension4 {
 
-	private IScriptProject fDTLKProject;
 	private String fMethodName;
-	private String[] fParamTypes;
 
-	public RubyOverrideCompletionProposal(IScriptProject jproject, ISourceModule cu, String methodName, String[] paramTypes, int start, int length, String displayName, String completionProposal) {
+	public RubyOverrideCompletionProposal(ISourceModule cu, String methodName, int start, int length, String displayName, String completionProposal) {
 		super(completionProposal, cu, start, length, null, displayName, 0);
-		Assert.isNotNull(jproject);
 		Assert.isNotNull(methodName);
-		Assert.isNotNull(paramTypes);
 		Assert.isNotNull(cu);
 
-		fParamTypes= paramTypes;
 		fMethodName= methodName;
 
-		fDTLKProject= jproject;
-		
 		StringBuffer buffer= new StringBuffer();
 		buffer.append(completionProposal);		
 		

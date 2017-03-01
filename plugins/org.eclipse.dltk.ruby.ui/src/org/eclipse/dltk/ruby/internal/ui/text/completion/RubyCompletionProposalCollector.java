@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text.completion;
 
@@ -55,8 +54,7 @@ public class RubyCompletionProposalCollector extends
 			IScriptProject scriptProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String displayName, String completionProposal) {
-		return new RubyOverrideCompletionProposal(scriptProject,
-				compilationUnit, name, paramTypes, start, length, displayName,
+		return new RubyOverrideCompletionProposal(compilationUnit, name, start, length, displayName,
 				completionProposal);
 	}
 
