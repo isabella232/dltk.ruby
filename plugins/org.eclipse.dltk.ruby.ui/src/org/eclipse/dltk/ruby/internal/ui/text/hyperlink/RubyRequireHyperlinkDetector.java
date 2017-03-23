@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -115,7 +115,7 @@ public class RubyRequireHyperlinkDetector extends AbstractHyperlinkDetector {
 	 */
 	protected IHyperlink createLink(int offset, final String line, int begin,
 			int end) {
-		final ITextEditor editor = (ITextEditor) getAdapter(ITextEditor.class);
+		final ITextEditor editor = getAdapter(ITextEditor.class);
 		if (editor != null) {
 			final String requiredFile = line.substring(begin, end);
 			final Region region = new Region(offset + begin, end - begin);
