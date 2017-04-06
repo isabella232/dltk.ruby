@@ -136,14 +136,14 @@
 			</action>
 			<action label="%ScriptInspect.label"
 				icon="$nl$/icons/etool16/insp_sbook.gif"
-				definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptInspect"
+				definitionId="org.eclipse.dltk.debug.ui.commands.ScriptInspect"
 				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptInspectAction"
 				menubarPath="additions"
 				id="org.eclipse.dltk.ruby.debug.ui.ScriptInspect">
 			</action>
 			<action label="%ScriptDisplay.label"
 				icon="$nl$/icons/etool16/disp_sbook.gif"
-				definitionId="org.eclipse.dlkt.debug.ui.commands.ScriptDisplay"
+				definitionId="org.eclipse.dltk.debug.ui.commands.ScriptDisplay"
 				class="org.eclipse.dltk.internal.debug.ui.actions.PopupScriptDisplayAction"
 				menubarPath="additions"
 				id="org.eclipse.dltk.ruby.debug.ui.ScriptDisplay">
