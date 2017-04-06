@@ -40,8 +40,9 @@ module XoredDebugger
         end
 
         def atomic?(obj)
-            atomic_types = [Bignum, FalseClass, Fixnum, Float, Integer, NilClass,
+            atomic_types = [FalseClass, Float, Integer, NilClass,
                             Numeric, Range, Regexp, String, Symbol, TrueClass]
+            atomic_types += [Bignum, Fixnum] if (RUBY_VERSION < "2.4")
             atomic_types.include?(obj.class)
         end
 
