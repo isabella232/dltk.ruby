@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.ListenerList;
 
 public class Watchdog implements Runnable {
 
-	private ListenerList timeoutListeners = new ListenerList();
+	private ListenerList<WatchdogListener> timeoutListeners = new ListenerList<>();
 
 	private final long timeout;
 
@@ -37,9 +37,8 @@ public class Watchdog implements Runnable {
 	}
 
 	protected final void fireTimeoutOccured() {
-		Object[] listeners = timeoutListeners.getListeners();
-		for (int i = 0; i < listeners.length; ++i) {
-			((WatchdogListener) listeners[i]).timeoutOccured();
+		for (WatchdogListener listener : timeoutListeners) {
+			listener.timeoutOccured();
 		}
 	}
 

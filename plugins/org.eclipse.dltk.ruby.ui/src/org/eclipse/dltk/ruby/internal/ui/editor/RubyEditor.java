@@ -1,11 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.editor;
 
@@ -125,7 +124,7 @@ public class RubyEditor extends ScriptEditor {
 					.prependVerifyKeyListener(fBracketInserter);
 	}
 
-	private static ListenerList doSetInputListeners = new ListenerList();
+	private static ListenerList<IRubyEditorListener> doSetInputListeners = new ListenerList<>();
 
 	public static void addListener(IRubyEditorListener listener) {
 		doSetInputListeners.add(listener);
@@ -136,9 +135,7 @@ public class RubyEditor extends ScriptEditor {
 	}
 
 	protected void notifyDoSetInput(IModelElement element) {
-		Object[] listeners2 = doSetInputListeners.getListeners();
-		for (int i = 0; i < listeners2.length; i++) {
-			IRubyEditorListener listener = (IRubyEditorListener) listeners2[i];
+		for (IRubyEditorListener listener : doSetInputListeners) {
 			if (listener != null) {
 				listener.notifyDoSetInput(element);
 			}

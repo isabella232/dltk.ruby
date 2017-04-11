@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,9 +35,8 @@ public class RubyPlugin extends Plugin {
 	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.core"; //$NON-NLS-1$
 
 	public static final boolean DUMP_EXCEPTIONS_TO_CONSOLE = Boolean
-			.valueOf(
-					Platform
-							.getDebugOption("org.eclipse.dltk.ruby.core/dumpErrorsToConsole")) //$NON-NLS-1$
+			.valueOf(Platform.getDebugOption(
+					"org.eclipse.dltk.ruby.core/dumpErrorsToConsole")) //$NON-NLS-1$
 			.booleanValue();
 
 	// The shared instance
@@ -55,7 +54,7 @@ public class RubyPlugin extends Plugin {
 		super.start(context);
 	}
 
-	private final ListenerList shutdownListeners = new ListenerList();
+	private final ListenerList<IShutdownListener> shutdownListeners = new ListenerList<>();
 
 	public void addShutdownListener(IShutdownListener listener) {
 		shutdownListeners.add(listener);
@@ -63,9 +62,8 @@ public class RubyPlugin extends Plugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		Object[] listeners = shutdownListeners.getListeners();
-		for (int i = 0; i < listeners.length; ++i) {
-			((IShutdownListener) listeners[i]).shutdown();
+		for (IShutdownListener listener : shutdownListeners) {
+			listener.shutdown();
 		}
 		shutdownListeners.clear();
 		plugin = null;
@@ -75,7 +73,7 @@ public class RubyPlugin extends Plugin {
 
 	/**
 	 * Returns the shared instance
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static RubyPlugin getDefault() {
@@ -88,15 +86,15 @@ public class RubyPlugin extends Plugin {
 		String message = ex.getMessage();
 		if (message == null)
 			message = "(no message)"; //$NON-NLS-1$
-		getDefault().getLog().log(
-				new Status(IStatus.ERROR, PLUGIN_ID, 0, message, ex));
+		getDefault().getLog()
+				.log(new Status(IStatus.ERROR, PLUGIN_ID, 0, message, ex));
 	}
 
 	public static void log(String message) {
 		if (DLTKCore.DEBUG || DUMP_EXCEPTIONS_TO_CONSOLE)
 			System.out.println(message);
-		getDefault().getLog().log(
-				new Status(IStatus.WARNING, PLUGIN_ID, 0, message, null));
+		getDefault().getLog()
+				.log(new Status(IStatus.WARNING, PLUGIN_ID, 0, message, null));
 	}
 
 	/**
@@ -122,7 +120,7 @@ public class RubyPlugin extends Plugin {
 	 * <p>
 	 * This method can be called concurrently.
 	 * </p>
-	 * 
+	 *
 	 * @param monitor
 	 *            a progress monitor, or <code>null</code> if progress reporting
 	 *            and cancellation are not desired
@@ -135,9 +133,8 @@ public class RubyPlugin extends Plugin {
 			throws CoreException {
 		try {
 			if (monitor != null)
-				monitor
-						.beginTask(Messages.RubyPlugin_initializingDltkRuby,
-								100);
+				monitor.beginTask(Messages.RubyPlugin_initializingDltkRuby,
+						100);
 
 			// dummy query for waiting until the indexes are ready
 			SearchEngine engine = new SearchEngine();
@@ -145,33 +142,38 @@ public class RubyPlugin extends Plugin {
 					.createWorkspaceScope(RubyLanguageToolkit.getDefault());
 			try {
 				if (monitor != null)
-					monitor
-							.subTask(Messages.RubyPlugin_initializingSearchEngine);
-				engine.searchAllTypeNames(
-						null,
-						SearchPattern.R_EXACT_MATCH,
+					monitor.subTask(
+							Messages.RubyPlugin_initializingSearchEngine);
+				engine.searchAllTypeNames(null, SearchPattern.R_EXACT_MATCH,
 						"!@$#!@".toCharArray(), //$NON-NLS-1$
 						SearchPattern.R_PATTERN_MATCH
 								| SearchPattern.R_CASE_SENSITIVE,
-						IDLTKSearchConstants.TYPE,
-						scope,
+						IDLTKSearchConstants.TYPE, scope,
 						new NopTypeNameRequestor(),
 						// will not activate index query caches if indexes are
 						// not ready, since it would take to long
 						// to wait until indexes are fully rebuild
 						IDLTKSearchConstants.CANCEL_IF_NOT_READY_TO_SEARCH,
-						monitor == null ? null : new SubProgressMonitor(
-								monitor, 49) // 49% of the time is spent in the
-						// dummy search
-						);
+						monitor == null ? null
+								: new SubProgressMonitor(monitor, 49) // 49% of
+																		// the
+																		// time
+																		// is
+																		// spent
+																		// in
+																		// the
+				// dummy search
+				);
 
 				// String[] mainClasses = new String[] {
-				//	"Object", "String", "Fixnum", "Array", "Regexp", "Class", "Kernel" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				// "Object", "String", "Fixnum", "Array", "Regexp", "Class",
+				// "Kernel" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				// //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				// for (int i = 0; i < mainClasses.length; i++) {
 				// RubyMixinModel.getInstance().createRubyElement(
 				// mainClasses[i]);
 				// RubyMixinModel.getInstance().createRubyElement(
-				//	mainClasses[i] + "%"); //$NON-NLS-1$
+				// mainClasses[i] + "%"); //$NON-NLS-1$
 				// monitor.worked(10);
 				// }
 				// RubyMixinModel.getRawInstance().find("$*"); //$NON-NLS-1$
