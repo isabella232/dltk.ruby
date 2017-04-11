@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="org.eclipse.dltk.ruby.launching.RubyLaunchingPluginPreferenceInitializer">
-      </initializer>
-   </extension>
   <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
          <launchConfigurationType
