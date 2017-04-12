@@ -1,16 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.parser.jruby;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -32,14 +32,13 @@ public class ZippedParserSuite extends TestSuite {
 		super(testsZip);
 		ZipFile zipFile;
 		try {
-			zipFile = new ZipFile(AbstractModelTests.storeToMetadata(Activator
-					.getDefault().getBundle(), "parser.zip", testsZip));
+			zipFile = new ZipFile(
+					AbstractModelTests.storeToMetadata(Activator.getDefault().getBundle(), "parser.zip", testsZip));
 			try {
 				Enumeration<? extends ZipEntry> entries = zipFile.entries();
 				while (entries.hasMoreElements()) {
 					ZipEntry entry = entries.nextElement();
-					final String content = loadContent(zipFile
-							.getInputStream(entry));
+					final String content = loadContent(zipFile.getInputStream(entry));
 
 					addTest(new TestCase(entry.getName()) {
 
@@ -51,8 +50,7 @@ public class ZippedParserSuite extends TestSuite {
 						@Override
 						protected void runTest() throws Throwable {
 							JRubySourceParser.setSilentState(false);
-							IModuleDeclaration module = DLTKLanguageManager
-									.getSourceParser(RubyNature.NATURE_ID)
+							IModuleDeclaration module = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID)
 									.parse(new ModuleSource(content), null);
 							assertNotNull(module);
 						}
@@ -72,7 +70,7 @@ public class ZippedParserSuite extends TestSuite {
 			int length = stream.available();
 			byte[] data = new byte[length];
 			stream.read(data);
-			return new String(data, "utf-8");
+			return new String(data, StandardCharsets.UTF_8);
 		} finally {
 			stream.close();
 		}
