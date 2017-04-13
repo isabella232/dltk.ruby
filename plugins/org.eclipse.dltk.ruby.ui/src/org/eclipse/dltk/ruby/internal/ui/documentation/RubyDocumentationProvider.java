@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,7 +54,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	/**
 	 * Installs a partitioner with <code>document</code>.
-	 * 
+	 *
 	 * @param document
 	 *            the document
 	 */
@@ -73,13 +73,13 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	/**
 	 * Removes partitioner with <code>document</code>.
-	 * 
+	 *
 	 * @param document
 	 *            the document
 	 */
 	private static void removeStuff(Document document) {
-		document
-				.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, null);
+		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING,
+				null);
 	}
 
 	private static int findOffsetBeforeMethod(Document doc, int start)
@@ -101,11 +101,11 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			if (PUBLIC.equals(s) || PROTECTED.equals(s) || PRIVATE.equals(s)) {
 				/**
 				 * skip access modifiers between method and comment, e.g.
-				 * 
+				 *
 				 * <code>
-				 * # foo-method	documentation 
-				 * public 
-				 * def foo 
+				 * # foo-method	documentation
+				 * public
+				 * def foo
 				 * end
 				 * </code>
 				 */
@@ -130,14 +130,13 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			while (pos >= 0 && pos <= doc.getLength()) {
 				ITypedRegion region = TextUtilities.getPartition(doc,
 						IRubyPartitions.RUBY_PARTITIONING, pos, true);
-				if (region.getType().equals(IRubyPartitions.RUBY_DOC)
-						|| region.getType()
-								.equals(IRubyPartitions.RUBY_COMMENT)) {
+				if (region.getType().equals(IRubyPartitions.RUBY_DOC) || region
+						.getType().equals(IRubyPartitions.RUBY_COMMENT)) {
 					start = region.getOffset();
 				}
 				if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
-					String content = doc.get(region.getOffset(),
-							region.getLength()).trim();
+					String content = doc
+							.get(region.getOffset(), region.getLength()).trim();
 					if (content.length() > 0 && !content.startsWith("public") //$NON-NLS-1$
 							&& !content.startsWith("protected") //$NON-NLS-1$
 							&& !content.startsWith("private")) //$NON-NLS-1$
@@ -151,14 +150,13 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			while (pos <= doc.getLength()) {
 				ITypedRegion region = TextUtilities.getPartition(doc,
 						IRubyPartitions.RUBY_PARTITIONING, pos, true);
-				if (region.getType().equals(IRubyPartitions.RUBY_DOC)
-						|| region.getType()
-								.equals(IRubyPartitions.RUBY_COMMENT)) {
+				if (region.getType().equals(IRubyPartitions.RUBY_DOC) || region
+						.getType().equals(IRubyPartitions.RUBY_COMMENT)) {
 					end = region.getOffset() + region.getLength();
 				}
 				if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
-					String content = doc.get(region.getOffset(),
-							region.getLength()).trim();
+					String content = doc
+							.get(region.getOffset(), region.getLength()).trim();
 					if (content.length() > 0 && !content.startsWith("public") //$NON-NLS-1$
 							&& !content.startsWith("protected") //$NON-NLS-1$
 							&& !content.startsWith("private")) //$NON-NLS-1$
@@ -252,7 +250,8 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	@Override
 	public Reader getInfo(IMember member, boolean lookIntoParents,
 			boolean lookIntoExternal) {
-		boolean isBuiltin = member.getAncestor(IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment;
+		boolean isBuiltin = member.getAncestor(
+				IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment;
 		if (isBuiltin && member instanceof IMethod) {
 			IMethod method = (IMethod) member;
 			return proccessBuiltinMethod(method);
@@ -271,7 +270,8 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		return new StringReader(convertToHTML(header));
 	}
 
-	private static String replaceSpecTag(String original, String sc, String tag) {
+	private static String replaceSpecTag(String original, String sc,
+			String tag) {
 		String filtered = original;
 		if (sc.equals("*") || sc.equals("+")) //$NON-NLS-1$ //$NON-NLS-2$
 			sc = "\\" + sc; //$NON-NLS-1$
@@ -360,7 +360,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	/**
 	 * Checks if a String is whitespace, empty ("") or null.
-	 * 
+	 *
 	 * @param str
 	 *            the String to check, may be null
 	 * @return <code>true</code> if the String is null, empty or whitespace

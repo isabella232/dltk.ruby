@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.WeakHashMap;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.IShutdownListener;
 import org.eclipse.dltk.core.environment.IDeployment;
 import org.eclipse.dltk.core.environment.IEnvironment;
 import org.eclipse.dltk.core.environment.IExecutionEnvironment;
@@ -48,7 +47,7 @@ public class RiHelper {
 		return instance;
 	}
 
-	private WeakHashMap<String, String> cache = new WeakHashMap<String, String>();
+	private WeakHashMap<String, String> cache = new WeakHashMap<>();
 
 	private Process riProcess;
 	private OutputStreamWriter writer;
@@ -66,8 +65,8 @@ public class RiHelper {
 		}
 	}
 
-	protected synchronized void runRiProcess() throws CoreException,
-			IOException {
+	protected synchronized void runRiProcess()
+			throws CoreException, IOException {
 		IInterpreterInstall install = ScriptRuntime
 				.getDefaultInterpreterInstall(RubyNature.NATURE_ID,
 						LocalEnvironment.getInstance());
@@ -88,15 +87,15 @@ public class RiHelper {
 
 		IFileHandle script = deployment.getFile(path);
 
-		riProcess = ScriptLaunchUtil.runScriptWithInterpreter(exeEnv, install
-				.getInstallLocation().toOSString(), script, null, null, null,
-				install.getEnvironmentVariables());
+		riProcess = ScriptLaunchUtil.runScriptWithInterpreter(exeEnv,
+				install.getInstallLocation().toOSString(), script, null, null,
+				null, install.getEnvironmentVariables());
 
 		writer = new OutputStreamWriter(riProcess.getOutputStream());
-		reader = new BufferedReader(new InputStreamReader(riProcess
-				.getInputStream()));
-		errorReader = new BufferedReader(new InputStreamReader(riProcess
-				.getErrorStream()));
+		reader = new BufferedReader(
+				new InputStreamReader(riProcess.getInputStream()));
+		errorReader = new BufferedReader(
+				new InputStreamReader(riProcess.getErrorStream()));
 	}
 
 	protected synchronized void destroyRiProcess() {
@@ -115,14 +114,7 @@ public class RiHelper {
 		if (riProcess != null) {
 			try {
 				final Watchdog watchdog = new Watchdog(TERMINATE_WAIT_TIMEOUT);
-				watchdog.addListener(new WatchdogListener() {
-
-					@Override
-					public void timeoutOccured() {
-						riProcess.destroy();
-					}
-
-				});
+				watchdog.addListener(() -> riProcess.destroy());
 				watchdog.start();
 				try {
 					riProcess.waitFor();
@@ -215,8 +207,8 @@ public class RiHelper {
 	}
 
 	protected RiHelper() {
-		ScriptRuntime
-				.addInterpreterInstallChangedListener(new IInterpreterInstallChangedListener() {
+		ScriptRuntime.addInterpreterInstallChangedListener(
+				new IInterpreterInstallChangedListener() {
 					@Override
 					public void defaultInterpreterInstallChanged(
 							IInterpreterInstall previous,
@@ -225,7 +217,8 @@ public class RiHelper {
 					}
 
 					@Override
-					public void interpreterAdded(IInterpreterInstall Interpreter) {
+					public void interpreterAdded(
+							IInterpreterInstall Interpreter) {
 					}
 
 					@Override
@@ -237,14 +230,7 @@ public class RiHelper {
 							IInterpreterInstall Interpreter) {
 					}
 				});
-		RubyUI.getDefault().addShutdownListener(new IShutdownListener() {
-
-			@Override
-			public void shutdown() {
-				destroyRiProcess();
-			}
-
-		});
+		RubyUI.getDefault().addShutdownListener(() -> destroyRiProcess());
 	}
 
 	public synchronized String getDocFor(String keyword) {

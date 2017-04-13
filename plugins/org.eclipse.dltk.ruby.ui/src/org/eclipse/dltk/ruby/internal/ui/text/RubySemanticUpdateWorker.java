@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -50,8 +50,8 @@ import org.eclipse.dltk.ui.editor.highlighting.ISemanticHighlightingRequestor;
 import org.eclipse.dltk.ui.editor.highlighting.SemanticHighlighting;
 import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 
-public class RubySemanticUpdateWorker extends ASTVisitor implements
-		ISemanticHighlighter, ISemanticHighlighterExtension {
+public class RubySemanticUpdateWorker extends ASTVisitor
+		implements ISemanticHighlighter, ISemanticHighlighterExtension {
 
 	@Override
 	public SemanticHighlighting[] getSemanticHighlightings() {
@@ -138,9 +138,9 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 			handleEvaluatableExpression(node);
 		} else if (node instanceof CallExpression) {
 			final CallExpression call = (CallExpression) node;
-			if (!(RubySyntaxUtils.isRubyOperator(call.getName()) || call
-					.getReceiver() == null
-					&& RubyCodeScanner.isPseudoKeyword(call.getName()))) {
+			if (!(RubySyntaxUtils.isRubyOperator(call.getName())
+					|| call.getReceiver() == null && RubyCodeScanner
+							.isPseudoKeyword(call.getName()))) {
 				final SimpleReference callName = call.getCallName();
 				if (callName.sourceStart() >= 0
 						&& callName.sourceEnd() > callName.sourceStart()) {
@@ -182,7 +182,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 		stack.pop();
 	}
 
-	private final Stack<ASTNode> stack = new Stack<ASTNode>();
+	private final Stack<ASTNode> stack = new Stack<>();
 
 	private void handleVariableReference(VariableReference ref) {
 		final String varName = ref.getName();
@@ -240,8 +240,8 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 					&& content[end] == terminator) {
 				start -= 3;
 				++end;
-				while (end < content.length
-						&& RubySyntaxUtils.isValidRegexpModifier(content[end])) {
+				while (end < content.length && RubySyntaxUtils
+						.isValidRegexpModifier(content[end])) {
 					++end;
 				}
 			}
@@ -251,7 +251,7 @@ public class RubySemanticUpdateWorker extends ASTVisitor implements
 
 	@Override
 	public String[] getHighlightingKeys() {
-		final Set<String> result = new HashSet<String>();
+		final Set<String> result = new HashSet<>();
 		for (SemanticHighlighting highlighting : getSemanticHighlightings()) {
 			result.add(highlighting.getPreferenceKey());
 		}

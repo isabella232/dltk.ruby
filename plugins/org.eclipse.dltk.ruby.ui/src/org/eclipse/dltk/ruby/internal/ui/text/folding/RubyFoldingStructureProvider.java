@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
-public class RubyFoldingStructureProvider extends
-		AbstractASTFoldingStructureProvider {
+public class RubyFoldingStructureProvider
+		extends AbstractASTFoldingStructureProvider {
 
 	@Override
 	protected String getCommentPartition() {
@@ -95,8 +95,8 @@ public class RubyFoldingStructureProvider extends
 	@Override
 	protected void initializePreferences(IPreferenceStore store) {
 		super.initializePreferences(store);
-		fInitCollapseRequires = store
-				.getBoolean(RubyPreferenceConstants.EDITOR_FOLDING_INIT_REQUIRES);
+		fInitCollapseRequires = store.getBoolean(
+				RubyPreferenceConstants.EDITOR_FOLDING_INIT_REQUIRES);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class RubyFoldingStructureProvider extends
 	protected static class RubyFoldingASTVisitor extends FoldingASTVisitor {
 
 		static class DeclarationContainer {
-			final List<Object> children = new ArrayList<Object>();
+			final List<Object> children = new ArrayList<>();
 			final Declaration declaration;
 			final boolean foldAlways;
 
@@ -134,7 +134,7 @@ public class RubyFoldingStructureProvider extends
 
 		static class ModuleDeclarationContainer extends DeclarationContainer {
 
-			final List<CallExpression> requires = new ArrayList<CallExpression>();
+			final List<CallExpression> requires = new ArrayList<>();
 
 			public ModuleDeclarationContainer() {
 				super(null, false);
@@ -146,7 +146,7 @@ public class RubyFoldingStructureProvider extends
 
 		}
 
-		private final Stack<DeclarationContainer> declarations = new Stack<DeclarationContainer>();
+		private final Stack<DeclarationContainer> declarations = new Stack<>();
 
 		private DeclarationContainer peekDeclaration() {
 			return declarations.peek();
@@ -195,7 +195,8 @@ public class RubyFoldingStructureProvider extends
 		@Override
 		public boolean visit(MethodDeclaration s) throws Exception {
 			handleRequireStatements();
-			final DeclarationContainer child = new DeclarationContainer(s, true);
+			final DeclarationContainer child = new DeclarationContainer(s,
+					true);
 			peekDeclaration().addChild(child);
 			declarations.push(child);
 			return visitGeneral(s);
@@ -218,8 +219,8 @@ public class RubyFoldingStructureProvider extends
 			for (Iterator<?> i = container.children.iterator(); i.hasNext();) {
 				final Object child = i.next();
 				if (child instanceof DeclarationContainer) {
-					processDeclarations((DeclarationContainer) child,
-							level + 1, nextCollabsible);
+					processDeclarations((DeclarationContainer) child, level + 1,
+							nextCollabsible);
 				} else if (child instanceof CodeBlock) {
 					add((CodeBlock) child);
 				}
@@ -260,8 +261,8 @@ public class RubyFoldingStructureProvider extends
 				final CallExpression lastRequire = container.requires
 						.get(container.requires.size() - 1);
 				container.addChild(new CodeBlock(firstRequire, new Region(
-						firstRequire.sourceStart(), lastRequire.sourceEnd()
-								- firstRequire.sourceStart())));
+						firstRequire.sourceStart(),
+						lastRequire.sourceEnd() - firstRequire.sourceStart())));
 				container.requires.clear();
 			}
 		}

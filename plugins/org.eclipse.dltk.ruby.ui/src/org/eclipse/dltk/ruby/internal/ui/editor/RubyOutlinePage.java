@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,19 +38,20 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 				fOutlineViewer, fStore);
 
 		String title, helpContext;
-		ArrayList<MemberFilterAction> actions = new ArrayList<MemberFilterAction>(3);
+		ArrayList<MemberFilterAction> actions = new ArrayList<>(
+				3);
 
 		// Hide variables
 		title = ActionMessages.MemberFilterActionGroup_hide_variables_label;
 
 		helpContext = "";// IDLTKHelpContextIds.FILTER_FIELDS_ACTION; //$NON-NLS-1$
 		MemberFilterAction hideVariables = new MemberFilterAction(
-				fMemberFilterActionGroup, title, new ModelElementFilter(
-						IModelElement.FIELD), helpContext, true);
-		hideVariables
-				.setDescription(ActionMessages.MemberFilterActionGroup_hide_variables_description);
-		hideVariables
-				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_variables_tooltip);
+				fMemberFilterActionGroup, title,
+				new ModelElementFilter(IModelElement.FIELD), helpContext, true);
+		hideVariables.setDescription(
+				ActionMessages.MemberFilterActionGroup_hide_variables_description);
+		hideVariables.setToolTipText(
+				ActionMessages.MemberFilterActionGroup_hide_variables_tooltip);
 		DLTKPluginImages.setLocalImageDescriptors(hideVariables,
 				"filter_fields.gif"); //$NON-NLS-1$
 		actions.add(hideVariables);
@@ -59,12 +60,13 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 		title = ActionMessages.MemberFilterActionGroup_hide_functions_label;
 		helpContext = "";// IDLTKHelpContextIds.FILTER_STATIC_ACTION; //$NON-NLS-1$
 		MemberFilterAction hideProcedures = new MemberFilterAction(
-				fMemberFilterActionGroup, title, new ModelElementFilter(
-						IModelElement.METHOD), helpContext, true);
-		hideProcedures
-				.setDescription(ActionMessages.MemberFilterActionGroup_hide_functions_description);
-		hideProcedures
-				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_functions_tooltip);
+				fMemberFilterActionGroup, title,
+				new ModelElementFilter(IModelElement.METHOD), helpContext,
+				true);
+		hideProcedures.setDescription(
+				ActionMessages.MemberFilterActionGroup_hide_functions_description);
+		hideProcedures.setToolTipText(
+				ActionMessages.MemberFilterActionGroup_hide_functions_tooltip);
 		// TODO: add correct icon
 		DLTKPluginImages.setLocalImageDescriptors(hideProcedures,
 				"filter_methods.gif"); //$NON-NLS-1$
@@ -74,18 +76,19 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 		title = ActionMessages.MemberFilterActionGroup_hide_classes_label;
 		helpContext = "";// IDLTKHelpContextIds.FILTER_PUBLIC_ACTION; //$NON-NLS-1$
 		MemberFilterAction hideNamespaces = new MemberFilterAction(
-				fMemberFilterActionGroup, title, new ModelElementFilter(
-						IModelElement.TYPE), helpContext, true);
-		hideNamespaces
-				.setDescription(ActionMessages.MemberFilterActionGroup_hide_classes_description);
-		hideNamespaces
-				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_classes_tooltip);
+				fMemberFilterActionGroup, title,
+				new ModelElementFilter(IModelElement.TYPE), helpContext, true);
+		hideNamespaces.setDescription(
+				ActionMessages.MemberFilterActionGroup_hide_classes_description);
+		hideNamespaces.setToolTipText(
+				ActionMessages.MemberFilterActionGroup_hide_classes_tooltip);
 		DLTKPluginImages.setLocalImageDescriptors(hideNamespaces,
 				"filter_classes.gif"); //$NON-NLS-1$
 		actions.add(hideNamespaces);
 
 		// Adding actions to toobar
-		MemberFilterAction[] fFilterActions = actions.toArray(new MemberFilterAction[actions.size()]);
+		MemberFilterAction[] fFilterActions = actions
+				.toArray(new MemberFilterAction[actions.size()]);
 
 		fMemberFilterActionGroup.setActions(fFilterActions);
 		fMemberFilterActionGroup.contributeToToolBar(toolBarManager);

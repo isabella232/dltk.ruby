@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.dltk.ruby.internal.ui.text.IRubyColorConstants;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -20,7 +19,8 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 
 public class RubySingleQuoteStringScanner extends AbstractScriptScanner {
 
-	private static final String[] fgTokenProperties = new String[] { IRubyColorConstants.RUBY_STRING };
+	private static final String[] fgTokenProperties = new String[] {
+			IRubyColorConstants.RUBY_STRING };
 
 	public RubySingleQuoteStringScanner(IColorManager manager,
 			IPreferenceStore store) {
@@ -36,7 +36,7 @@ public class RubySingleQuoteStringScanner extends AbstractScriptScanner {
 
 	@Override
 	protected List<IRule> createRules() {
-		List<IRule> rules = new ArrayList<IRule>();
+		List<IRule> rules = new ArrayList<>();
 
 		// Add generic whitespace rule.
 		rules.add(new WhitespaceRule(new RubyWhitespaceDetector()));

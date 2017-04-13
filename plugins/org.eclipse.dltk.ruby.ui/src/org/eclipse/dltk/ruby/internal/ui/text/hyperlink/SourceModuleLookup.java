@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -26,7 +26,7 @@ public class SourceModuleLookup {
 	/**
 	 * Lookups {@link ISourceModule}s with the specified
 	 * <code>modulePath</code>. Returns the array of the matched modules.
-	 * 
+	 *
 	 * @param project
 	 *            project to lookup
 	 * @param modulePath
@@ -38,7 +38,7 @@ public class SourceModuleLookup {
 	 */
 	public static ISourceModule[] lookup(IScriptProject project,
 			String modulePath, String suffix) throws ModelException {
-		final List<ISourceModule> result = new ArrayList<ISourceModule>();
+		final List<ISourceModule> result = new ArrayList<>();
 		final IPath path = new Path(modulePath);
 		final String fileName = path.lastSegment();
 		final String folderPath = path.removeLastSegments(1).toString();

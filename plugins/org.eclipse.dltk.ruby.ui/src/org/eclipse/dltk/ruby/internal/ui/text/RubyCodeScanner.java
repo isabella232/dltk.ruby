@@ -80,7 +80,7 @@ public class RubyCodeScanner extends AbstractScriptScanner {
 
 	@Override
 	protected List<IRule> createRules() {
-		List<IRule> rules = new ArrayList<IRule>();
+		List<IRule> rules = new ArrayList<>();
 		IToken keyword = getToken(IRubyColorConstants.RUBY_KEYWORD);
 		IToken keywordReturn = getToken(IRubyColorConstants.RUBY_KEYWORD_RETURN);
 		IToken other = getToken(IRubyColorConstants.RUBY_DEFAULT);

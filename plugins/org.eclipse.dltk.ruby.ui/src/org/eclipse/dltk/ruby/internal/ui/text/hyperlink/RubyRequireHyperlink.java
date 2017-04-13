@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -38,7 +38,8 @@ public class RubyRequireHyperlink implements IHyperlink {
 	private final IRegion region;
 	private final ITextEditor editor;
 
-	public RubyRequireHyperlink(String path, IRegion region, ITextEditor editor) {
+	public RubyRequireHyperlink(String path, IRegion region,
+			ITextEditor editor) {
 		this.path = path;
 		this.region = region;
 		this.editor = editor;
@@ -75,15 +76,15 @@ public class RubyRequireHyperlink implements IHyperlink {
 	private static final String DEFAULT_EXTENSION = ".rb"; //$NON-NLS-1$
 
 	private void doOpen() throws ModelException {
-		final IModelElement input = EditorUtility.getEditorInputModelElement(
-				editor, false);
+		final IModelElement input = EditorUtility
+				.getEditorInputModelElement(editor, false);
 		if (input != null) {
 			final OpenAction openAction = (OpenAction) editor
 					.getAction("OpenEditor"); //$NON-NLS-1$
 			if (openAction != null) {
 				final IScriptProject project = input.getScriptProject();
-				final ISourceModule[] modules = SourceModuleLookup.lookup(
-						project, path, DEFAULT_EXTENSION);
+				final ISourceModule[] modules = SourceModuleLookup
+						.lookup(project, path, DEFAULT_EXTENSION);
 				if (modules.length > 0) {
 					if (modules.length == 1) {
 						openAction.run(modules);
@@ -94,7 +95,8 @@ public class RubyRequireHyperlink implements IHyperlink {
 						}
 					}
 				} else {
-					showMessage(RubyHyperlinkMessages.RequireHyperlink_BadSelection);
+					showMessage(
+							RubyHyperlinkMessages.RequireHyperlink_BadSelection);
 				}
 			}
 		}
@@ -113,7 +115,7 @@ public class RubyRequireHyperlink implements IHyperlink {
 		if (dialog.open() == Window.OK) {
 			final Object[] selection = dialog.getResult();
 			if (selection != null && selection.length > 0) {
-				final List<ISourceModule> result = new ArrayList<ISourceModule>();
+				final List<ISourceModule> result = new ArrayList<>();
 				for (int i = 0, size = selection.length; i < size; i++) {
 					final Object current = selection[i];
 					if (current instanceof ISourceModule) {

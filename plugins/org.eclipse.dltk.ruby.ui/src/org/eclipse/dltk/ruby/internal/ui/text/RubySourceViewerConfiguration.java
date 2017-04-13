@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2016 IBM Corporation and others.
+ * Copyright (c) 2005, 2017 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,13 +7,14 @@
  *
  *  Contributors:
  *     xored software, Inc. - initial API and implementation
- *     xored software, Inc. - fix tab handling (Bug# 200024) (Alex Panchenko) 
+ *     xored software, Inc. - fix tab handling (Bug# 200024) (Alex Panchenko)
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text;
 
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
@@ -29,7 +30,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -44,11 +44,10 @@ import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-public class RubySourceViewerConfiguration extends
-		ScriptSourceViewerConfiguration {
+public class RubySourceViewerConfiguration
+		extends ScriptSourceViewerConfiguration {
 
 	private RubyTextTools fTextTools;
 
@@ -108,8 +107,8 @@ public class RubySourceViewerConfiguration extends
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 		PresentationReconciler reconciler = new ScriptPresentationReconciler();
-		reconciler
-				.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+		reconciler.setDocumentPartitioning(
+				getConfiguredDocumentPartitioning(sourceViewer));
 
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(fCodeScanner);
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
@@ -153,7 +152,7 @@ public class RubySourceViewerConfiguration extends
 	 * Clients are not allowed to call this method if the old setup with text
 	 * tools is in use.
 	 * </p>
-	 * 
+	 *
 	 * @param event
 	 *            the event to which to adapt
 	 * @see RubySourceViewerConfiguration#ScriptSourceViewerConfiguration(IColorManager,
@@ -177,11 +176,11 @@ public class RubySourceViewerConfiguration extends
 	/**
 	 * Determines whether the preference change encoded by the given event
 	 * changes the behavior of one of its contained components.
-	 * 
+	 *
 	 * @param event
 	 *            the event to be investigated
 	 * @return <code>true</code> if event causes a behavioral change
-	 * 
+	 *
 	 */
 	@Override
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
@@ -194,14 +193,11 @@ public class RubySourceViewerConfiguration extends
 
 	private IInformationControlCreator getHierarchyPresenterControlCreator(
 			ISourceViewer sourceViewer) {
-		return new IInformationControlCreator() {
-			@Override
-			public IInformationControl createInformationControl(Shell parent) {
-				int shellStyle = SWT.RESIZE;
-				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
-				return new RubyHierarchyInformationControl(parent, shellStyle,
-						treeStyle);
-			}
+		return parent -> {
+			int shellStyle = SWT.RESIZE;
+			int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
+			return new RubyHierarchyInformationControl(parent, shellStyle,
+					treeStyle);
 		};
 	}
 
@@ -209,15 +205,15 @@ public class RubySourceViewerConfiguration extends
 	public IInformationPresenter getHierarchyPresenter(
 			ScriptSourceViewer sourceViewer, boolean doCodeResolve) {
 		// Do not create hierarchy presenter if there's no CU.
-		if (getEditor() != null
-				&& getEditor().getEditorInput() != null
-				&& EditorUtility.getEditorInputModelElement(getEditor(), true) == null)
+		if (getEditor() != null && getEditor().getEditorInput() != null
+				&& EditorUtility.getEditorInputModelElement(getEditor(),
+						true) == null)
 			return null;
 
 		InformationPresenter presenter = new InformationPresenter(
 				getHierarchyPresenterControlCreator(sourceViewer));
-		presenter
-				.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+		presenter.setDocumentPartitioning(
+				getConfiguredDocumentPartitioning(sourceViewer));
 		presenter.setAnchor(AbstractInformationControlManager.ANCHOR_GLOBAL);
 		IInformationProvider provider = new ScriptElementProvider(getEditor(),
 				doCodeResolve);
@@ -229,11 +225,12 @@ public class RubySourceViewerConfiguration extends
 	}
 
 	@Override
-	public IAutoEditStrategy[] getAutoEditStrategies(
-			ISourceViewer sourceViewer, String contentType) {
+	public IAutoEditStrategy[] getAutoEditStrategies(ISourceViewer sourceViewer,
+			String contentType) {
 		// // TODO: check contentType. think, do we really need it? :)
 		String partitioning = getConfiguredDocumentPartitioning(sourceViewer);
-		return new IAutoEditStrategy[] { new RubyAutoEditStrategy(partitioning) };
+		return new IAutoEditStrategy[] {
+				new RubyAutoEditStrategy(partitioning) };
 	}
 
 	@Override
@@ -254,8 +251,10 @@ public class RubySourceViewerConfiguration extends
 	}
 
 	@Override
-	protected Map getHyperlinkDetectorTargets(final ISourceViewer sourceViewer) {
-		final Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
+	protected Map<String, IAdaptable> getHyperlinkDetectorTargets(
+			final ISourceViewer sourceViewer) {
+		final Map<String, IAdaptable> targets = super.getHyperlinkDetectorTargets(
+				sourceViewer);
 		targets.put("org.eclipse.dltk.ruby.code", getEditor()); //$NON-NLS-1$
 		return targets;
 	}
