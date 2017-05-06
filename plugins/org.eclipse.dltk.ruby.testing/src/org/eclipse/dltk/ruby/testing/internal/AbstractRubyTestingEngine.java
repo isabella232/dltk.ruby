@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -41,50 +41,35 @@ public abstract class AbstractRubyTestingEngine extends AbstractTestingEngine {
 		return RubyTestingPlugin.getDefault().getBundle();
 	}
 
-	protected File getRunnerFile(final Bundle bundle, final String runnerPath,
-			final String runnerName) throws CoreException {
+	protected File getRunnerFile(final Bundle bundle, final String runnerPath, final String runnerName)
+			throws CoreException {
 		URL runnerScript = bundle.getEntry(runnerPath + runnerName);
 		if (runnerScript == null) {
-			final String msg = NLS.bind(Messages.Delegate_runnerNotFound,
-					runnerName);
-			throw new CoreException(new Status(IStatus.ERROR,
-					RubyTestingPlugin.PLUGIN_ID, msg, null));
+			final String msg = NLS.bind(Messages.Delegate_runnerNotFound, runnerName);
+			throw new CoreException(new Status(IStatus.ERROR, RubyTestingPlugin.PLUGIN_ID, msg, null));
 		}
 		try {
 			return Util.toFile(runnerScript);
 		} catch (IOException e) {
-			final String msg = NLS.bind(
-					Messages.Delegate_errorExtractingRunner, runnerName);
-			throw new CoreException(new Status(IStatus.ERROR,
-					RubyTestingPlugin.PLUGIN_ID, msg, e));
+			final String msg = NLS.bind(Messages.Delegate_errorExtractingRunner, runnerName);
+			throw new CoreException(new Status(IStatus.ERROR, RubyTestingPlugin.PLUGIN_ID, msg, e));
 		}
 	}
 
-	protected boolean isDevelopmentMode(InterpreterConfig config,
-			String runnerName) {
-		return config.getScriptFilePath() != null
-				&& config.getScriptFilePath().lastSegment().equals(runnerName);
+	protected boolean isDevelopmentMode(InterpreterConfig config, String runnerName) {
+		return config.getScriptFilePath() != null && config.getScriptFilePath().lastSegment().equals(runnerName);
 	}
 
 	/**
-	 * Returns a free port number on localhost, or -1 if unable to find a free
-	 * port.
-	 * 
+	 * Returns a free port number on localhost, or -1 if unable to find a free port.
+	 *
 	 * @return a free port number or -1
 	 */
 	private static int findFreePort() {
-		ServerSocket socket = null;
-		try {
-			socket = new ServerSocket(0);
+
+		try (ServerSocket socket = new ServerSocket(0)) {
 			return socket.getLocalPort();
 		} catch (IOException e) {
-		} finally {
-			if (socket != null) {
-				try {
-					socket.close();
-				} catch (IOException e) {
-				}
-			}
 		}
 		return -1;
 	}
@@ -92,18 +77,14 @@ public abstract class AbstractRubyTestingEngine extends AbstractTestingEngine {
 	protected int allocatePort() throws CoreException {
 		int port = findFreePort();
 		if (port == -1) {
-			informAndAbort(
-					"No socket available", //$NON-NLS-1$
-					null,
-					ScriptLaunchConfigurationConstants.ERR_NO_SOCKET_AVAILABLE);
+			informAndAbort("No socket available", //$NON-NLS-1$
+					null, ScriptLaunchConfigurationConstants.ERR_NO_SOCKET_AVAILABLE);
 		}
 		return port;
 	}
 
-	protected void informAndAbort(String message, Throwable exception, int code)
-			throws CoreException {
-		IStatus status = new Status(IStatus.INFO, RubyTestingPlugin.PLUGIN_ID,
-				code, message, exception);
+	protected void informAndAbort(String message, Throwable exception, int code) throws CoreException {
+		IStatus status = new Status(IStatus.INFO, RubyTestingPlugin.PLUGIN_ID, code, message, exception);
 		if (showStatusMessage(status)) {
 			// Status message successfully shown
 			// -> Abort with INFO exception
@@ -113,25 +94,20 @@ public abstract class AbstractRubyTestingEngine extends AbstractTestingEngine {
 			// Status message could not be shown
 			// -> Abort with original exception
 			// -> Will write WARNINGs and ERRORs to log
-			throw new CoreException(new Status(IStatus.ERROR,
-					RubyTestingPlugin.PLUGIN_ID, code, message, exception));
+			throw new CoreException(new Status(IStatus.ERROR, RubyTestingPlugin.PLUGIN_ID, code, message, exception));
 		}
 	}
 
 	protected boolean showStatusMessage(final IStatus status) {
 		final boolean[] success = new boolean[] { false };
-		getDisplay().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = DLTKTestingPlugin.getActiveWorkbenchShell();
-				if (shell == null)
-					shell = getDisplay().getActiveShell();
-				if (shell != null) {
-					MessageDialog.openInformation(shell,
-							"Problems Launching Unit Tests", //$NON-NLS-1$
-							status.getMessage());
-					success[0] = true;
-				}
+		getDisplay().syncExec(() -> {
+			Shell shell = DLTKTestingPlugin.getActiveWorkbenchShell();
+			if (shell == null)
+				shell = getDisplay().getActiveShell();
+			if (shell != null) {
+				MessageDialog.openInformation(shell, "Problems Launching Unit Tests", //$NON-NLS-1$
+						status.getMessage());
+				success[0] = true;
 			}
 		});
 		return success[0];

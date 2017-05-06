@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -67,8 +67,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 
 	@Override
 	public void launch(IEditorPart editor, String mode) {
-		IModelElement element = DLTKUIPlugin.getEditorInputModelElement(editor
-				.getEditorInput());
+		IModelElement element = DLTKUIPlugin.getEditorInputModelElement(editor.getEditorInput());
 		if (element != null) {
 			launch(new Object[] { element }, mode);
 		} else {
@@ -95,18 +94,15 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 					performLaunch((IFolder) selected, mode);
 					return;
 				}
-				if (!(selected instanceof IModelElement)
-						&& selected instanceof IAdaptable) {
-					selected = ((IAdaptable) selected)
-							.getAdapter(IModelElement.class);
+				if (!(selected instanceof IModelElement) && selected instanceof IAdaptable) {
+					selected = ((IAdaptable) selected).getAdapter(IModelElement.class);
 				}
 				if (selected instanceof IModelElement) {
 					IModelElement element = (IModelElement) selected;
 					switch (element.getElementType()) {
 					case IModelElement.SCRIPT_PROJECT: {
-						IProject project = ((IScriptProject) element)
-								.getProject();
-						List<ILaunchConfiguration> configs = new ArrayList<ILaunchConfiguration>();
+						IProject project = ((IScriptProject) element).getProject();
+						List<ILaunchConfiguration> configs = new ArrayList<>();
 						IFolder specFolder = project.getFolder("test"); //$NON-NLS-1$
 						if (specFolder != null && specFolder.exists())
 							configs.add(findOrCreateLaunch(specFolder, mode));
@@ -120,14 +116,9 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 							config = chooseConfiguration(configs, mode);
 						}
 						if (config != null) {
-							if (config.getAttribute(
-									DLTKTestingConstants.ATTR_ENGINE_ID,
-									(String) null) == null) {
-								MessageDialog
-										.openInformation(
-												getShell(),
-												Messages.RubyTestingLaunchShortcut_testLaunch,
-												Messages.RubyTestingLaunchShortcut_theSelectedLaunchConfigurationDoesntHaveATestingEngineConfigured);
+							if (config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, (String) null) == null) {
+								MessageDialog.openInformation(getShell(), Messages.RubyTestingLaunchShortcut_testLaunch,
+										Messages.RubyTestingLaunchShortcut_theSelectedLaunchConfigurationDoesntHaveATestingEngineConfigured);
 								return;
 							}
 							DebugUITools.launch(config, mode);
@@ -155,31 +146,22 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		} catch (InterruptedException e) {
 			// OK, silently move on
 		} catch (CoreException e) {
-			ExceptionHandler
-					.handle(
-							e,
-							getShell(),
-							Messages.RubyTestingLaunchShortcut_testLaunch,
-							Messages.RubyTestingLaunchShortcut_testLaunchUnexpectedlyFailed);
+			ExceptionHandler.handle(e, getShell(), Messages.RubyTestingLaunchShortcut_testLaunch,
+					Messages.RubyTestingLaunchShortcut_testLaunchUnexpectedlyFailed);
 		}
 	}
 
 	private void showNoTestsFoundDialog() {
-		MessageDialog
-				.openInformation(
-						getShell(),
-						Messages.RubyTestingLaunchShortcut_testLaunch,
-						Messages.RubyTestingLaunchShortcut_unableToLocateAnyTestsInTheSpecifiedSelection);
+		MessageDialog.openInformation(getShell(), Messages.RubyTestingLaunchShortcut_testLaunch,
+				Messages.RubyTestingLaunchShortcut_unableToLocateAnyTestsInTheSpecifiedSelection);
 	}
 
-	private void performLaunch(IModelElement element, String mode)
-			throws InterruptedException, CoreException {
+	private void performLaunch(IModelElement element, String mode) throws InterruptedException, CoreException {
 		ILaunchConfigurationWorkingCopy temporary = createLaunchConfiguration(element);
 		if (temporary == null) {
 			return;
 		}
-		ILaunchConfiguration config = findExistingLaunchConfiguration(
-				temporary, mode);
+		ILaunchConfiguration config = findExistingLaunchConfiguration(temporary, mode);
 		if (config == null) {
 			// no existing found: create a new one
 			final IResource resource = element.getUnderlyingResource();
@@ -190,13 +172,9 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		} else {
 			config = DLTKTestingMigrationDelegate.fixMappedResources(config);
 		}
-		if (config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID,
-				(String) null) == null) {
-			MessageDialog
-					.openInformation(
-							getShell(),
-							Messages.RubyTestingLaunchShortcut_testLaunch,
-							Messages.RubyTestingLaunchShortcut_theSelectedLaunchConfigurationDoesntHaveATestingEngineConfigured);
+		if (config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, (String) null) == null) {
+			MessageDialog.openInformation(getShell(), Messages.RubyTestingLaunchShortcut_testLaunch,
+					Messages.RubyTestingLaunchShortcut_theSelectedLaunchConfigurationDoesntHaveATestingEngineConfigured);
 			return;
 		}
 		DebugUITools.launch(config, mode);
@@ -210,23 +188,19 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		ILaunchConfigurationType configType = getLaunchManager()
 				.getLaunchConfigurationType(getLaunchConfigurationTypeId());
 		final ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager().generateLaunchConfigurationName(
-						testName));
+				getLaunchManager().generateLaunchConfigurationName(testName));
 
-		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-				folder.getProject().getName());
+		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, folder.getProject().getName());
 
 		// wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_TEST_NAME,
 		// EMPTY_STRING);
 		IModelElement element = DLTKCore.create(folder);
 		if (element != null) {
-			wc.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, element
-					.getHandleIdentifier());
+			wc.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, element.getHandleIdentifier());
 			// wc.setAttribute(ScriptLaunchConfigurationConstants.
 			// ATTR_TEST_ELEMENT_NAME, EMPTY_STRING);
 
-			final ITestingEngine[] engines = TestingEngineManager
-					.getEngines(RubyNature.NATURE_ID);
+			final ITestingEngine[] engines = TestingEngineManager.getEngines(RubyNature.NATURE_ID);
 			element.accept(new IModelElementVisitor() {
 
 				private boolean detected;
@@ -236,26 +210,22 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 					if (detected)
 						return false;
 					if (element instanceof ISourceModule) {
-						TestingEngineDetectResult detection = TestingEngineManager
-								.detect(engines, (ISourceModule) element);
+						TestingEngineDetectResult detection = TestingEngineManager.detect(engines,
+								(ISourceModule) element);
 						if (detection != null) {
-							wc.setAttribute(
-									DLTKTestingConstants.ATTR_ENGINE_ID,
-									detection.getEngine().getId());
+							wc.setAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, detection.getEngine().getId());
 							detected = true;
 							return false;
 						}
 					}
-					return element instanceof IScriptFolder
-							|| element instanceof IProjectFragment
+					return element instanceof IScriptFolder || element instanceof IProjectFragment
 							|| element instanceof IScriptProject;
 				}
 
 			});
 		}
 
-		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE,
-				RubyNature.NATURE_ID);
+		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, RubyNature.NATURE_ID);
 
 		ILaunchConfiguration config = findExistingLaunchConfiguration(wc, mode);
 		if (config == null) {
@@ -268,16 +238,11 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		return config;
 	}
 
-	private void performLaunch(IFolder folder, String mode)
-			throws InterruptedException, CoreException {
+	private void performLaunch(IFolder folder, String mode) throws InterruptedException, CoreException {
 		ILaunchConfiguration config = findOrCreateLaunch(folder, mode);
-		if (config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID,
-				(String) null) == null) {
-			MessageDialog
-					.openInformation(
-							getShell(),
-							Messages.RubyTestingLaunchShortcut_testLaunch,
-							Messages.RubyTestingLaunchShortcut_theSelectedLaunchConfigurationDoesntHaveATestingEngineConfigured);
+		if (config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, (String) null) == null) {
+			MessageDialog.openInformation(getShell(), Messages.RubyTestingLaunchShortcut_testLaunch,
+					Messages.RubyTestingLaunchShortcut_theSelectedLaunchConfigurationDoesntHaveATestingEngineConfigured);
 			return;
 		}
 		DebugUITools.launch(config, mode);
@@ -292,30 +257,25 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 	}
 
 	/**
-	 * Show a selection dialog that allows the user to choose one of the
-	 * specified launch configurations. Return the chosen config, or
-	 * <code>null</code> if the user cancelled the dialog.
-	 * 
+	 * Show a selection dialog that allows the user to choose one of the specified
+	 * launch configurations. Return the chosen config, or <code>null</code> if the
+	 * user cancelled the dialog.
+	 *
 	 * @param configList
 	 * @param mode
 	 * @return ILaunchConfiguration
 	 * @throws InterruptedException
 	 */
-	private ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList,
-			String mode) throws InterruptedException {
-		IDebugModelPresentation labelProvider = DebugUITools
-				.newDebugModelPresentation();
-		ElementListSelectionDialog dialog = new ElementListSelectionDialog(
-				getShell(), labelProvider);
+	private ILaunchConfiguration chooseConfiguration(List<ILaunchConfiguration> configList, String mode)
+			throws InterruptedException {
+		IDebugModelPresentation labelProvider = DebugUITools.newDebugModelPresentation();
+		ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
 		dialog.setElements(configList.toArray());
-		dialog
-				.setTitle(Messages.RubyTestingLaunchShortcut_selectTestConfiguration);
+		dialog.setTitle(Messages.RubyTestingLaunchShortcut_selectTestConfiguration);
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			dialog
-					.setMessage(Messages.RubyTestingLaunchShortcut_selectConfigurationToDebug);
+			dialog.setMessage(Messages.RubyTestingLaunchShortcut_selectConfigurationToDebug);
 		} else {
-			dialog
-					.setMessage(Messages.RubyTestingLaunchShortcut_selectConfigurationToRun);
+			dialog.setMessage(Messages.RubyTestingLaunchShortcut_selectConfigurationToRun);
 		}
 		dialog.setMultipleSelection(false);
 		int result = dialog.open();
@@ -327,9 +287,9 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 
 	/**
 	 * Returns the launch configuration type id of the launch configuration this
-	 * shortcut will create. Clients can override this method to return the id
-	 * of their launch configuration.
-	 * 
+	 * shortcut will create. Clients can override this method to return the id of
+	 * their launch configuration.
+	 *
 	 * @return the launch configuration type id of the launch configuration this
 	 *         shortcut will create
 	 */
@@ -338,35 +298,31 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 	}
 
 	/**
-	 * Creates a launch configuration working copy for the given element. The
-	 * launch configuration type created will be of the type returned by
-	 * {@link #getLaunchConfigurationTypeId}. The element type can only be of
-	 * type {@link IJavaProject}, {@link IPackageFragmentRoot},
-	 * {@link IPackageFragment}, {@link IType} or {@link IMethod}.
-	 * 
-	 * Clients can extend this method (should call super) to configure
-	 * additional attributes on the launch configuration working copy.
-	 * 
+	 * Creates a launch configuration working copy for the given element. The launch
+	 * configuration type created will be of the type returned by
+	 * {@link #getLaunchConfigurationTypeId}. The element type can only be of type
+	 * {@link IJavaProject}, {@link IPackageFragmentRoot}, {@link IPackageFragment},
+	 * {@link IType} or {@link IMethod}.
+	 *
+	 * Clients can extend this method (should call super) to configure additional
+	 * attributes on the launch configuration working copy.
+	 *
 	 * @return a launch configuration working copy for the given element
 	 */
-	protected ILaunchConfigurationWorkingCopy createLaunchConfiguration(
-			IModelElement element) throws CoreException {
+	protected ILaunchConfigurationWorkingCopy createLaunchConfiguration(IModelElement element) throws CoreException {
 		String testFileName;
 
-		String name = ScriptElementLabels.getDefault().getTextLabel(element,
-				ScriptElementLabels.F_FULLY_QUALIFIED);
+		String name = ScriptElementLabels.getDefault().getTextLabel(element, ScriptElementLabels.F_FULLY_QUALIFIED);
 		String testName = name.substring(name.lastIndexOf(IPath.SEPARATOR) + 1);
 
 		switch (element.getElementType()) {
 		case IModelElement.SOURCE_MODULE:
 		case IModelElement.TYPE: {
-			testFileName = element.getResource().getProjectRelativePath()
-					.toPortableString();
+			testFileName = element.getResource().getProjectRelativePath().toPortableString();
 		}
 			break;
 		case IModelElement.METHOD: {
-			testFileName = element.getResource().getProjectRelativePath()
-					.toPortableString();
+			testFileName = element.getResource().getProjectRelativePath().toPortableString();
 		}
 			break;
 		default:
@@ -377,16 +333,12 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		ILaunchConfigurationType configType = getLaunchManager()
 				.getLaunchConfigurationType(getLaunchConfigurationTypeId());
 		ILaunchConfigurationWorkingCopy wc = configType.newInstance(null,
-				getLaunchManager().generateLaunchConfigurationName(
-						testName));
+				getLaunchManager().generateLaunchConfigurationName(testName));
 
 		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				element.getScriptProject().getElementName());
-		wc.setAttribute(
-				ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-				testFileName);
-		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE,
-				RubyNature.NATURE_ID);
+		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, testFileName);
+		wc.setAttribute(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, RubyNature.NATURE_ID);
 		wc.setAttribute(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, "true"); //$NON-NLS-1$
 		// wc.setAttribute(XUnitLaunchConfigurationConstants.ATTR_TEST_NAME,
 		// testFileName);
@@ -395,47 +347,39 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		// wc.setAttribute(XUnitLaunchConfigurationConstants.
 		// ATTR_TEST_ELEMENT_NAME, testElementName);
 		// XUnitMigrationDelegate.mapResources(wc);
-		ITestingEngine[] engines = TestingEngineManager
-				.getEngines(RubyNature.NATURE_ID);
-		ISourceModule module = (ISourceModule) element
-				.getAncestor(IModelElement.SOURCE_MODULE);
-		TestingEngineDetectResult detection = TestingEngineManager.detect(
-				engines, module);
+		ITestingEngine[] engines = TestingEngineManager.getEngines(RubyNature.NATURE_ID);
+		ISourceModule module = (ISourceModule) element.getAncestor(IModelElement.SOURCE_MODULE);
+		TestingEngineDetectResult detection = TestingEngineManager.detect(engines, module);
 		if (detection != null) {
-			wc.setAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, detection
-					.getEngine().getId());
+			wc.setAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, detection.getEngine().getId());
 		}
 
 		return wc;
 	}
 
 	/**
-	 * Returns the attribute names of the attributes that are compared when
-	 * looking for an existing similar launch configuration. Clients can
-	 * override and replace to customize.
-	 * 
+	 * Returns the attribute names of the attributes that are compared when looking
+	 * for an existing similar launch configuration. Clients can override and
+	 * replace to customize.
+	 *
 	 * @return the attribute names of the attributes that are compared
 	 */
 	protected String[] getAttributeNamesToCompare() {
-		return new String[] {
-				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-				DLTKTestingConstants.ATTR_TEST_CONTAINER,
-				ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+		return new String[] { ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+				DLTKTestingConstants.ATTR_TEST_CONTAINER, ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
 				// IDLTKTestingConstants.ENGINE_ID_ATR,
 				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE
-		// XUnitLaunchConfigurationConstants.ATTR_TEST_NAME,
-		// XUnitLaunchConfigurationConstants.ATTR_TEST_ELEMENT_NAME
+				// XUnitLaunchConfigurationConstants.ATTR_TEST_NAME,
+				// XUnitLaunchConfigurationConstants.ATTR_TEST_ELEMENT_NAME
 		};
 	}
 
-	private static boolean hasSameAttributes(ILaunchConfiguration config1,
-			ILaunchConfiguration config2, String[] attributeToCompare) {
+	private static boolean hasSameAttributes(ILaunchConfiguration config1, ILaunchConfiguration config2,
+			String[] attributeToCompare) {
 		try {
 			for (int i = 0; i < attributeToCompare.length; i++) {
-				String val1 = config1.getAttribute(attributeToCompare[i],
-						Util.EMPTY_STRING);
-				String val2 = config2.getAttribute(attributeToCompare[i],
-						Util.EMPTY_STRING);
+				String val1 = config1.getAttribute(attributeToCompare[i], Util.EMPTY_STRING);
+				String val2 = config2.getAttribute(attributeToCompare[i], Util.EMPTY_STRING);
 				if (!val1.equals(val2)) {
 					return false;
 				}
@@ -447,16 +391,14 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 		return false;
 	}
 
-	private ILaunchConfiguration findExistingLaunchConfiguration(
-			ILaunchConfigurationWorkingCopy temporary, String mode)
+	private ILaunchConfiguration findExistingLaunchConfiguration(ILaunchConfigurationWorkingCopy temporary, String mode)
 			throws InterruptedException, CoreException {
 		ILaunchConfigurationType configType = temporary.getType();
 
-		ILaunchConfiguration[] configs = getLaunchManager()
-				.getLaunchConfigurations(configType);
+		ILaunchConfiguration[] configs = getLaunchManager().getLaunchConfigurations(configType);
 		String[] attributeToCompare = getAttributeNamesToCompare();
 
-		ArrayList<ILaunchConfiguration> candidateConfigs = new ArrayList<ILaunchConfiguration>(configs.length);
+		ArrayList<ILaunchConfiguration> candidateConfigs = new ArrayList<>(configs.length);
 		for (int i = 0; i < configs.length; i++) {
 			ILaunchConfiguration config = configs[i];
 			if (hasSameAttributes(config, temporary, attributeToCompare)) {
@@ -480,8 +422,7 @@ public class RubyTestingLaunchShortcut implements ILaunchShortcut {
 			// cancelled the dialog, in which case this method returns null,
 			// since cancelling the dialog should also cancel launching
 			// anything.
-			ILaunchConfiguration config = chooseConfiguration(candidateConfigs,
-					mode);
+			ILaunchConfiguration config = chooseConfiguration(candidateConfigs, mode);
 			if (config != null) {
 				return config;
 			}

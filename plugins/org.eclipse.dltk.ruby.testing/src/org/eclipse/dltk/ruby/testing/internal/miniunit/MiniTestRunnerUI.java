@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc. and others
+ * Copyright (c) 2016, 2017 Red Hat, Inc. and others
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -140,7 +140,7 @@ public class MiniTestRunnerUI extends AbstractRubyTestRunnerUI {
 	}
 
 	private static final class TypeSearchRequestor extends SearchRequestor {
-		final List<IType> types = new ArrayList<IType>();
+		final List<IType> types = new ArrayList<>();
 
 		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {

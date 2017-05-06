@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -61,7 +61,6 @@ import org.eclipse.dltk.testing.DLTKTestingPlugin;
 import org.eclipse.dltk.testing.TestElementResolution;
 import org.eclipse.dltk.testing.model.ITestCaseElement;
 import org.eclipse.dltk.testing.model.ITestElement;
-import org.eclipse.dltk.testing.model.ITestElementPredicate;
 import org.eclipse.dltk.testing.model.ITestRunSession;
 import org.eclipse.dltk.testing.model.ITestSuiteElement;
 import org.eclipse.jface.text.BadLocationException;
@@ -77,8 +76,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 	 * @param testingEngine
 	 * @param project
 	 */
-	public RSpecTestRunnerUI(RspecTestingEngine testingEngine,
-			IScriptProject project) {
+	public RSpecTestRunnerUI(RspecTestingEngine testingEngine, IScriptProject project) {
 		super(testingEngine, project);
 	}
 
@@ -89,8 +87,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		if (index >= 0) {
 			if (full) {
 				final String template = DLTKTestingMessages.TestSessionLabelProvider_testMethodName_className;
-				return NLS.bind(template, testName.substring(index + 1),
-						testName.substring(0, index));
+				return NLS.bind(template, testName.substring(index + 1), testName.substring(0, index));
 			} else {
 				return testName.substring(0, index);
 			}
@@ -104,17 +101,14 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		int index = testName.lastIndexOf(PATH_BEGIN);
 		if (index >= 0) {
 			final String template = DLTKTestingMessages.TestRunnerViewPart_message_started;
-			return NLS.bind(template, testName.substring(index + 1), testName
-					.substring(0, index));
+			return NLS.bind(template, testName.substring(index + 1), testName.substring(0, index));
 		}
 		return testName;
 	}
 
-	private static class RSpecLocator extends
-			AbstractTestingEngineValidateVisitor {
+	private static class RSpecLocator extends AbstractTestingEngineValidateVisitor {
 
-		protected ASTNode collectArgs(final CallArgumentsList args,
-				final List<String> texts) {
+		protected ASTNode collectArgs(final CallArgumentsList args, final List<String> texts) {
 			ASTNode lastArg = null;
 			for (Iterator<ASTNode> i = args.getChilds().iterator(); i.hasNext();) {
 				final ASTNode arg = i.next();
@@ -190,14 +184,11 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 					if (isMethodCall(call, RSpecUtils.CONTEXT_METHODS)) {
 						final CallArgumentsList args = call.getArgs();
 						if (args.getChilds().size() >= 1) {
-							final List<String> texts = new ArrayList<String>();
+							final List<String> texts = new ArrayList<>();
 							final ASTNode lastArg = collectArgs(args, texts);
-							if (!texts.isEmpty()
-									&& isMatched(contextName, texts)) {
+							if (!texts.isEmpty() && isMatched(contextName, texts)) {
 								assert (lastArg != null);
-								range = new SourceRange(call.sourceStart(),
-										lastArg.sourceEnd()
-												- call.sourceStart());
+								range = new SourceRange(call.sourceStart(), lastArg.sourceEnd() - call.sourceStart());
 							}
 						}
 					}
@@ -230,7 +221,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 		}
 
-		private final Stack<State> states = new Stack<State>();
+		private final Stack<State> states = new Stack<>();
 
 		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
@@ -241,10 +232,9 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 					if (args.getChilds().size() >= 1) {
 						if (isMethodCall(call, RSpecUtils.CONTEXT_METHODS)) {
 							boolean matched = false;
-							final List<String> texts = new ArrayList<String>();
+							final List<String> texts = new ArrayList<>();
 							final ASTNode lastArg = collectArgs(args, texts);
-							if (!texts.isEmpty()
-									&& isMatched(contextName, texts)) {
+							if (!texts.isEmpty() && isMatched(contextName, texts)) {
 								assert (lastArg != null);
 								matched = true;
 								// range = new SourceRange(call.sourceStart(),
@@ -252,15 +242,12 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 								// - call.sourceStart());
 							}
 							states.push(new State(node, matched));
-						} else if (isMatchingContext()
-								&& isMethodCall(call, RSpecUtils.TEST_METHODS)) {
-							final List<String> texts = new ArrayList<String>();
+						} else if (isMatchingContext() && isMethodCall(call, RSpecUtils.TEST_METHODS)) {
+							final List<String> texts = new ArrayList<>();
 							final ASTNode lastArg = collectArgs(args, texts);
 							if (!texts.isEmpty() && isMatched(testName, texts)) {
 								assert (lastArg != null);
-								range = new SourceRange(call.sourceStart(),
-										lastArg.sourceEnd()
-												- call.sourceStart());
+								range = new SourceRange(call.sourceStart(), lastArg.sourceEnd() - call.sourceStart());
 							}
 						}
 					}
@@ -291,7 +278,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	private static class MethodRequestor extends SearchRequestor {
 
-		final Set<IResource> resources = new HashSet<IResource>();
+		final Set<IResource> resources = new HashSet<>();
 
 		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
@@ -305,7 +292,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 	@Override
 	protected TestElementResolution resolveTestSuite(ITestSuiteElement element) {
 		final ITestElement[] children = element.getChildren();
-		final Set<String> locations = new HashSet<String>();
+		final Set<String> locations = new HashSet<>();
 		for (int i = 0; i < children.length; ++i) {
 			if (children[i] instanceof ITestCaseElement) {
 				final ITestCaseElement caseElement = (ITestCaseElement) children[i];
@@ -313,17 +300,15 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 				final int index = testName.lastIndexOf(PATH_BEGIN);
 				if (index > 0) {
 					final String location = testName.substring(index + 1);
-					final Matcher matcher = STACK_FRAME_PATTERN
-							.matcher(location);
+					final Matcher matcher = STACK_FRAME_PATTERN.matcher(location);
 					if (matcher.matches()) {
 						locations.add(matcher.group(1));
 					}
 				}
 			}
 		}
-		final Set<IResource> processedResources = new HashSet<IResource>();
-		final RSpecContextLocator locator = new RSpecContextLocator(element
-				.getSuiteTypeName());
+		final Set<IResource> processedResources = new HashSet<>();
+		final RSpecContextLocator locator = new RSpecContextLocator(element.getSuiteTypeName());
 		for (Iterator<String> i = locations.iterator(); i.hasNext();) {
 			final ISourceModule module = findSourceModule(i.next());
 			if (module != null) {
@@ -338,22 +323,19 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		}
 		final IDLTKSearchScope scope = getSearchScope();
 		TestElementResolution resolution;
-		resolution = searchMethodReferences(scope, locator,
-				RSpecUtils.DESCRIBE, processedResources);
+		resolution = searchMethodReferences(scope, locator, RSpecUtils.DESCRIBE, processedResources);
 		if (resolution != null) {
 			return resolution;
 		}
-		resolution = searchMethodReferences(scope, locator, RSpecUtils.CONTEXT,
-				processedResources);
+		resolution = searchMethodReferences(scope, locator, RSpecUtils.CONTEXT, processedResources);
 		if (resolution != null) {
 			return resolution;
 		}
 		return null;
 	}
 
-	private TestElementResolution searchMethodReferences(
-			final IDLTKSearchScope scope, final RSpecContextLocator locator,
-			final String methodName, final Set<IResource> processedResources) {
+	private TestElementResolution searchMethodReferences(final IDLTKSearchScope scope,
+			final RSpecContextLocator locator, final String methodName, final Set<IResource> processedResources) {
 		final Set<IResource> describeReferences = findMethodReferences(scope, methodName);
 		describeReferences.removeAll(processedResources);
 		for (Iterator<IResource> i = describeReferences.iterator(); i.hasNext();) {
@@ -373,18 +355,14 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return null;
 	}
 
-	private Set<IResource> findMethodReferences(final IDLTKSearchScope scope,
-			final String methodName) {
-		final SearchPattern pattern = SearchPattern.createPattern(methodName,
-				IDLTKSearchConstants.METHOD, IDLTKSearchConstants.REFERENCES,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
+	private Set<IResource> findMethodReferences(final IDLTKSearchScope scope, final String methodName) {
+		final SearchPattern pattern = SearchPattern.createPattern(methodName, IDLTKSearchConstants.METHOD,
+				IDLTKSearchConstants.REFERENCES, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
 				scope.getLanguageToolkit());
 		final MethodRequestor requestor = new MethodRequestor();
 		try {
-			new SearchEngine().search(pattern,
-					new SearchParticipant[] { SearchEngine
-							.getDefaultSearchParticipant() }, scope, requestor,
-					null);
+			new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
+					scope, requestor, null);
 		} catch (CoreException e) {
 			final String msg = "Error in search method references {0})"; //$NON-NLS-1$
 			RubyTestingPlugin.error(NLS.bind(msg, methodName), e);
@@ -413,8 +391,7 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 			return null;
 		}
 		final RSpecTestLocator locator = new RSpecTestLocator(
-				((ITestSuiteElement) element.getParentContainer())
-						.getSuiteTypeName(), testName.substring(0, index));
+				((ITestSuiteElement) element.getParentContainer()).getSuiteTypeName(), testName.substring(0, index));
 		locator.process(module);
 		if (locator.range != null) {
 			return new TestElementResolution(module, locator.range);
@@ -439,8 +416,8 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 		} catch (BadLocationException e) {
 			return null;
 		}
-		return new TestElementResolution(module, ResolverUtils.adjustRange(
-				source, line.getOffset(), line.getOffset() + line.getLength()));
+		return new TestElementResolution(module,
+				ResolverUtils.adjustRange(source, line.getOffset(), line.getOffset() + line.getLength()));
 	}
 
 	private ISourceModule findSourceModule(String path) {
@@ -486,45 +463,29 @@ public class RSpecTestRunnerUI extends AbstractRubyTestRunnerUI {
 	}
 
 	@Override
-	public String collectFailures(ITestRunSession testRunSession)
-			throws CoreException {
+	public String collectFailures(ITestRunSession testRunSession) throws CoreException {
 		try {
 			final File file = File.createTempFile("rspecTestFailures", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
 			file.deleteOnExit();
-			BufferedWriter bw = null;
-			try {
-				bw = new BufferedWriter(new FileWriter(file));
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 				final ITestElement[] failures = testRunSession
-						.getFailedTestElements(new ITestElementPredicate() {
-							@Override
-							public boolean matches(ITestElement testElement) {
-								return testElement instanceof ITestCaseElement;
-							}
-						});
+						.getFailedTestElements(testElement -> testElement instanceof ITestCaseElement);
 				for (int i = 0; i < failures.length; i++) {
 					final ITestElement failure = failures[i];
 					if (failure instanceof ITestCaseElement
 							&& failure.getParentContainer() instanceof ITestSuiteElement) {
-						final ITestSuiteElement suite = (ITestSuiteElement) failure
-								.getParentContainer();
-						final String exampleName = suite.getSuiteTypeName()
-								+ " " //$NON-NLS-1$
-								+ getTestCaseLabel((ITestCaseElement) failure,
-										false);
+						final ITestSuiteElement suite = (ITestSuiteElement) failure.getParentContainer();
+						final String exampleName = suite.getSuiteTypeName() + " " //$NON-NLS-1$
+								+ getTestCaseLabel((ITestCaseElement) failure, false);
 						bw.write(exampleName);
 						bw.newLine();
 						// TODO handle "automatic" example names
 					}
 				}
-			} finally {
-				if (bw != null) {
-					bw.close();
-				}
 			}
 			return file.getAbsolutePath();
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					DLTKTestingPlugin.PLUGIN_ID, IStatus.ERROR, "", e)); //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR, DLTKTestingPlugin.PLUGIN_ID, IStatus.ERROR, "", e)); //$NON-NLS-1$
 		}
 	}
 }

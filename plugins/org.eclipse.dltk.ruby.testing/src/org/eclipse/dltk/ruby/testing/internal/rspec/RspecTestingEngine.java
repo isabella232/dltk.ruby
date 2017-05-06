@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc. and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -43,8 +43,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class RspecTestingEngine extends AbstractRubyTestingEngine {
 
-	static class RSpecValidateVisitor extends
-			AbstractTestingEngineValidateVisitor {
+	static class RSpecValidateVisitor extends AbstractTestingEngineValidateVisitor {
 
 		private static final String RSPEC = "spec"; //$NON-NLS-1$
 
@@ -62,9 +61,8 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 				} else if (isMethodCall(call, RSpecUtils.CONTEXT_METHODS)
 						|| isMethodCall(call, RSpecUtils.SHARED_GROUP)) {
 					contextCalls.push(node);
-				} else if (!contextCalls.isEmpty()
-						&& (isMethodCall(call, RSpecUtils.TEST_METHODS) || isMethodCall(
-								call, RSpecUtils.TEST_SHARED))) {
+				} else if (!contextCalls.isEmpty() && (isMethodCall(call, RSpecUtils.TEST_METHODS)
+						|| isMethodCall(call, RSpecUtils.TEST_SHARED))) {
 					weight += TEST_WEIGHT;
 				}
 			}
@@ -81,15 +79,14 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 			super.endvisitGeneral(node);
 		}
 
-		private final Stack<ASTNode> contextCalls = new Stack<ASTNode>();
+		private final Stack<ASTNode> contextCalls = new Stack<>();
 
 		public IStatus getStatus() {
 			if (weight >= REQUIRE_WEIGHT + TEST_WEIGHT) {
 				return Status.OK_STATUS;
 			}
 			if (weight >= TEST_WEIGHT) {
-				return createStatus(IStatus.INFO,
-						Messages.validate_probablyRSpec);
+				return createStatus(IStatus.INFO, Messages.validate_probablyRSpec);
 			}
 			return createStatus(IStatus.WARNING, Messages.validate_notRSpec);
 		}
@@ -105,8 +102,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 		try {
 			declaration.traverse(visitor);
 		} catch (Exception e) {
-			return createStatus(IStatus.WARNING, NLS.bind(
-					Messages.validate_runtimeError, e.getMessage()));
+			return createStatus(IStatus.WARNING, NLS.bind(Messages.validate_runtimeError, e.getMessage()));
 		}
 		return visitor.getStatus();
 	}
@@ -114,41 +110,35 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 	static final String RSPEC_RUNNER = "dltk-rspec-runner.rb"; //$NON-NLS-1$
 
 	@Override
-	public String getMainScriptPath(ILaunchConfiguration configuration,
-			IEnvironment scriptEnvironment) throws CoreException {
+	public String getMainScriptPath(ILaunchConfiguration configuration, IEnvironment scriptEnvironment)
+			throws CoreException {
 		return getRunnerFile(getBundle(), RUNNER_PATH, RSPEC_RUNNER).getPath();
 	}
 
 	@Override
-	public void configureLaunch(InterpreterConfig config,
-			ILaunchConfiguration configuration, ILaunch launch)
+	public void configureLaunch(InterpreterConfig config, ILaunchConfiguration configuration, ILaunch launch)
 			throws CoreException {
 		// select port number
 		final String strPort = String.valueOf(allocatePort());
 		launch.setAttribute(DLTKTestingConstants.ATTR_PORT, strPort);
 		config.addEnvVar(RUBY_TESTING_PORT, strPort);
-		final String failureNames = configuration.getAttribute(
-				DLTKTestingConstants.ATTR_FAILURES_NAMES, Util.EMPTY_STRING);
+		final String failureNames = configuration.getAttribute(DLTKTestingConstants.ATTR_FAILURES_NAMES,
+				Util.EMPTY_STRING);
 		if (failureNames.length() != 0) {
 			config.addScriptArg("-e"); //$NON-NLS-1$
 			config.addScriptArg(failureNames);
 		}
-		if (!RubyTestingLaunchConfigurationDelegate
-				.isContainerMode(configuration)) {
-			final String mainScript = AbstractScriptLaunchConfigurationDelegate
-					.getMainScriptName(configuration);
+		if (!RubyTestingLaunchConfigurationDelegate.isContainerMode(configuration)) {
+			final String mainScript = AbstractScriptLaunchConfigurationDelegate.getMainScriptName(configuration);
 			// ssanders - Fully qualify the script path, otherwise it won't be
 			// found for nested folders
 			final IScriptProject scriptProject = AbstractScriptLaunchConfigurationDelegate
 					.getScriptProject(configuration);
-			final IPath scriptPath = scriptProject.getProject().getLocation()
-					.append(mainScript);
-			config.addScriptArg(config.getEnvironment().getFile(scriptPath)
-					.toOSString());
+			final IPath scriptPath = scriptProject.getProject().getLocation().append(mainScript);
+			config.addScriptArg(config.getEnvironment().getFile(scriptPath).toOSString());
 		} else {
-			final String containerHandle = configuration
-					.getAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER,
-							Util.EMPTY_STRING);
+			final String containerHandle = configuration.getAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER,
+					Util.EMPTY_STRING);
 			Assert.isLegal(containerHandle.length() != 0);
 			IModelElement element = DLTKCore.create(containerHandle);
 			Assert.isNotNull(element);
@@ -162,8 +152,7 @@ public class RspecTestingEngine extends AbstractRubyTestingEngine {
 	 * @see org.eclipse.dltk.testing.ITestingEngine#getTestRunnerUI()
 	 */
 	@Override
-	public ITestRunnerUI getTestRunnerUI(IScriptProject project,
-			ILaunchConfiguration configuration) {
+	public ITestRunnerUI getTestRunnerUI(IScriptProject project, ILaunchConfiguration configuration) {
 		return new RSpecTestRunnerUI(this, project);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -63,12 +63,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
-public class RubyTestingMainLaunchConfigurationTab extends
-		RubyMainLaunchConfigurationTab {
+public class RubyTestingMainLaunchConfigurationTab extends RubyMainLaunchConfigurationTab {
 
 	private Button detect;
 	private Combo engineType;
-	private Map<String, String> nameToId = new HashMap<String, String>();
+	private Map<String, String> nameToId = new HashMap<>();
 	private Label engineMessageLabel;
 	private Label engineMessageImageLabel;
 
@@ -97,8 +96,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		// one test
 		//
 		fTestRadioButton = new Button(comp, SWT.RADIO);
-		fTestRadioButton
-				.setText(DLTKTestingMessages.JUnitLaunchConfigurationTab_label_oneTest);
+		fTestRadioButton.setText(DLTKTestingMessages.JUnitLaunchConfigurationTab_label_oneTest);
 		fTestRadioButton.setLayoutData(createModeGridData());
 		fTestRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -111,15 +109,13 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		comp.setLayout(topLayout);
 		createProjectEditor(comp);
 
-		createMainModuleEditor(comp,
-				DLTKLaunchConfigurationsMessages.mainTab_mainModule);
+		createMainModuleEditor(comp, DLTKLaunchConfigurationsMessages.mainTab_mainModule);
 		createVerticalSpacer(comp, 1);
 		//
 		// container tests
 		//
 		fTestContainerRadioButton = new Button(comp, SWT.RADIO);
-		fTestContainerRadioButton
-				.setText(DLTKTestingMessages.JUnitLaunchConfigurationTab_label_containerTest);
+		fTestContainerRadioButton.setText(DLTKTestingMessages.JUnitLaunchConfigurationTab_label_containerTest);
 		fTestContainerRadioButton.setLayoutData(createModeGridData());
 		fTestContainerRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -135,8 +131,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		fContainerText.setLayoutData(gd);
 		fContainerText.addModifyListener(getWidgetListener());
 
-		fContainerSearchButton = createPushButton(comp,
-				DLTKTestingMessages.JUnitLaunchConfigurationTab_label_search,
+		fContainerSearchButton = createPushButton(comp, DLTKTestingMessages.JUnitLaunchConfigurationTab_label_search,
 				null);
 		fContainerSearchButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -148,9 +143,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		//
 		// Testing engine
 		//
-		createTestEngineEditor(
-				comp,
-				Messages.RubyTestingMainLaunchConfigurationTab_rubyTestingEngine);
+		createTestEngineEditor(comp, Messages.RubyTestingMainLaunchConfigurationTab_rubyTestingEngine);
 		createVerticalSpacer(comp, 1);
 
 		createDebugOptionsGroup(comp);
@@ -160,7 +153,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	protected void handleContainerSearchButtonSelected() {
 		IModelElement element = chooseContainer(fContainerElement);
@@ -198,26 +191,21 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	}
 
 	private IModelElement chooseContainer(IModelElement initElement) {
-		Class<?>[] acceptedClasses = new Class[] { IProjectFragment.class,
-				IScriptProject.class, IScriptFolder.class };
-		TypedElementSelectionValidator validator = new TypedElementSelectionValidator(
-				acceptedClasses, false) {
+		Class<?>[] acceptedClasses = new Class[] { IProjectFragment.class, IScriptProject.class, IScriptFolder.class };
+		TypedElementSelectionValidator validator = new TypedElementSelectionValidator(acceptedClasses, false) {
 			@Override
 			public boolean isSelectedValid(Object element) {
 				return true;
 			}
 		};
 
-		acceptedClasses = new Class[] { IScriptModel.class,
-				IProjectFragment.class, IScriptProject.class,
+		acceptedClasses = new Class[] { IScriptModel.class, IProjectFragment.class, IScriptProject.class,
 				IScriptFolder.class };
 		ViewerFilter filter = new TypedViewerFilter(acceptedClasses) {
 			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IScriptProject) {
-					if (!getNatureID().equals(
-							((IScriptProject) element).getLanguageToolkit()
-									.getNatureId())) {
+					if (!getNatureID().equals(((IScriptProject) element).getLanguageToolkit().getNatureId())) {
 						return false;
 					}
 				}
@@ -228,8 +216,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 					}
 				}
 				try {
-					if (element instanceof IScriptFolder
-							&& !((IScriptFolder) element).hasChildren()) {
+					if (element instanceof IScriptFolder && !((IScriptFolder) element).hasChildren()) {
 						return false;
 					}
 				} catch (ModelException e) {
@@ -240,16 +227,12 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		};
 
 		StandardModelElementContentProvider provider = new StandardModelElementContentProvider();
-		ILabelProvider labelProvider = new ModelElementLabelProvider(
-				ModelElementLabelProvider.SHOW_DEFAULT);
-		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-				getShell(), labelProvider, provider);
+		ILabelProvider labelProvider = new ModelElementLabelProvider(ModelElementLabelProvider.SHOW_DEFAULT);
+		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
 		dialog.setValidator(validator);
 		dialog.setComparator(new ModelElementComparator());
-		dialog
-				.setTitle(DLTKTestingMessages.JUnitLaunchConfigurationTab_folderdialog_title);
-		dialog
-				.setMessage(DLTKTestingMessages.JUnitLaunchConfigurationTab_folderdialog_message);
+		dialog.setTitle(DLTKTestingMessages.JUnitLaunchConfigurationTab_folderdialog_title);
+		dialog.setMessage(DLTKTestingMessages.JUnitLaunchConfigurationTab_folderdialog_message);
 		dialog.addFilter(filter);
 		dialog.setInput(DLTKCore.create(getWorkspaceRoot()));
 		dialog.setInitialSelection(initElement);
@@ -273,13 +256,11 @@ public class RubyTestingMainLaunchConfigurationTab extends
 
 	@Override
 	protected boolean needGroupForField(String fieldName) {
-		return !FIELD_PROJECT.equals(fieldName)
-				&& !FIELD_SCRIPT.equals(fieldName);
+		return !FIELD_PROJECT.equals(fieldName) && !FIELD_SCRIPT.equals(fieldName);
 	}
 
 	@Override
-	protected Label createLabelForField(Composite parent, String fieldName,
-			String text) {
+	protected Label createLabelForField(Composite parent, String fieldName, String text) {
 		final Label label = super.createLabelForField(parent, fieldName, text);
 		if (FIELD_PROJECT.equals(fieldName) || FIELD_SCRIPT.equals(fieldName)) {
 			label.setLayoutData(createIndentedGridData());
@@ -310,8 +291,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		if (!isSingleTestMode && fContainerText.getText().length() == 0) {
 			String projText = getProjectName();
 			if (Path.EMPTY.isValidSegment(projText)) {
-				IScriptProject project = getScriptModel().getScriptProject(
-						projText);
+				IScriptProject project = getScriptModel().getScriptProject(projText);
 				if (project != null && project.exists()) {
 					setContainerElement(project);
 				}
@@ -345,12 +325,9 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		engineType.setLayoutData(gd);
 		engineType.addModifyListener(getWidgetListener());
-		detect = createPushButton(parent,
-				DLTKTestingMessages.MainLaunchConfigurationTab_detectEngine,
-				null);
+		detect = createPushButton(parent, DLTKTestingMessages.MainLaunchConfigurationTab_detectEngine, null);
 
-		ITestingEngine[] engines = TestingEngineManager
-				.getEngines(getNatureID());
+		ITestingEngine[] engines = TestingEngineManager.getEngines(getNatureID());
 		for (int i = 0; i < engines.length; i++) {
 			String name = engines[i].getName();
 			this.engineType.add(name);
@@ -375,13 +352,10 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	private void handleDetectButtonSelected() {
 		ISourceModule module = getSourceModule();
 		if (module != null && module.exists()) {
-			final ITestingEngine[] engines = TestingEngineManager
-					.getEngines(getNatureID());
-			final TestingEngineDetectResult result = TestingEngineManager
-					.detect(engines, module);
+			final ITestingEngine[] engines = TestingEngineManager.getEngines(getNatureID());
+			final TestingEngineDetectResult result = TestingEngineManager.detect(engines, module);
 			if (result != null) {
-				engineType.select(Arrays.asList(engines).indexOf(
-						result.getEngine()));
+				engineType.select(Arrays.asList(engines).indexOf(result.getEngine()));
 				updateEngineStatus(result.getStatus());
 			}
 		}
@@ -415,7 +389,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 
 	/**
 	 * Show the new message and image.
-	 * 
+	 *
 	 * @param newMessage
 	 * @param newImage
 	 */
@@ -470,8 +444,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 	}
 
 	@Override
-	protected void setDefaults(ILaunchConfigurationWorkingCopy configuration,
-			IModelElement element) {
+	protected void setDefaults(ILaunchConfigurationWorkingCopy configuration, IModelElement element) {
 		element = ensureValid(element);
 		if (element != null) {
 			if (element.getElementType() >= IModelElement.SOURCE_MODULE) {
@@ -479,55 +452,37 @@ public class RubyTestingMainLaunchConfigurationTab extends
 				if (element != null) {
 					super.setDefaults(configuration, element);
 					TestingEngineDetectResult detection = TestingEngineManager
-							.detect(TestingEngineManager
-									.getEngines(getNatureID()),
-									(ISourceModule) element);
+							.detect(TestingEngineManager.getEngines(getNatureID()), (ISourceModule) element);
 					if (detection != null) {
-						configuration.setAttribute(
-								DLTKTestingConstants.ATTR_ENGINE_ID, detection
-										.getEngine().getId());
+						configuration.setAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, detection.getEngine().getId());
 					}
 				}
 			} else {
-				configuration.setAttribute(
-						ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+				configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 						element.getScriptProject().getElementName());
-				configuration.setAttribute(
-						DLTKTestingConstants.ATTR_TEST_CONTAINER, element
-								.getHandleIdentifier());
+				configuration.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, element.getHandleIdentifier());
 			}
 		}
 	}
 
 	@Override
 	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
-		if (fTestContainerRadioButton.getSelection()
-				&& fContainerElement != null) {
-			config.setAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+		if (fTestContainerRadioButton.getSelection() && fContainerElement != null) {
+			config.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 					fContainerElement.getScriptProject().getElementName());
-			config.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER,
-					fContainerElement.getHandleIdentifier());
-			config.setAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-					EMPTY_STRING);
+			config.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, fContainerElement.getHandleIdentifier());
+			config.setAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, EMPTY_STRING);
 		} else {
-			config.setAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					getProjectName());
-			config.setAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-					getScriptName());
-			config.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER,
-					EMPTY_STRING);
+			config.setAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, getProjectName());
+			config.setAttribute(ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME, getScriptName());
+			config.setAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, EMPTY_STRING);
 		}
 		performApplyInteractiveConsole(config);
 		config.setAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, getEngineId());
 	}
 
 	@Override
-	protected void mapResources(ILaunchConfigurationWorkingCopy config)
-			throws CoreException {
+	protected void mapResources(ILaunchConfigurationWorkingCopy config) throws CoreException {
 		DLTKTestingMigrationDelegate.mapResources(config);
 	}
 
@@ -541,8 +496,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		// update test type
 		String containerHandle = EMPTY_STRING;
 		try {
-			containerHandle = config.getAttribute(
-					DLTKTestingConstants.ATTR_TEST_CONTAINER, EMPTY_STRING);
+			containerHandle = config.getAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, EMPTY_STRING);
 		} catch (CoreException ce) {
 		}
 		if (containerHandle.length() > 0) {
@@ -553,8 +507,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		// update engine
 		String id = null;
 		try {
-			id = config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID,
-					EMPTY_STRING);
+			id = config.getAttribute(DLTKTestingConstants.ATTR_ENGINE_ID, EMPTY_STRING);
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
@@ -563,8 +516,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		if (id == null || id.length() == 0) {
 			handleDetectButtonSelected();
 		} else {
-			final ITestingEngine[] engines = TestingEngineManager
-					.getEngines(getNatureID());
+			final ITestingEngine[] engines = TestingEngineManager.getEngines(getNatureID());
 			for (int i = 0; i < engines.length; i++) {
 				final ITestingEngine engine = engines[i];
 				if (engine.getId().equals(id)) {
@@ -595,8 +547,7 @@ public class RubyTestingMainLaunchConfigurationTab extends
 		String containerHandle = EMPTY_STRING;
 		IModelElement containerElement = null;
 		try {
-			containerHandle = config.getAttribute(
-					DLTKTestingConstants.ATTR_TEST_CONTAINER, EMPTY_STRING);
+			containerHandle = config.getAttribute(DLTKTestingConstants.ATTR_TEST_CONTAINER, EMPTY_STRING);
 			if (containerHandle.length() > 0) {
 				containerElement = DLTKCore.create(containerHandle);
 			}

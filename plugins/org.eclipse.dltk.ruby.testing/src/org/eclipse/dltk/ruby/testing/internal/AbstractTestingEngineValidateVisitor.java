@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc.
+ * Copyright (c) 2008, 2017 xored software, Inc.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,7 +32,7 @@ import org.eclipse.dltk.ruby.typeinference.RubyClassType;
 
 public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 
-	private final Stack<ASTNode> stack = new Stack<ASTNode>();
+	private final Stack<ASTNode> stack = new Stack<>();
 
 	/**
 	 * @param call
@@ -77,30 +77,23 @@ public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 		super.endvisitGeneral(node);
 	}
 
-	protected boolean isMethodPrefix(final MethodDeclaration method,
-			final String prefix) {
+	protected boolean isMethodPrefix(final MethodDeclaration method, final String prefix) {
 		final String methodName = method.getName();
-		return methodName.startsWith(prefix)
-				&& methodName.length() > prefix.length();
+		return methodName.startsWith(prefix) && methodName.length() > prefix.length();
 	}
 
-	protected boolean isSuperClassOf(ISourceModule module,
-			RubyClassDeclaration declaration, final String className) {
+	protected boolean isSuperClassOf(ISourceModule module, RubyClassDeclaration declaration, final String className) {
 		if (declaration.getSuperClassNames().contains(className))
 			return true;
 		else {
 			String classKey = className.replaceAll("::", //$NON-NLS-1$
 					String.valueOf(IIndexConstants.SEPARATOR));
-			Set<String> processedKeys = new HashSet<String>();
-			for (Iterator<String> iter = declaration.getSuperClassNames().iterator(); iter
-					.hasNext();) {
+			Set<String> processedKeys = new HashSet<>();
+			for (Iterator<String> iter = declaration.getSuperClassNames().iterator(); iter.hasNext();) {
 				String superClass = iter.next();
-				RubyMixinModel model = RubyMixinModel.getInstance(module
-						.getScriptProject());
-				RubyMixinClass mixinClass = model
-						.createRubyClass(new RubyClassType(superClass
-								.replaceAll("::", String //$NON-NLS-1$
-										.valueOf(IIndexConstants.SEPARATOR))));
+				RubyMixinModel model = RubyMixinModel.getInstance(module.getScriptProject());
+				RubyMixinClass mixinClass = model.createRubyClass(new RubyClassType(superClass.replaceAll("::", String //$NON-NLS-1$
+						.valueOf(IIndexConstants.SEPARATOR))));
 				if (mixinClass != null)
 					// ssanders - Already know that it's indirect, because of
 					// contains() above
@@ -120,8 +113,7 @@ public class AbstractTestingEngineValidateVisitor extends ASTVisitor {
 	}
 
 	private boolean isRequire(CallExpression call) {
-		return call.getReceiver() == null
-				&& RubyConstants.REQUIRE.equals(call.getName())
+		return call.getReceiver() == null && RubyConstants.REQUIRE.equals(call.getName())
 				&& call.getArgs().getChilds().size() == 1;
 	}
 

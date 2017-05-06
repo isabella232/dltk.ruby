@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2016 xored software, Inc. and others
+ * Copyright (c) 2008, 2017 xored software, Inc. and others
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -69,8 +69,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	/**
 	 * @param testingEngine
 	 */
-	public TestUnitTestRunnerUI(AbstractRubyTestingEngine testingEngine,
-			IScriptProject project) {
+	public TestUnitTestRunnerUI(AbstractRubyTestingEngine testingEngine, IScriptProject project) {
 		super(testingEngine, project);
 	}
 
@@ -80,19 +79,16 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		int index = testName.lastIndexOf(CLASS_BEGIN);
 		if (index > 0) {
 			final int braceIndex = index;
-			while (index > 0
-					&& Character.isWhitespace(testName.charAt(index - 1))) {
+			while (index > 0 && Character.isWhitespace(testName.charAt(index - 1))) {
 				--index;
 			}
 			if (full) {
 				int end = testName.length();
-				if (end > braceIndex + 1
-						&& testName.charAt(end - 1) == CLASS_END) {
+				if (end > braceIndex + 1 && testName.charAt(end - 1) == CLASS_END) {
 					--end;
 				}
 				final String template = DLTKTestingMessages.TestSessionLabelProvider_testMethodName_className;
-				return NLS.bind(template, testName.substring(braceIndex + 1,
-						end), testName.substring(0, index));
+				return NLS.bind(template, testName.substring(braceIndex + 1, end), testName.substring(0, index));
 			} else {
 				return testName.substring(0, index);
 			}
@@ -111,14 +107,11 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 				--end;
 			}
 			final String className = testName.substring(index + 1, end);
-			while (index > 0
-					&& Character.isWhitespace(testName.charAt(index - 1))) {
+			while (index > 0 && Character.isWhitespace(testName.charAt(index - 1))) {
 				--index;
 			}
 			final String method = testName.substring(0, index);
-			return NLS.bind(
-					DLTKTestingMessages.TestRunnerViewPart_message_started,
-					className, method);
+			return NLS.bind(DLTKTestingMessages.TestRunnerViewPart_message_started, className, method);
 		} else {
 			return testName;
 		}
@@ -136,8 +129,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		if (!(pos > 0 && testName.charAt(testName.length() - 1) == CLASS_END)) {
 			return null;
 		}
-		final String className = testName.substring(pos + 1,
-				testName.length() - 1);
+		final String className = testName.substring(pos + 1, testName.length() - 1);
 		if (!RubySyntaxUtils.isValidClass(className)) {
 			return null;
 		}
@@ -145,26 +137,22 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		if (RubySyntaxUtils.isRubyMethodName(methodName)) {
 			final IMethod method = findMethod(className, methodName);
 			if (method != null) {
-				return new TestElementResolution(method, ResolverUtils
-						.getSourceRange(method));
+				return new TestElementResolution(method, ResolverUtils.getSourceRange(method));
 			}
 		}
-		final List types = findClasses(className);
+		final List<IType> types = findClasses(className);
 		if (types == null) {
 			return null;
 		}
 		if (methodName.startsWith(SHOULDA_TEST_PREFIX)) {
-			String shouldName = methodName.substring(
-					SHOULDA_TEST_PREFIX.length()).trim();
-			if (shouldName.length() != 0
-					&& shouldName.charAt(shouldName.length() - 1) == '.') {
-				shouldName = shouldName.substring(0, shouldName.length() - 1)
-						.trim();
+			String shouldName = methodName.substring(SHOULDA_TEST_PREFIX.length()).trim();
+			if (shouldName.length() != 0 && shouldName.charAt(shouldName.length() - 1) == '.') {
+				shouldName = shouldName.substring(0, shouldName.length() - 1).trim();
 			}
 			if (shouldName.length() != 0) {
-				final Set<IFile> resources = new HashSet<IFile>();
-				for (Iterator i = types.iterator(); i.hasNext();) {
-					final IType type = (IType) i.next();
+				final Set<IFile> resources = new HashSet<>();
+				for (Iterator<IType> i = types.iterator(); i.hasNext();) {
+					final IType type = i.next();
 					final IResource resource = type.getResource();
 					if (resource != null && resource instanceof IFile) {
 						resources.add((IFile) resource);
@@ -175,8 +163,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 				}
 				for (Iterator<IFile> i = resources.iterator(); i.hasNext();) {
 					final ISourceModule module = (ISourceModule) DLTKCore.create(i.next());
-					final TestElementResolution resolution = findShould(module,
-							className, shouldName);
+					final TestElementResolution resolution = findShould(module, className, shouldName);
 					if (resolution != null) {
 						return resolution;
 					}
@@ -186,8 +173,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 		return null;
 	}
 
-	private static class ShouldLocator extends
-			AbstractTestingEngineValidateVisitor {
+	private static class ShouldLocator extends AbstractTestingEngineValidateVisitor {
 
 		private static final String TWO_COLONS = "::"; //$NON-NLS-1$
 
@@ -205,7 +191,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			this.shouldName = shouldName;
 		}
 
-		final Stack<Boolean> typeMatches = new Stack<Boolean>();
+		final Stack<Boolean> typeMatches = new Stack<>();
 
 		@Override
 		public boolean visit(TypeDeclaration s) throws Exception {
@@ -236,15 +222,14 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			return false;
 		}
 
-		final Stack<CallExpression> calls = new Stack<CallExpression>();
+		final Stack<CallExpression> calls = new Stack<>();
 
 		@Override
 		public boolean visitGeneral(ASTNode node) throws Exception {
 			if (isMatchedType() && range == null) {
 				if (node instanceof CallExpression) {
 					final CallExpression call = (CallExpression) node;
-					if (isMethodCall(call, ShouldaUtils.METHODS)
-							&& call.getArgs().getChilds().size() >= 1) {
+					if (isMethodCall(call, ShouldaUtils.METHODS) && call.getArgs().getChilds().size() >= 1) {
 						final Object arg0 = call.getArgs().getChilds().get(0);
 						if (arg0 instanceof RubyCallArgument) {
 							final RubyCallArgument callArg = (RubyCallArgument) arg0;
@@ -252,8 +237,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 								calls.push(call);
 								if (isShouldMatched()) {
 									range = new SourceRange(call.sourceStart(),
-											callArg.sourceEnd()
-													- call.sourceStart());
+											callArg.sourceEnd() - call.sourceStart());
 								}
 							}
 						}
@@ -270,18 +254,15 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			if (isShouldMatched(shouldName)) {
 				return true;
 			}
-			final String noTestClassName = className.replaceAll(
-					"Test", Util.EMPTY_STRING); //$NON-NLS-1$
+			final String noTestClassName = className.replaceAll("Test", Util.EMPTY_STRING); //$NON-NLS-1$
 			if (startsWith(shouldName, noTestClassName)) {
-				return isShouldMatched(shouldName.substring(
-						noTestClassName.length()).trim());
+				return isShouldMatched(shouldName.substring(noTestClassName.length()).trim());
 			}
 			return false;
 		}
 
 		private boolean startsWith(final String value, final String substring) {
-			return value.length() > substring.length()
-					&& value.startsWith(substring)
+			return value.length() > substring.length() && value.startsWith(substring)
 					&& Character.isWhitespace(value.charAt(substring.length()));
 		}
 
@@ -296,20 +277,15 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 					if (!startsWith(value, ShouldaUtils.SHOULD)) {
 						return false;
 					}
-					value = value.substring(ShouldaUtils.SHOULD.length())
-							.trim();
-					final RubyCallArgument callArg = (RubyCallArgument) call
-							.getArgs().getChilds().get(0);
-					final String literal = ((StringLiteral) callArg.getValue())
-							.getValue();
+					value = value.substring(ShouldaUtils.SHOULD.length()).trim();
+					final RubyCallArgument callArg = (RubyCallArgument) call.getArgs().getChilds().get(0);
+					final String literal = ((StringLiteral) callArg.getValue()).getValue();
 					if (value.equals(literal)) {
 						return true;
 					}
 				} else if (ShouldaUtils.CONTEXT.equals(call.getName())) {
-					final RubyCallArgument callArg = (RubyCallArgument) call
-							.getArgs().getChilds().get(0);
-					final String literal = ((StringLiteral) callArg.getValue())
-							.getValue().trim();
+					final RubyCallArgument callArg = (RubyCallArgument) call.getArgs().getChilds().get(0);
+					final String literal = ((StringLiteral) callArg.getValue()).getValue().trim();
 					if (!startsWith(value, literal)) {
 						return false;
 					}
@@ -334,17 +310,14 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	 * @param shouldName
 	 * @return
 	 */
-	private TestElementResolution findShould(ISourceModule module,
-			String className, String shouldName) {
+	private TestElementResolution findShould(ISourceModule module, String className, String shouldName) {
 		final ModuleDeclaration declaration = ResolverUtils.parse(module);
 		if (declaration != null) {
 			try {
-				final ShouldLocator locator = new ShouldLocator(className,
-						shouldName);
+				final ShouldLocator locator = new ShouldLocator(className, shouldName);
 				declaration.traverse(locator);
 				if (locator.range != null) {
-					final ISourceRange range = ResolverUtils.adjustRange(module
-							.getSource(), locator.range);
+					final ISourceRange range = ResolverUtils.adjustRange(module.getSource(), locator.range);
 					return new TestElementResolution(module, range);
 				}
 			} catch (Exception e) {
@@ -359,22 +332,21 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	protected TestElementResolution resolveTestSuite(ITestSuiteElement element) {
 		final String className = element.getSuiteTypeName();
 		if (RubySyntaxUtils.isValidClass(className)) {
-			final List types = findClasses(className);
+			final List<IType> types = findClasses(className);
 			if (types != null) {
-				final IType type = (IType) types.get(0);
-				return new TestElementResolution(type, ResolverUtils
-						.getSourceRange(type));
+				final IType type = types.get(0);
+				return new TestElementResolution(type, ResolverUtils.getSourceRange(type));
 			}
 		}
 		return null;
 	}
 
 	private static final class TypeSearchRequestor extends SearchRequestor {
-		final List<Object> types = new ArrayList<Object>();
+		final List<IType> types = new ArrayList<>();
 
 		@Override
 		public void acceptSearchMatch(SearchMatch match) throws CoreException {
-			types.add(match.getElement());
+			types.add((IType) match.getElement());
 		}
 	}
 
@@ -395,16 +367,13 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	private IMethod findMethod(String className, String methodName) {
 		final IDLTKSearchScope scope = getSearchScope();
 		final String sPattern = className + "::" + methodName; //$NON-NLS-1$
-		SearchPattern pattern = SearchPattern.createPattern(sPattern,
-				IDLTKSearchConstants.METHOD, IDLTKSearchConstants.DECLARATIONS,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
+		SearchPattern pattern = SearchPattern.createPattern(sPattern, IDLTKSearchConstants.METHOD,
+				IDLTKSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
 				scope.getLanguageToolkit());
 		try {
 			final MethodRequestor requestor = new MethodRequestor();
-			new SearchEngine().search(pattern,
-					new SearchParticipant[] { SearchEngine
-							.getDefaultSearchParticipant() }, scope, requestor,
-					null);
+			new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
+					scope, requestor, null);
 			return requestor.method;
 		} catch (CoreException e) {
 			final String msg = "Error in findMethod({0}::{1})"; //$NON-NLS-1$
@@ -416,18 +385,15 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 	/**
 	 * @param className
 	 */
-	private List findClasses(String className) {
+	private List<IType> findClasses(String className) {
 		final IDLTKSearchScope scope = getSearchScope();
-		SearchPattern pattern = SearchPattern.createPattern(className,
-				IDLTKSearchConstants.TYPE, IDLTKSearchConstants.DECLARATIONS,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
+		SearchPattern pattern = SearchPattern.createPattern(className, IDLTKSearchConstants.TYPE,
+				IDLTKSearchConstants.DECLARATIONS, SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
 				scope.getLanguageToolkit());
 		try {
 			final TypeSearchRequestor requestor = new TypeSearchRequestor();
-			new SearchEngine().search(pattern,
-					new SearchParticipant[] { SearchEngine
-							.getDefaultSearchParticipant() }, scope, requestor,
-					null);
+			new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
+					scope, requestor, null);
 			if (!requestor.types.isEmpty()) {
 				return requestor.types;
 			}
@@ -442,12 +408,9 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 
 	private boolean testFragmentPath(IPath fragmentPath, IPath path) {
 		if (pathEquality.isPrefixOf(fragmentPath, path)
-				&& path.segmentCount() > fragmentPath.segmentCount()
-						+ TEST_UNIT.length) {
+				&& path.segmentCount() > fragmentPath.segmentCount() + TEST_UNIT.length) {
 			for (int j = 0; j < TEST_UNIT.length; ++j) {
-				if (!TEST_UNIT[j].equals(path.segment(fragmentPath
-						.segmentCount()
-						+ j))) {
+				if (!TEST_UNIT[j].equals(path.segment(fragmentPath.segmentCount() + j))) {
 					return false;
 				}
 			}
@@ -462,8 +425,7 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 				+ slash;
 	}
 
-	private static final Pattern GEM_SHOULDA_LIB = Pattern
-			.compile(buildRegex());
+	private static final Pattern GEM_SHOULDA_LIB = Pattern.compile(buildRegex());
 
 	@Override
 	protected boolean selectLine(String line) {
@@ -483,10 +445,8 @@ public class TestUnitTestRunnerUI extends AbstractRubyTestRunnerUI {
 			for (int i = 0; i < fragments.length; ++i) {
 				final IProjectFragment fragment = fragments[i];
 				if (fragment.isExternal()
-						&& testFragmentPath(EnvironmentPathUtils
-								.getLocalPath(fragment.getPath()), path)
-						&& RubyConsoleSourceModuleLookup.isIncluded(fragment,
-								path)) {
+						&& testFragmentPath(EnvironmentPathUtils.getLocalPath(fragment.getPath()), path)
+						&& RubyConsoleSourceModuleLookup.isIncluded(fragment, path)) {
 					return false;
 				}
 			}
