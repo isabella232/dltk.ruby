@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016 Red Hat Inc. and others
+# Copyright (c) 2016, 2017 Red Hat Inc. and others
 #
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
@@ -150,8 +150,8 @@ module Minitest
       location, line = result.method(result.name).source_location
       DLTKReporter.sendMessage MessageIds::TEST_ERROR + result.class.name+result.name + "," + result.name
       DLTKReporter.sendMessage MessageIds::TRACE_START
-      DLTKReporter.sendMessage result.failure.to_s
-      DLTKReporter.sendMessage result.failure.location
+      DLTKReporter.sendMessage result.failures[0].message
+      DLTKReporter.sendMessage result.failures[0].location
       result.failure.backtrace.each { |line| DLTKReporter.sendMessage line }
       DLTKReporter.sendMessage MessageIds::TRACE_END
     end
