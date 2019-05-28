@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -56,8 +56,7 @@ public class MixinTestsSuite extends TestSuite {
 				String line = lines[i].trim();
 				int pos = line.indexOf("##");
 				if (pos >= 0) {
-					StringTokenizer tok = new StringTokenizer(line
-							.substring(pos + 2));
+					StringTokenizer tok = new StringTokenizer(line.substring(pos + 2));
 					String test = tok.nextToken();
 					if ("exit".equals(test)) {
 						return;
@@ -80,8 +79,7 @@ public class MixinTestsSuite extends TestSuite {
 		}
 
 		private CharSequence loadContent(String path) throws IOException {
-			return new CharArraySequence(Util.getInputStreamAsCharArray(
-					Activator.openResource(path), -1, null));
+			return new CharArraySequence(Util.getInputStreamAsCharArray(Activator.openResource(path), -1, null));
 		}
 	}
 
@@ -95,8 +93,7 @@ public class MixinTestsSuite extends TestSuite {
 
 		@Override
 		public void check() throws Exception {
-			final MixinModel model = new MixinModel(RubyLanguageToolkit
-					.getDefault());
+			final MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
 			try {
 				IMixinElement mixinElement = model.get(key);
 				if (mixinElement == null) {
@@ -104,16 +101,13 @@ public class MixinTestsSuite extends TestSuite {
 				}
 				Object[] allObjects = mixinElement.getAllObjects();
 				if (allObjects == null || allObjects.length == 0)
-					throw new AssertionFailedError("Key " + key
-							+ " has null or empty object set");
+					throw new AssertionFailedError("Key " + key + " has null or empty object set");
 				for (int i = 0; i < allObjects.length; i++) {
 					if (allObjects[i] == null)
-						throw new AssertionFailedError("Key " + key
-								+ " has null object at index " + i);
+						throw new AssertionFailedError("Key " + key + " has null object at index " + i);
 					RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 					if (info.getObject() == null)
-						throw new AssertionFailedError("Key " + key
-								+ " has info with a null object at index " + i
+						throw new AssertionFailedError("Key " + key + " has info with a null object at index " + i
 								+ " (kind=" + info.getKind() + ")");
 				}
 			} finally {
@@ -126,8 +120,7 @@ public class MixinTestsSuite extends TestSuite {
 	public MixinTestsSuite(String testsDirectory) {
 		super(testsDirectory);
 
-		Enumeration<String> entryPaths = Activator.getDefault().getBundle()
-				.getEntryPaths(testsDirectory);
+		Enumeration<String> entryPaths = Activator.getDefault().getBundle().getEntryPaths(testsDirectory);
 		while (entryPaths.hasMoreElements()) {
 			final String path = entryPaths.nextElement();
 			URL entry = Activator.getDefault().getBundle().getEntry(path);
@@ -148,13 +141,13 @@ public class MixinTestsSuite extends TestSuite {
 		private static final String SRC_PROJECT = "automixins";
 
 		public SuiteSetupTeardown() {
-			super(Activator.PLUGIN_ID, Util.EMPTY_STRING);
+			super(Util.EMPTY_STRING);
 		}
 
 		@Override
 		public void setUpSuite() throws Exception {
 			super.setUpSuite();
-			setUpScriptProject(SRC_PROJECT);
+			setUpScriptProject(SRC_PROJECT, Activator.PLUGIN_ID);
 			waitUntilIndexesReady();
 		}
 

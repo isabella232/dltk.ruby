@@ -4,7 +4,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -41,7 +41,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 	private static final String METHOD2_NAME = "testProjectIsolation2";
 
 	public MixinProjectIsolationTests(String name) {
-		super(Activator.PLUGIN_ID, name);
+		super(name);
 	}
 
 	public static Suite suite() {
@@ -54,8 +54,8 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		project1 = setUpScriptProject(PROJECT1_NAME);
-		project2 = setUpScriptProject(PROJECT2_NAME);
+		project1 = setUpScriptProject(PROJECT1_NAME, Activator.PLUGIN_ID);
+		project2 = setUpScriptProject(PROJECT2_NAME, Activator.PLUGIN_ID);
 		waitUntilIndexesReady();
 	}
 
@@ -69,29 +69,21 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 	private static final String TEST_CLASS_NAME = "TestClass20080818";
 
 	public void testSimple() {
-		checkModel(RubyMixinModel.getInstance(project1),
-				new String[] { METHOD1_NAME });
-		checkModel(RubyMixinModel.getInstance(project2),
-				new String[] { METHOD2_NAME });
-		checkModel(RubyMixinModel.getWorkspaceInstance(), new String[] {
-				METHOD1_NAME, METHOD2_NAME });
+		checkModel(RubyMixinModel.getInstance(project1), new String[] { METHOD1_NAME });
+		checkModel(RubyMixinModel.getInstance(project2), new String[] { METHOD2_NAME });
+		checkModel(RubyMixinModel.getWorkspaceInstance(), new String[] { METHOD1_NAME, METHOD2_NAME });
 	}
 
 	public void testComplex2to1() throws ModelException {
 		testSimple();
-		addBuildpathEntry(project1, DLTKCore.newProjectEntry(new Path("/"
-				+ PROJECT2_NAME)));
+		addBuildpathEntry(project1, DLTKCore.newProjectEntry(new Path("/" + PROJECT2_NAME)));
 		waitUntilIndexesReady();
 		//
-		checkModel(RubyMixinModel.getInstance(project1), new String[] {
-				METHOD1_NAME, METHOD2_NAME });
-		checkModel(RubyMixinModel.getInstance(project2),
-				new String[] { METHOD2_NAME });
-		checkModel(RubyMixinModel.getWorkspaceInstance(), new String[] {
-				METHOD1_NAME, METHOD2_NAME });
+		checkModel(RubyMixinModel.getInstance(project1), new String[] { METHOD1_NAME, METHOD2_NAME });
+		checkModel(RubyMixinModel.getInstance(project2), new String[] { METHOD2_NAME });
+		checkModel(RubyMixinModel.getWorkspaceInstance(), new String[] { METHOD1_NAME, METHOD2_NAME });
 		//
-		removeBuildpathEntry(project1, DLTKCore.newProjectEntry(new Path("/"
-				+ PROJECT2_NAME)));
+		removeBuildpathEntry(project1, DLTKCore.newProjectEntry(new Path("/" + PROJECT2_NAME)));
 		waitUntilIndexesReady();
 		//
 		testSimple();
@@ -99,26 +91,20 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 
 	public void testComplex1to2() throws ModelException {
 		testSimple();
-		addBuildpathEntry(project2, DLTKCore.newProjectEntry(new Path("/"
-				+ PROJECT1_NAME)));
+		addBuildpathEntry(project2, DLTKCore.newProjectEntry(new Path("/" + PROJECT1_NAME)));
 		waitUntilIndexesReady();
 		//
-		checkModel(RubyMixinModel.getInstance(project1),
-				new String[] { METHOD1_NAME });
-		checkModel(RubyMixinModel.getInstance(project2), new String[] {
-				METHOD1_NAME, METHOD2_NAME });
-		checkModel(RubyMixinModel.getWorkspaceInstance(), new String[] {
-				METHOD1_NAME, METHOD2_NAME });
+		checkModel(RubyMixinModel.getInstance(project1), new String[] { METHOD1_NAME });
+		checkModel(RubyMixinModel.getInstance(project2), new String[] { METHOD1_NAME, METHOD2_NAME });
+		checkModel(RubyMixinModel.getWorkspaceInstance(), new String[] { METHOD1_NAME, METHOD2_NAME });
 		//
-		removeBuildpathEntry(project2, DLTKCore.newProjectEntry(new Path("/"
-				+ PROJECT1_NAME)));
+		removeBuildpathEntry(project2, DLTKCore.newProjectEntry(new Path("/" + PROJECT1_NAME)));
 		waitUntilIndexesReady();
 		//
 		testSimple();
 	}
 
-	private void addBuildpathEntry(final IScriptProject project,
-			final IBuildpathEntry newEntry) throws ModelException {
+	private void addBuildpathEntry(final IScriptProject project, final IBuildpathEntry newEntry) throws ModelException {
 		IBuildpathEntry[] originalCP = project.getRawBuildpath();
 		IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
 		System.arraycopy(originalCP, 0, newCP, 0, originalCP.length);
@@ -128,21 +114,18 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 		project.setRawBuildpath(newCP, null);
 	}
 
-	private void removeBuildpathEntry(final IScriptProject project,
-			final IBuildpathEntry entry) throws ModelException {
+	private void removeBuildpathEntry(final IScriptProject project, final IBuildpathEntry entry) throws ModelException {
 		final List<IBuildpathEntry> cp = new ArrayList<>();
 		cp.addAll(Arrays.asList(project.getRawBuildpath()));
 		assertTrue(cp.remove(entry));
-		IBuildpathEntry[] newCP = cp
-				.toArray(new IBuildpathEntry[cp.size()]);
+		IBuildpathEntry[] newCP = cp.toArray(new IBuildpathEntry[cp.size()]);
 		IModelStatus status = BuildpathEntry.validateBuildpath(project, newCP);
 		assertEquals(IStatus.OK, status.getSeverity());
 		project.setRawBuildpath(newCP, null);
 	}
 
 	private void checkModel(RubyMixinModel model, String[] childrenNames) {
-		IMixinElement element = model.getRawModel().get(
-				TEST_CLASS_NAME + RubyMixin.INSTANCE_SUFFIX);
+		IMixinElement element = model.getRawModel().get(TEST_CLASS_NAME + RubyMixin.INSTANCE_SUFFIX);
 		assertNotNull(element);
 		IMixinElement[] children = element.getChildren();
 		assertNotNull(children);
@@ -152,8 +135,7 @@ public class MixinProjectIsolationTests extends AbstractDLTKSearchTests {
 			names.add(children[i].getLastKeySegment());
 		}
 		for (int i = 0; i < childrenNames.length; ++i) {
-			assertTrue(childrenNames[i] + " is not found", names
-					.contains(childrenNames[i]));
+			assertTrue(childrenNames[i] + " is not found", names.contains(childrenNames[i]));
 		}
 	}
 

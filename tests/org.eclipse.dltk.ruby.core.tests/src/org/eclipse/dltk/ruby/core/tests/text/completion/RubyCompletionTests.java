@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -29,18 +29,16 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 	// RelevanceConstants.R_NON_RESTRICTED);
 
 	public RubyCompletionTests(String name) {
-		super(Activator.PLUGIN_ID, name);
+		super(name);
 	}
 
 	@Override
 	public void setUpSuite() throws Exception {
 		// We need to initialie at least one interpreter.
 
-		PROJECT = setUpScriptProject("completion");
+		PROJECT = setUpScriptProject("completion", Activator.PLUGIN_ID);
 		waitUntilIndexesReady();
-		ResourcesPlugin.getWorkspace()
-				.build(IncrementalProjectBuilder.FULL_BUILD,
-						new NullProgressMonitor());
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		waitForAutoBuild();
 		// RubyPlugin.initialized = true;
 		super.setUpSuite();
@@ -60,9 +58,9 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 	// relevance) {
 	// StringBuffer buffer = new StringBuffer();
 	// for (int i = 0; i < elements.length; ++i) {
-	// buffer.append("element:" + elements[i] + "    completion:" +
+	// buffer.append("element:" + elements[i] + " completion:" +
 	// completions[i]
-	// + "    relevance:" + relevance[i]);
+	// + " relevance:" + relevance[i]);
 	//
 	// if (i != elements.length - 1) {
 	// buffer.append("\n");
@@ -95,8 +93,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Foo.new.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -110,8 +107,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Foo42::";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -125,8 +121,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -140,8 +135,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -155,8 +149,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -170,8 +163,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -185,8 +177,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "::";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -202,14 +193,12 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "::";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertTrue((requestor.getResults().indexOf("Mine") != -1)
-				&& (requestor.getResults().indexOf("Mix") != -1));
+		assertTrue((requestor.getResults().indexOf("Mine") != -1) && (requestor.getResults().indexOf("Mix") != -1));
 
 	}
 
@@ -219,8 +208,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Min";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -235,8 +223,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@a";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -251,8 +238,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@a";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -267,8 +253,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@@a";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -283,8 +268,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Mega";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -299,8 +283,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -315,8 +298,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "t.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -331,8 +313,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -347,8 +328,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Foo66.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -364,8 +344,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Foo66.cool2.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -380,8 +359,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@categ";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -396,8 +374,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "::";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 
@@ -410,8 +387,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -426,8 +402,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -442,8 +417,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "t.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -458,8 +432,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = ".x";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -473,8 +446,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "::x";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -488,8 +460,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "fo";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -499,13 +470,11 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 	public void testCompletion027() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("completion", "src",
-				"inside_block.rb");
+		ISourceModule cu = getSourceModule("completion", "src", "inside_block.rb");
 
 		String str = cu.getSource();
 		String completeBehind = "v.tu";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -519,8 +488,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "p";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -534,8 +502,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "arg3['sdsd'] = ";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -549,8 +516,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "ff g";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -564,8 +530,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "_f";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -578,8 +543,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "puts v";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -592,8 +556,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@data[@i";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -606,8 +569,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@data[@";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -620,8 +582,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "xx";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -634,8 +595,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "t";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -648,8 +608,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "Test.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -670,8 +629,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		for (int i = 0; i < keyWords.length; i++) {
 			CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 			String completeBehind = keyWords[i];
-			int cursorLocation = str.lastIndexOf(completeBehind)
-					+ completeBehind.length();
+			int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 			cursorLocation--;// try to complete one char before the end
 
 			waitForAutoBuild();
@@ -687,8 +645,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "::";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -702,8 +659,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -717,8 +673,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "y.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -732,8 +687,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = ".se";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -748,8 +702,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = ".n";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -764,8 +717,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "l.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -773,27 +725,20 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		Vector<String> methods = new Vector<>();
 		int lastElementsOccurance = 0;
-		while ((lastElementsOccurance = completionResults.indexOf("element:",
-				lastElementsOccurance)) > -1) {
+		while ((lastElementsOccurance = completionResults.indexOf("element:", lastElementsOccurance)) > -1) {
 			int lastElementsIndex = lastElementsOccurance + "element:".length();
-			lastElementsOccurance = completionResults.indexOf(" ",
-					lastElementsOccurance);
-			methods.add(completionResults.substring(lastElementsIndex,
-					lastElementsOccurance));
+			lastElementsOccurance = completionResults.indexOf(" ", lastElementsOccurance);
+			methods.add(completionResults.substring(lastElementsIndex, lastElementsOccurance));
 		}
 
 		Vector<String> relevances = new Vector<>();
 		int lastRelevanceOccurance = 0;
 		while (lastRelevanceOccurance > -1) {
-			lastRelevanceOccurance = completionResults.indexOf("relevance:",
-					lastRelevanceOccurance);
-			int lastRelevanceIndex = lastRelevanceOccurance
-					+ "relevance:".length();
-			lastRelevanceOccurance = completionResults.indexOf("\n",
-					lastRelevanceOccurance);
+			lastRelevanceOccurance = completionResults.indexOf("relevance:", lastRelevanceOccurance);
+			int lastRelevanceIndex = lastRelevanceOccurance + "relevance:".length();
+			lastRelevanceOccurance = completionResults.indexOf("\n", lastRelevanceOccurance);
 			if (lastRelevanceOccurance > -1)
-				relevances.add(completionResults.substring(lastRelevanceIndex,
-						lastRelevanceOccurance));
+				relevances.add(completionResults.substring(lastRelevanceIndex, lastRelevanceOccurance));
 			else
 				relevances.add(completionResults.substring(lastRelevanceIndex));
 		}
@@ -807,8 +752,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "File.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -822,8 +766,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "File.";
-		int cursorLocation = str.indexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.indexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -837,8 +780,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "File.ex";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -852,8 +794,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@f";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -867,8 +808,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "y.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -882,8 +822,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "self.m";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -897,8 +836,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = ".new; @parser.s";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -912,8 +850,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "z2.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -927,8 +864,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "t.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -942,8 +878,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "val.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -960,8 +895,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "val.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -978,8 +912,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "@body.i";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -992,8 +925,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "4.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1006,8 +938,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "--1.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1020,8 +951,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "w.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1036,8 +966,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "as.methods.so";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1052,8 +981,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "__FILE_";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1067,8 +995,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "String.new.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1082,8 +1009,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "protecte";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1099,8 +1025,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "med";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1118,8 +1043,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1134,8 +1058,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = ".";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1150,8 +1073,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "3.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1167,8 +1089,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "str1.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);
@@ -1183,8 +1104,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 
 		String str = cu.getSource();
 		String completeBehind = "x.";
-		int cursorLocation = str.lastIndexOf(completeBehind)
-				+ completeBehind.length();
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
 
 		waitForAutoBuild();
 		cu.codeComplete(cursorLocation, requestor);

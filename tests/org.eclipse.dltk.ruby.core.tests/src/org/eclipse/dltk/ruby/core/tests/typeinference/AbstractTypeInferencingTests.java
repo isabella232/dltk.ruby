@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -27,9 +27,9 @@ import org.eclipse.dltk.ruby.core.tests.Activator;
 
 import junit.framework.ComparisonFailure;
 
-
 public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 	protected static IScriptProject PROJECT;
+
 	protected class CompletionResult {
 		public String proposals;
 		public String context;
@@ -43,8 +43,8 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 
 	private static final int COMPLETE_TIMEOUT = 5000;
 
-	public AbstractTypeInferencingTests(String projectName, String name) {
-		super(projectName, name);
+	public AbstractTypeInferencingTests(String name) {
+		super(name);
 	}
 
 	@Override
@@ -56,12 +56,13 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 		return this.complete(path, source, false, completeBehind);
 	}
 
-	protected CompletionResult complete(String path, String source, boolean showPositions, String completeBehind) throws ModelException {
+	protected CompletionResult complete(String path, String source, boolean showPositions, String completeBehind)
+			throws ModelException {
 		return this.complete(path, source, showPositions, completeBehind, null, null);
 	}
 
-	protected CompletionResult complete(String path, String source, boolean showPositions, String completeBehind, String tokenStartBehind,
-			String token) throws ModelException {
+	protected CompletionResult complete(String path, String source, boolean showPositions, String completeBehind,
+			String tokenStartBehind, String token) throws ModelException {
 		this.wc = getWorkingCopy(path, source);
 		CompletionTestsRequestor2 requestor = new CompletionTestsRequestor2(true, false, showPositions);
 		String str = this.wc.getSource();
@@ -87,7 +88,7 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 		try (InputStream input = Activator.openResource(path);) {
 			InputStreamReader reader = new InputStreamReader(input);
 			BufferedReader br = new BufferedReader(reader);
-			char[] data = new char[100*1024]; // tests shouldnt be more that 100 kb
+			char[] data = new char[100 * 1024]; // tests shouldnt be more that 100 kb
 			int size = br.read(data);
 			buffer.append(data, 0, size);
 		}
@@ -105,10 +106,11 @@ public abstract class AbstractTypeInferencingTests extends AbstractModelTests {
 		return result;
 	}
 
-	protected CompletionResult snippetContextComplete(IType type, String snippet, int insertion, int cursorLocation, boolean isStatic)
-			throws ModelException {
+	protected CompletionResult snippetContextComplete(IType type, String snippet, int insertion, int cursorLocation,
+			boolean isStatic) throws ModelException {
 		CompletionTestsRequestor2 requestor = new CompletionTestsRequestor2(true, false, false, false);
-		type.codeComplete(snippet.toCharArray(), insertion, cursorLocation, null, null, null, isStatic, requestor, this.wcOwner);
+		type.codeComplete(snippet.toCharArray(), insertion, cursorLocation, null, null, null, isStatic, requestor,
+				this.wcOwner);
 		CompletionResult result = new CompletionResult();
 		result.proposals = requestor.getResults();
 		result.context = requestor.getContext();

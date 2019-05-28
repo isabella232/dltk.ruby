@@ -3,13 +3,11 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.assist;
-
-import junit.framework.Test;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -21,6 +19,8 @@ import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
 import org.eclipse.dltk.ruby.internal.core.codeassist.RubySelectionEngine;
+
+import junit.framework.Test;
 
 public class RubySelectionTests extends AbstractModelCompletionTests {
 
@@ -51,23 +51,21 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	private static final ThinkRubySelectionEngine thinkEngine = new ThinkRubySelectionEngine();
 
 	public RubySelectionTests(String name) {
-		super("org.eclipse.dltk.ruby.core.tests", name);
+		super(name);
 	}
 
 	@Override
 	public void setUpSuite() throws Exception {
-		PROJECT = setUpScriptProjectTo(SELECTION_PROJECT, "Selection");
+		PROJECT = setUpScriptProjectTo(SELECTION_PROJECT, "Selection", "org.eclipse.dltk.ruby.core.tests");
 
 		super.setUpSuite();
 		waitUntilIndexesReady();
-		ResourcesPlugin.getWorkspace()
-				.build(IncrementalProjectBuilder.FULL_BUILD,
-						new NullProgressMonitor());
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		waitForAutoBuild();
 	}
-	
+
 	@Override
-	public void tearDownSuite () throws Exception {
+	public void tearDownSuite() throws Exception {
 		deleteProject(SELECTION_PROJECT);
 		super.tearDownSuite();
 	}
@@ -77,10 +75,10 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	/*
-	 * 
+	 *
 	 * ckeckSelection() method tests
-	 * 
-	 * 
+	 *
+	 *
 	 */
 
 	public String getCheckrbSource() throws ModelException {
@@ -88,8 +86,8 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		return cu.getSource();
 	}
 
-	public void selectionPosChecker0(int start, int end, boolean expRes,
-			int expStart, int expEnd) throws ModelException {
+	public void selectionPosChecker0(int start, int end, boolean expRes, int expStart, int expEnd)
+			throws ModelException {
 		String source = getCheckrbSource();
 		boolean res = thinkEngine.checkSelection(source, start, end);
 		assertEquals(expRes, res);
@@ -105,11 +103,9 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		assertTrue(start != -1);
 		int end = start - 1;
 		for (int i = 0; i < word.length(); i++) {
-			boolean res = thinkEngine
-					.checkSelection(source, start + i, end + i);
+			boolean res = thinkEngine.checkSelection(source, start + i, end + i);
 			assertEquals(true, res);
-			String sel = source.substring(thinkEngine.getActualStart(),
-					thinkEngine.getActualEnd());
+			String sel = source.substring(thinkEngine.getActualStart(), thinkEngine.getActualEnd());
 			assertEquals(word, sel);
 		}
 	}
@@ -183,8 +179,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnMethod() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("cool_method");
@@ -198,8 +193,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnClassDeclaraion() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("Fooo");
@@ -213,8 +207,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnClassUsage() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("Bar");
@@ -228,8 +221,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnMethodDeclaration() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("doo");
@@ -244,14 +236,12 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 
 	public void testSelectionOnMethod2() throws ModelException { // NIM = not
 																	// in method
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("Bar.new.cool_method");
 
-		IModelElement[] elements = cu.codeSelect(start + "Bar.new.".length()
-				+ 2, 0);
+		IModelElement[] elements = cu.codeSelect(start + "Bar.new.".length() + 2, 0);
 		assertNotNull(elements);
 		assertEquals(1, elements.length);
 		IMethod method = cu.getType("Bar").getMethod("cool_method");
@@ -263,8 +253,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 																		// not
 																		// in
 																		// method
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("ff = Fooo.new") + 1;
@@ -280,8 +269,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 																				// not
 																				// in
 																				// method
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method1.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method1.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("f.doo");
@@ -295,8 +283,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnMethod2_1() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method2.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method2.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("boz.dining_philosopher") + 5;
@@ -310,8 +297,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnMethod2_2() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method2.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method2.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("ultimate_answer") + 1;
@@ -325,8 +311,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testSelectionOnMethod3_2() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_method3.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_method3.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("megathing") + 1;
@@ -338,10 +323,9 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		assertNotNull(method);
 		assertEquals(method, elements[0]);
 	}
-	
+
 	public void testSelectionOnSuper() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_super.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_super.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("super") + 1;
@@ -352,8 +336,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testBug185487() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"dsl/behaviour.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "dsl/behaviour.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("example_finished") + 1;
@@ -364,8 +347,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testBug193105() throws ModelException {
-		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"b193105.rb");
+		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "b193105.rb");
 
 		String source = cu.getSource();
 		int start = source.indexOf("instance_variable_set") + 1;
@@ -374,30 +356,27 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 		assertNotNull(elements);
 		assertEquals(1, elements.length);
 	}
-	
+
 	public void testBug194721() throws ModelException {
-		final ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
-				"selection_on_var.rb");
+		final ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", "selection_on_var.rb");
 		final String source = cu.getSource();
 		final String variableName = "boolean";
 		final int start = source.lastIndexOf(variableName);
 		final IModelElement[] before = cu.codeSelect(start, 0);
 		assertNotNull(before);
 		assertEquals(1, before.length);
-		final IModelElement[] after = cu.codeSelect(start
-				+ variableName.length(), 0);
+		final IModelElement[] after = cu.codeSelect(start + variableName.length(), 0);
 		assertNotNull(after);
 		assertEquals(1, after.length);
 	}
-	
+
 	// ////
-	public void executeTest(String module, int offset, int length)
-			throws ModelException {
+	public void executeTest(String module, int offset, int length) throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src", module);
 
 		if (offset == 657) // for breakpoints
 			System.out.println();
-		
+
 		IModelElement[] elements = cu.codeSelect(offset, length);
 		assertNotNull(elements);
 		assertTrue(elements.length > 0);
@@ -408,5 +387,4 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 
 	}
 
-	
 }

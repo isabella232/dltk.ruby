@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -26,18 +26,18 @@ import org.eclipse.dltk.ruby.core.tests.Activator;
 /**
  * Tests for mixin model. Checks operations with a source modules and
  * buildpaths. For model building tests see AutoMixinTests.
- * 
+ *
  * Warning! Tests results depends of test execution order cause tests modifies a
  * project.
- * 
+ *
  * @author fourdman
- * 
+ *
  */
 public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 	private static final String PROJECT_NAME = "mixins";
 
 	public MixinModelManipulationTests(String name) {
-		super(Activator.PLUGIN_ID, name);
+		super(name);
 	}
 
 	public static Suite suite() {
@@ -47,7 +47,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
+		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME, Activator.PLUGIN_ID);
 		waitUntilIndexesReady();
 	}
 
@@ -81,8 +81,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 		assertNotNull(objs);
 		assertEquals(2, objs.length);
 
-		ISourceModule sourceModule = getSourceModule(PROJECT_NAME, "src",
-				"src2.rb");
+		ISourceModule sourceModule = getSourceModule(PROJECT_NAME, "src", "src2.rb");
 		sourceModule.delete(true, null);
 
 		waitUntilIndexesReady();
@@ -101,10 +100,8 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 		assertNotNull(objs);
 		assertEquals(2, objs.length);
 
-		getProjectFragment(PROJECT_NAME, "src").delete(
-				IResource.KEEP_HISTORY,
-				IProjectFragment.ORIGINATING_PROJECT_BUILDPATH
-						| IProjectFragment.OTHER_REFERRING_PROJECTS_BUILDPATH,
+		getProjectFragment(PROJECT_NAME, "src").delete(IResource.KEEP_HISTORY,
+				IProjectFragment.ORIGINATING_PROJECT_BUILDPATH | IProjectFragment.OTHER_REFERRING_PROJECTS_BUILDPATH,
 				null);
 		waitUntilIndexesReady();
 
@@ -123,11 +120,9 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 		assertNotNull(objs);
 		assertEquals(2, objs.length);
 
-		getScriptFolder(PROJECT_NAME, "src", new Path("folder1")).delete(true,
-				null);
+		getScriptFolder(PROJECT_NAME, "src", new Path("folder1")).delete(true, null);
 		waitUntilIndexesReady();
-		getScriptFolder(PROJECT_NAME, "src", new Path("folder2")).delete(true,
-				null);
+		getScriptFolder(PROJECT_NAME, "src", new Path("folder2")).delete(true, null);
 		waitUntilIndexesReady();
 
 		assertEquals(0, model.find("Folder", new NullProgressMonitor()).length);
@@ -144,8 +139,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 		assertNotNull(objs);
 		assertEquals(2, objs.length);
 
-		ISourceModule sourceModule = getSourceModule(PROJECT_NAME, "src",
-				"src1.rb");
+		ISourceModule sourceModule = getSourceModule(PROJECT_NAME, "src", "src1.rb");
 		sourceModule.delete(true, null);
 
 		waitUntilIndexesReady();
@@ -163,8 +157,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 		Object[] objs = mixinElement.getAllObjects();
 		assertEquals(2, objs.length);
 
-		IScriptFolder scriptFolder = getScriptFolder(PROJECT_NAME, "src",
-				new Path(""));
+		IScriptFolder scriptFolder = getScriptFolder(PROJECT_NAME, "src", new Path(""));
 		String contents = "class Foo\n def bar\n end\n end\n";
 		scriptFolder.createSourceModule("MoreFoo.rb", contents, true, null);
 
@@ -181,10 +174,8 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 		IMixinElement mixinElement = model.get("Buzzy");
 		assertNull(mixinElement);
 
-		IScriptFolder scriptFolder = getScriptFolder(PROJECT_NAME, "src",
-				new Path(""));
-		String contents = "class Buzzy\n" + "    def myFyb\n " + "    end\n "
-				+ "end\n";
+		IScriptFolder scriptFolder = getScriptFolder(PROJECT_NAME, "src", new Path(""));
+		String contents = "class Buzzy\n" + "    def myFyb\n " + "    end\n " + "end\n";
 
 		scriptFolder.createSourceModule("Buzzy.rb", contents, true, null);
 
@@ -203,10 +194,8 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests {
 
 		IBuildpathEntry[] rawBuildpath = SCRIPT_PROJECT.getRawBuildpath();
 		IBuildpathEntry[] newRawBuildpath = new IBuildpathEntry[rawBuildpath.length + 1];
-		System.arraycopy(rawBuildpath, 0, newRawBuildpath, 0,
-				rawBuildpath.length);
-		newRawBuildpath[rawBuildpath.length] = DLTKCore
-				.newSourceEntry(new Path("/mixins/src3"));
+		System.arraycopy(rawBuildpath, 0, newRawBuildpath, 0, rawBuildpath.length);
+		newRawBuildpath[rawBuildpath.length] = DLTKCore.newSourceEntry(new Path("/mixins/src3"));
 		SCRIPT_PROJECT.setRawBuildpath(newRawBuildpath, null);
 
 		waitUntilIndexesReady();

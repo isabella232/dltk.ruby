@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -25,18 +25,18 @@ public class TypeInferenceTest extends AbstractTypeInferencingTests {
 	private static final String SRC_PROJECT = "typeinference";
 
 	public TypeInferenceTest(String name) {
-		super("org.eclipse.dltk.ruby.core.tests", name);
+		super(name);
 	}
 
 	@Override
 	public void setUpSuite() throws Exception {
-		PROJECT = setUpScriptProject(SRC_PROJECT);
+		PROJECT = setUpScriptProject(SRC_PROJECT, "org.eclipse.dltk.ruby.core.tests");
 		super.setUpSuite();
 		waitUntilIndexesReady();
 		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		waitForAutoBuild();
 	}
-	
+
 	@Override
 	public void tearDownSuite() throws Exception {
 		deleteProject(SRC_PROJECT);

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -22,7 +22,7 @@ import org.eclipse.dltk.ruby.core.tests.Activator;
 
 public abstract class AbstractRubyParserTests extends AbstractModelTests {
 	public AbstractRubyParserTests(String testProjectName, String name) {
-		super(testProjectName, name);
+		super(name);
 	}
 
 	public ModuleDeclaration processScript(String name) throws Exception {
@@ -39,9 +39,8 @@ public abstract class AbstractRubyParserTests extends AbstractModelTests {
 					buffer.append('\n');
 				}
 			}
-			module = (ModuleDeclaration) DLTKLanguageManager.getSourceParser(
-					RubyNature.NATURE_ID).parse(
-					new ModuleSource(name, buffer.toString()), null);
+			module = (ModuleDeclaration) DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID)
+					.parse(new ModuleSource(name, buffer.toString()), null);
 			assertNotNull(module);
 			assertFalse(module.isEmpty());
 		}

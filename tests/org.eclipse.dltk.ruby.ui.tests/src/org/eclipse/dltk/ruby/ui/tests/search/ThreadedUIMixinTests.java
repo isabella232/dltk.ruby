@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -22,7 +22,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 	private static final String PROJECT_NAME = "mixins";
 
 	public ThreadedUIMixinTests(String name) {
-		super(RubyUITestsPlugin.PLUGIN_ID, name);
+		super(name);
 	}
 
 	public static Suite suite() {
@@ -63,7 +63,7 @@ public class ThreadedUIMixinTests extends AbstractDLTKSearchTests {
 		if (SCRIPT_PROJECT != null) {
 			deleteProject(SCRIPT_PROJECT.getElementName());
 		}
-		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
+		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME, RubyUITestsPlugin.PLUGIN_ID);
 	}
 
 	class Access implements Runnable {

@@ -3,12 +3,12 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
  *     xored software, Inc. - initial API and Implementation
- *     xored software, Inc. - Search All occurences bugfix, 
+ *     xored software, Inc. - Search All occurences bugfix,
  *     						  hilight only class name when class is in search results ( Alex Panchenko <alex@xored.com>)
  *******************************************************************************/
 
@@ -32,7 +32,7 @@ public class RubyResourcesTests extends AbstractModelTests {
 	private static final String PROJECT2 = "resource2";
 
 	public RubyResourcesTests(String name) {
-		super(Activator.PLUGIN_ID, name);
+		super(name);
 	}
 
 	public static Suite suite() {
@@ -42,8 +42,8 @@ public class RubyResourcesTests extends AbstractModelTests {
 	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProject(PROJECT1);
-		setUpScriptProject(PROJECT2);
+		setUpScriptProject(PROJECT1, Activator.PLUGIN_ID);
+		setUpScriptProject(PROJECT2, Activator.PLUGIN_ID);
 		waitUntilIndexesReady();
 	}
 
@@ -73,11 +73,9 @@ public class RubyResourcesTests extends AbstractModelTests {
 		assertTrue(project2.equals(project2a));
 		assertTrue(project2a.equals(project2));
 		//
-		final ISourceModule module1 = (ISourceModule) project1
-				.findElement(new Path("resource001.rb"));
+		final ISourceModule module1 = (ISourceModule) project1.findElement(new Path("resource001.rb"));
 		assertNotNull(module1);
-		final ISourceModule module1a = (ISourceModule) project1a
-				.findElement(new Path("resource001.rb"));
+		final ISourceModule module1a = (ISourceModule) project1a.findElement(new Path("resource001.rb"));
 		assertNotNull(module1a);
 		assertTrue(module1.equals(module1a));
 		assertTrue(module1a.equals(module1));
@@ -85,10 +83,8 @@ public class RubyResourcesTests extends AbstractModelTests {
 
 	public void testTypeEquals() {
 		final IProject project = getProject(PROJECT1);
-		final ISourceModule module1 = (ISourceModule) DLTKCore.create(project
-				.getFile("class1.rb"));
-		final ISourceModule module2 = (ISourceModule) DLTKCore.create(project
-				.getFile("class2.rb"));
+		final ISourceModule module1 = (ISourceModule) DLTKCore.create(project.getFile("class1.rb"));
+		final ISourceModule module2 = (ISourceModule) DLTKCore.create(project.getFile("class2.rb"));
 		final IType type1 = module1.getType("A001");
 		final IType type2 = module2.getType("A001");
 		assertFalse(type1.equals(type2));
@@ -96,10 +92,8 @@ public class RubyResourcesTests extends AbstractModelTests {
 
 	public void testSourceModuleEquals() {
 		final IProject project = getProject(PROJECT1);
-		final ISourceModule module1 = (ISourceModule) DLTKCore.create(project
-				.getFile("folder1/class3.rb"));
-		final ISourceModule module2 = (ISourceModule) DLTKCore.create(project
-				.getFile("folder2/class3.rb"));
+		final ISourceModule module1 = (ISourceModule) DLTKCore.create(project.getFile("folder1/class3.rb"));
+		final ISourceModule module2 = (ISourceModule) DLTKCore.create(project.getFile("folder2/class3.rb"));
 		assertFalse(module1.equals(module2));
 	}
 

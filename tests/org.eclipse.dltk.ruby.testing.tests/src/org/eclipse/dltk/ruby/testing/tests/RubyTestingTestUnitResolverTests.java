@@ -38,7 +38,7 @@ public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 	 * @param name
 	 */
 	public RubyTestingTestUnitResolverTests(String name) {
-		super(AllTests.BUNDLE_ID, name);
+		super(name);
 	}
 
 	final static String projectName = "testing1"; //$NON-NLS-1$
@@ -46,7 +46,7 @@ public class RubyTestingTestUnitResolverTests extends AbstractModelTests {
 	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpProject(projectName);
+		setUpProject(projectName, AllTests.BUNDLE_ID);
 		waitUntilIndexesReady();
 	}
 

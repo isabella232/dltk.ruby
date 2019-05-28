@@ -17,13 +17,13 @@ public class RubyCommentElementTests extends AbstractModelTests {
 	}
 
 	public RubyCommentElementTests(String name) {
-		super(RubyUITestsPlugin.PLUGIN_ID, name);
+		super(name);
 	}
 
 	@Override
 	public void setUpSuite() throws Exception {
 		super.setUpSuite();
-		setUpScriptProject(PROJECT_NAME);
+		setUpScriptProject(PROJECT_NAME, RubyUITestsPlugin.PLUGIN_ID);
 	}
 
 	@Override
@@ -33,8 +33,7 @@ public class RubyCommentElementTests extends AbstractModelTests {
 	}
 
 	public void testCommentPositioning1() throws ModelException {
-		ISourceModule module = getSourceModule(PROJECT_NAME, "src",
-				"comments1.rb");
+		ISourceModule module = getSourceModule(PROJECT_NAME, "src", "comments1.rb");
 
 		assertEquals("proc1", getElementByComment(module, "proc1_before"));
 		assertEquals("proc1", getElementByComment(module, "proc1_inside"));
@@ -53,16 +52,13 @@ public class RubyCommentElementTests extends AbstractModelTests {
 
 	/**
 	 *
-	 * Gets a string pattern, searches for the comment that contains this
-	 * pattern and returns IModelElement to which the comment corresponds
+	 * Gets a string pattern, searches for the comment that contains this pattern
+	 * and returns IModelElement to which the comment corresponds
 	 *
 	 */
-	protected String getElementByComment(ISourceModule module,
-			String commentPattern) throws ModelException {
-		final IElementCommentResolver resolver = new DefaultElementCommentResolver(
-				module);
-		IModelElement el = resolver.getElementByCommentPosition(module
-				.getSource().indexOf(commentPattern), 0);
+	protected String getElementByComment(ISourceModule module, String commentPattern) throws ModelException {
+		final IElementCommentResolver resolver = new DefaultElementCommentResolver(module);
+		IModelElement el = resolver.getElementByCommentPosition(module.getSource().indexOf(commentPattern), 0);
 		if (el != null)
 			return el.getElementName();
 		else

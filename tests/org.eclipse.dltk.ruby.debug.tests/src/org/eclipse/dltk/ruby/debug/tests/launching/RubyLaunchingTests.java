@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
@@ -34,11 +34,7 @@ import junit.framework.Test;
 public class RubyLaunchingTests extends ScriptLaunchingTests {
 
 	public RubyLaunchingTests(String name) {
-		super("org.eclipse.dltk.ruby.debug.tests", name);
-	}
-
-	public RubyLaunchingTests(String testProjectName, String name) {
-		super(testProjectName, name);
+		super(name);
 	}
 
 	public static Test suite() {
@@ -161,5 +157,10 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 	@Override
 	protected boolean hasPredefinedInterpreters() {
 		return true;
+	}
+
+	@Override
+	protected String getBundleName() {
+		return "org.eclipse.dltk.ruby.debug.tests";
 	}
 }

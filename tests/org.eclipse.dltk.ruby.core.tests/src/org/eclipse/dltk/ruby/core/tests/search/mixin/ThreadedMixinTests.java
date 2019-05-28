@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -22,7 +22,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 	private static final String PROJECT_NAME = "mixins";
 
 	public ThreadedMixinTests(String name) {
-		super(Activator.PLUGIN_ID, name);
+		super(name);
 	}
 
 	public static Suite suite() {
@@ -38,9 +38,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 	}
 
 	private void buildAll() throws CoreException {
-		ResourcesPlugin.getWorkspace()
-				.build(IncrementalProjectBuilder.FULL_BUILD,
-						new NullProgressMonitor());
+		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 		// waitForAutoBuild();
 	}
 
@@ -56,8 +54,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 		String id = null;
 		do {
 			id = String.valueOf(System.currentTimeMillis());
-		} while (InterpreterType.findInterpreterInstall(id) != null
-				|| id.equals(fgLastUsedID));
+		} while (InterpreterType.findInterpreterInstall(id) != null || id.equals(fgLastUsedID));
 		fgLastUsedID = id;
 		return id;
 	}
@@ -66,7 +63,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 		if (SCRIPT_PROJECT != null) {
 			deleteProject(SCRIPT_PROJECT.getElementName());
 		}
-		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME);
+		SCRIPT_PROJECT = setUpScriptProject(PROJECT_NAME, Activator.PLUGIN_ID);
 	}
 
 	class Access implements Runnable {
@@ -77,8 +74,7 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 		public boolean finish = false;
 		private final RubyMixinModel mixinModel;
 
-		public Access(RubyMixinModel mixinModel, String keys[], int start,
-				int stop, int cycles) {
+		public Access(RubyMixinModel mixinModel, String keys[], int start, int stop, int cycles) {
 			this.mixinModel = mixinModel;
 			this.start = start;
 			this.stop = stop;
@@ -108,13 +104,11 @@ public class ThreadedMixinTests extends AbstractDLTKSearchTests {
 		int d = findKeys.length / count;
 		for (int i = 0; i < count; i++) {
 			if (i != count - 1) {
-				Access a = new Access(mixinModel, findKeys, d * (i), d
-						* (i + 1), 1);
+				Access a = new Access(mixinModel, findKeys, d * (i), d * (i + 1), 1);
 				access[i] = a;
 				threads[i] = new Thread(a);
 			} else {
-				Access a = new Access(mixinModel, findKeys, d * (i),
-						findKeys.length, 10);
+				Access a = new Access(mixinModel, findKeys, d * (i), findKeys.length, 10);
 				access[i] = a;
 				threads[i] = new Thread(a);
 			}
