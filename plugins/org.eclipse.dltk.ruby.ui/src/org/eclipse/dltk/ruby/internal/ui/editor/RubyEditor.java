@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
  *
  *******************************************************************************/
@@ -60,8 +60,8 @@ public class RubyEditor extends ScriptEditor {
 
 	@Override
 	protected ScriptOutlinePage doCreateOutlinePage() {
-		return new RubyOutlinePage(this, RubyUI.getDefault()
-				.getPreferenceStore());
+		return new RubyOutlinePage(this,
+				RubyUI.getDefault().getPreferenceStore());
 	}
 
 	@Override
@@ -69,8 +69,8 @@ public class RubyEditor extends ScriptEditor {
 			IDocument document) {
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension = (IDocumentExtension3) document;
-			if (extension
-					.getDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING) == null) {
+			if (extension.getDocumentPartitioner(
+					IRubyPartitions.RUBY_PARTITIONING) == null) {
 				RubyDocumentSetupParticipant participant = new RubyDocumentSetupParticipant();
 				participant.setup(document);
 			}
@@ -80,7 +80,7 @@ public class RubyEditor extends ScriptEditor {
 	private IFoldingStructureProvider fFoldingProvider = null;
 
 	@Override
-	protected IFoldingStructureProvider getFoldingStructureProvider() {
+	protected IFoldingStructureProvider createFoldingStructureProvider() {
 		if (fFoldingProvider == null) {
 			fFoldingProvider = new RubyFoldingStructureProvider();
 		}
@@ -104,7 +104,8 @@ public class RubyEditor extends ScriptEditor {
 
 	@Override
 	protected void initializeKeyBindingScopes() {
-		setKeyBindingScopes(new String[] { "org.eclipse.dltk.ui.rubyEditorScope" }); //$NON-NLS-1$
+		setKeyBindingScopes(
+				new String[] { "org.eclipse.dltk.ui.rubyEditorScope" }); //$NON-NLS-1$
 	}
 
 	@Override
